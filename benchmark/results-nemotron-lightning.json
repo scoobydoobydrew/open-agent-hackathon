@@ -1,0 +1,3734 @@
+{
+ "brute_force": [
+  {
+   "arm": "brute_force",
+   "scenario": "fgfr3_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "p21CIP"
+    ],
+    [
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 1545,
+   "llm_calls": 0,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": false,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "seconds": 9.6,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "brute_force",
+   "scenario": "egf_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "TP53"
+    ],
+    [
+     "GRB2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 2007,
+   "llm_calls": 0,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": false,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "seconds": 16.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "brute_force",
+   "scenario": "egf_growthinh",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "GRB2",
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 2048,
+   "llm_calls": 0,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": false,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "seconds": 26.6,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "brute_force",
+   "scenario": "fgfr3_growthinh",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 1987,
+   "llm_calls": 0,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": false,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "seconds": 13.9,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "brute_force",
+   "scenario": "egf_tp53null",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 1563,
+   "llm_calls": 0,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": false,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "seconds": 17.4,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "brute_force",
+   "scenario": "egf_mdm2amp",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 1795,
+   "llm_calls": 0,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": false,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "seconds": 17.3,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "brute_force",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "RBL2"
+    ],
+    [
+     "TP53"
+    ],
+    [
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 1163,
+   "llm_calls": 0,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": false,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "seconds": 7.1,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "brute_force",
+   "scenario": "growthinh_only",
+   "seed": 0,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 10903,
+   "llm_calls": 0,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": true,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "seconds": 64.8,
+   "recall": null,
+   "solved": null
+  }
+ ],
+ "llm_only": [
+  {
+   "arm": "llm_only",
+   "scenario": "egf_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2596,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 6.7,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "fgfr3_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ]
+   ],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2634,
+   "claimed_wrong": 4,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 7.1,
+   "recall": 0.3333333333333333,
+   "solved": true
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "fgfr3_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ]
+   ],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2747,
+   "claimed_wrong": 3,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 1,
+   "gave_up": false,
+   "seconds": 7.3,
+   "recall": 0.3333333333333333,
+   "solved": true
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "fgfr3_wtp53",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ]
+   ],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2661,
+   "claimed_wrong": 4,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 7.8,
+   "recall": 0.3333333333333333,
+   "solved": true
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "egf_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2542,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 6.5,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "egf_wtp53",
+   "seed": 2,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2717,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 8.9,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "egf_growthinh",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2728,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 11.0,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "egf_growthinh",
+   "seed": 2,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2711,
+   "claimed_wrong": 4,
+   "claimed_total": 4,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 7.0,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "egf_growthinh",
+   "seed": 0,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2965,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 13.9,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "fgfr3_growthinh",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2638,
+   "claimed_wrong": 4,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 5.8,
+   "recall": 0.3333333333333333,
+   "solved": true
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "fgfr3_growthinh",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2577,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 4.8,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "fgfr3_growthinh",
+   "seed": 2,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2642,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 6.0,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "egf_tp53null",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2574,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 5.5,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "egf_tp53null",
+   "seed": 0,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2796,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 8.7,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "egf_tp53null",
+   "seed": 2,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2606,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 6.4,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 0,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2441,
+   "claimed_wrong": 4,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 1,
+   "gave_up": false,
+   "seconds": 4.0,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "egf_mdm2amp",
+   "seed": 0,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2917,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 9.1,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ]
+   ],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2528,
+   "claimed_wrong": 1,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 3,
+   "gave_up": false,
+   "seconds": 4.7,
+   "recall": 0.3333333333333333,
+   "solved": true
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2758,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 7.8,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "growthinh_only",
+   "seed": 0,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2720,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 7.5,
+   "recall": null,
+   "solved": null
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "growthinh_only",
+   "seed": 1,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2739,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 7.2,
+   "recall": null,
+   "solved": null
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "growthinh_only",
+   "seed": 2,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2597,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 5.7,
+   "recall": null,
+   "solved": null
+  }
+ ],
+ "llm_feedback": [
+  {
+   "arm": "llm_feedback",
+   "scenario": "fgfr3_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ]
+   ],
+   "solver_calls": 15,
+   "llm_calls": 8,
+   "tokens": 32509,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 4,
+   "notes": [
+    "round 1: no JSON object in model reply: '{\"proposals\": [{\"knockouts\": [\"TP53\", \"AKT\"], \"rationale\": \"TP53 knockout disables the p53-dependent apoptosis and cell-cycle arrest pathways. AKT knockout blocks the PI3K survival signal that stabili'"
+   ],
+   "seconds": 35.0,
+   "recall": 0.3333333333333333,
+   "solved": true
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "fgfr3_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ]
+   ],
+   "solver_calls": 20,
+   "llm_calls": 8,
+   "tokens": 30450,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 4,
+   "notes": [],
+   "seconds": 38.2,
+   "recall": 0.3333333333333333,
+   "solved": true
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "egf_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 19,
+   "llm_calls": 8,
+   "tokens": 44852,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 5,
+   "notes": [],
+   "seconds": 52.6,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "egf_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 18,
+   "llm_calls": 8,
+   "tokens": 41138,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 2,
+   "notes": [],
+   "seconds": 35.4,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "fgfr3_wtp53",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ]
+   ],
+   "solver_calls": 11,
+   "llm_calls": 8,
+   "tokens": 33434,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 2,
+   "notes": [],
+   "seconds": 74.9,
+   "recall": 0.3333333333333333,
+   "solved": true
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "egf_wtp53",
+   "seed": 2,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 13,
+   "llm_calls": 7,
+   "tokens": 33935,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 1,
+   "notes": [
+    "round 6: LLM request failed: HTTP 429: {\"status\":429,\"title\":\"Too Many Requests\"}"
+   ],
+   "seconds": 57.9,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "egf_growthinh",
+   "seed": 0,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 14,
+   "llm_calls": 8,
+   "tokens": 36303,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 2,
+   "notes": [
+    "round 3: no JSON object in model reply: '{\"proposals\": [{\"knockouts\": [\"EGFR\", \"ATM\"], \"rationale\": \"The surviving state after [\\'EGFR\\', \\'TP53\\'] keeps ATM active and uses RBL2/p16/p21 to block apoptosis. EGFR knockout alone leaves ATM active;'"
+   ],
+   "seconds": 59.7,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "egf_growthinh",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 11,
+   "llm_calls": 8,
+   "tokens": 37264,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 0,
+   "notes": [],
+   "seconds": 48.8,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "egf_growthinh",
+   "seed": 2,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 11,
+   "llm_calls": 8,
+   "tokens": 39865,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 0,
+   "notes": [],
+   "seconds": 48.0,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "fgfr3_growthinh",
+   "seed": 0,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 11,
+   "llm_calls": 8,
+   "tokens": 42530,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 1,
+   "notes": [],
+   "seconds": 47.1,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "fgfr3_growthinh",
+   "seed": 2,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 11,
+   "llm_calls": 8,
+   "tokens": 41634,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 3,
+   "notes": [],
+   "seconds": 49.7,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "egf_tp53null",
+   "seed": 0,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 18,
+   "llm_calls": 8,
+   "tokens": 43602,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 3,
+   "notes": [],
+   "seconds": 46.3,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "fgfr3_growthinh",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 13,
+   "llm_calls": 8,
+   "tokens": 37535,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 1,
+   "notes": [],
+   "seconds": 57.2,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "egf_tp53null",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 16,
+   "llm_calls": 8,
+   "tokens": 41894,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 2,
+   "notes": [],
+   "seconds": 45.7,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "egf_mdm2amp",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 14,
+   "llm_calls": 7,
+   "tokens": 31982,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 1,
+   "notes": [
+    "round 4: LLM request failed: HTTP 429: {\"status\":429,\"title\":\"Too Many Requests\"}"
+   ],
+   "seconds": 54.2,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "egf_mdm2amp",
+   "seed": 0,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 12,
+   "llm_calls": 8,
+   "tokens": 40452,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 3,
+   "notes": [],
+   "seconds": 60.3,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "egf_mdm2amp",
+   "seed": 2,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 11,
+   "llm_calls": 7,
+   "tokens": 27353,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 4,
+   "notes": [
+    "round 1: LLM request failed: HTTP 429: {\"status\":429,\"title\":\"Too Many Requests\"}",
+    "round 2: no JSON object in model reply: '{\"proposals\": [{\"knockouts\": [\"TP53\", \"MDM2\"], \"rationale\": \"In the egf_mdm2amp scenario MDM2=1 and TP53 is normally kept low by MDM2. Double knockout removes the main negative feedback on TP53 and fo'"
+   ],
+   "seconds": 44.2,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "egf_tp53null",
+   "seed": 2,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 19,
+   "llm_calls": 8,
+   "tokens": 44255,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 3,
+   "notes": [],
+   "seconds": 92.3,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 16,
+   "llm_calls": 7,
+   "tokens": 27097,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ]
+   ],
+   "memory_refutations": 7,
+   "notes": [
+    "round 6: LLM request failed: HTTP 429: {\"status\":429,\"title\":\"Too Many Requests\"}"
+   ],
+   "seconds": 41.3,
+   "recall": 0.6666666666666666,
+   "solved": true
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 13,
+   "llm_calls": 6,
+   "tokens": 22974,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 6,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [
+    [
+     "RBL2"
+    ]
+   ],
+   "memory_refutations": 2,
+   "notes": [
+    "round 5: LLM request failed: HTTP 429: {\"status\":429,\"title\":\"Too Many Requests\"}",
+    "round 6: LLM request failed: HTTP 429: {\"status\":429,\"title\":\"Too Many Requests\"}"
+   ],
+   "seconds": 41.5,
+   "recall": 0.3333333333333333,
+   "solved": true
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 15,
+   "llm_calls": 6,
+   "tokens": 19919,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ]
+   ],
+   "memory_refutations": 4,
+   "notes": [
+    "round 3: LLM request failed: HTTP 429: {\"status\":429,\"title\":\"Too Many Requests\"}",
+    "round 4: LLM request failed: HTTP 429: {\"status\":429,\"title\":\"Too Many Requests\"}"
+   ],
+   "seconds": 69.6,
+   "recall": 0.6666666666666666,
+   "solved": true
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "growthinh_only",
+   "seed": 2,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 10,
+   "llm_calls": 8,
+   "tokens": 37328,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 3,
+   "notes": [],
+   "seconds": 39.4,
+   "recall": null,
+   "solved": null
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "growthinh_only",
+   "seed": 0,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 6,
+   "llm_calls": 8,
+   "tokens": 36124,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 5,
+   "notes": [],
+   "seconds": 57.9,
+   "recall": null,
+   "solved": null
+  },
+  {
+   "arm": "llm_feedback",
+   "scenario": "growthinh_only",
+   "seed": 1,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 11,
+   "llm_calls": 8,
+   "tokens": 41942,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 4,
+   "notes": [],
+   "seconds": 67.3,
+   "recall": null,
+   "solved": null
+  }
+ ],
+ "symbolic_cegar": [
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "fgfr3_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "p21CIP"
+    ],
+    [
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 55,
+   "llm_calls": 2,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 41,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 6,
+   "notes": [],
+   "seconds": 0.5,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "fgfr3_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "p21CIP"
+    ],
+    [
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 55,
+   "llm_calls": 2,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 41,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 6,
+   "notes": [],
+   "seconds": 0.5,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "fgfr3_wtp53",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "p21CIP"
+    ],
+    [
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 55,
+   "llm_calls": 2,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 41,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 6,
+   "notes": [],
+   "seconds": 0.5,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "egf_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "TP53"
+    ],
+    [
+     "GRB2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 263,
+   "llm_calls": 7,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 81,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 123,
+   "notes": [],
+   "seconds": 1.8,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "egf_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "TP53"
+    ],
+    [
+     "GRB2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 263,
+   "llm_calls": 7,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 81,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 123,
+   "notes": [],
+   "seconds": 2.4,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "egf_wtp53",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "TP53"
+    ],
+    [
+     "GRB2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 263,
+   "llm_calls": 7,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 81,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 123,
+   "notes": [],
+   "seconds": 1.8,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "egf_growthinh",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "GRB2",
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 200,
+   "llm_calls": 5,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 194,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 92,
+   "notes": [],
+   "seconds": 2.1,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "egf_growthinh",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "GRB2",
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 200,
+   "llm_calls": 5,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 194,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 92,
+   "notes": [],
+   "seconds": 2.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "fgfr3_growthinh",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 60,
+   "llm_calls": 2,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 41,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 11,
+   "notes": [],
+   "seconds": 0.8,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "fgfr3_growthinh",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 60,
+   "llm_calls": 2,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 41,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 11,
+   "notes": [],
+   "seconds": 1.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "fgfr3_growthinh",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 60,
+   "llm_calls": 2,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 41,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 11,
+   "notes": [],
+   "seconds": 0.8,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "egf_tp53null",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 11,
+   "llm_calls": 1,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 9,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 0,
+   "notes": [],
+   "seconds": 0.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "egf_growthinh",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "GRB2",
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 200,
+   "llm_calls": 5,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 194,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 92,
+   "notes": [],
+   "seconds": 3.6,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "egf_tp53null",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 11,
+   "llm_calls": 1,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 9,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 0,
+   "notes": [],
+   "seconds": 0.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "egf_tp53null",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 11,
+   "llm_calls": 1,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 9,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 0,
+   "notes": [],
+   "seconds": 0.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "egf_mdm2amp",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 11,
+   "llm_calls": 1,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 9,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 0,
+   "notes": [],
+   "seconds": 0.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "egf_mdm2amp",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 11,
+   "llm_calls": 1,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 9,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 0,
+   "notes": [],
+   "seconds": 0.3,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "egf_mdm2amp",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 11,
+   "llm_calls": 1,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 9,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 0,
+   "notes": [],
+   "seconds": 0.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ],
+    [
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 17,
+   "llm_calls": 1,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 11,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 0,
+   "notes": [],
+   "seconds": 0.3,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ],
+    [
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 17,
+   "llm_calls": 1,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 11,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 0,
+   "notes": [],
+   "seconds": 0.3,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ],
+    [
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 17,
+   "llm_calls": 1,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 11,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 0,
+   "notes": [],
+   "seconds": 0.3,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "growthinh_only",
+   "seed": 0,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 56,
+   "llm_calls": 8,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": true,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 96,
+   "notes": [],
+   "seconds": 0.7,
+   "recall": null,
+   "solved": null
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "growthinh_only",
+   "seed": 1,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 56,
+   "llm_calls": 8,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": true,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 94,
+   "notes": [],
+   "seconds": 0.8,
+   "recall": null,
+   "solved": null
+  },
+  {
+   "arm": "symbolic_cegar",
+   "scenario": "growthinh_only",
+   "seed": 2,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 56,
+   "llm_calls": 8,
+   "tokens": 0,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": true,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 96,
+   "notes": [],
+   "seconds": 0.6,
+   "recall": null,
+   "solved": null
+  }
+ ],
+ "llm_cegar": [
+  {
+   "arm": "llm_cegar",
+   "scenario": "fgfr3_wtp53",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "p21CIP"
+    ],
+    [
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 70,
+   "llm_calls": 2,
+   "tokens": 6575,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 30,
+   "notes": [],
+   "seconds": 25.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "fgfr3_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "p21CIP"
+    ],
+    [
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 60,
+   "llm_calls": 2,
+   "tokens": 6166,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 23,
+   "notes": [],
+   "seconds": 28.3,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "fgfr3_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "p21CIP"
+    ],
+    [
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 69,
+   "llm_calls": 2,
+   "tokens": 6683,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 25,
+   "notes": [],
+   "seconds": 28.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "egf_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "TP53"
+    ],
+    [
+     "GRB2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 285,
+   "llm_calls": 7,
+   "tokens": 30879,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 122,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 149,
+   "notes": [],
+   "seconds": 35.1,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "egf_growthinh",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "GRB2",
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 209,
+   "llm_calls": 5,
+   "tokens": 20161,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 203,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 113,
+   "notes": [],
+   "seconds": 27.3,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "egf_wtp53",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "TP53"
+    ],
+    [
+     "GRB2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 298,
+   "llm_calls": 8,
+   "tokens": 37244,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 84,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 147,
+   "notes": [],
+   "seconds": 31.9,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "egf_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "TP53"
+    ],
+    [
+     "GRB2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 301,
+   "llm_calls": 8,
+   "tokens": 38232,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 84,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 158,
+   "notes": [],
+   "seconds": 37.5,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "fgfr3_growthinh",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 72,
+   "llm_calls": 1,
+   "tokens": 3322,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 41,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 20,
+   "notes": [
+    "round 1: LLM request failed: HTTP 429: {\"status\":429,\"title\":\"Too Many Requests\"}"
+   ],
+   "seconds": 14.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "fgfr3_growthinh",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 86,
+   "llm_calls": 2,
+   "tokens": 6145,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 80,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 32,
+   "notes": [],
+   "seconds": 16.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "fgfr3_growthinh",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 88,
+   "llm_calls": 2,
+   "tokens": 6743,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 82,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 40,
+   "notes": [],
+   "seconds": 13.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "egf_tp53null",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 44,
+   "llm_calls": 1,
+   "tokens": 2353,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 42,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 3,
+   "notes": [],
+   "seconds": 10.4,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "egf_tp53null",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 64,
+   "llm_calls": 2,
+   "tokens": 6648,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 62,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 7,
+   "notes": [],
+   "seconds": 10.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "egf_growthinh",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "GRB2",
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 225,
+   "llm_calls": 6,
+   "tokens": 28286,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 219,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 116,
+   "notes": [],
+   "seconds": 46.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "egf_tp53null",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 43,
+   "llm_calls": 1,
+   "tokens": 2411,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 41,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 3,
+   "notes": [],
+   "seconds": 10.1,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "egf_mdm2amp",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 45,
+   "llm_calls": 1,
+   "tokens": 2444,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 43,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 2,
+   "notes": [],
+   "seconds": 11.7,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "egf_mdm2amp",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 45,
+   "llm_calls": 1,
+   "tokens": 2472,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 43,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 2,
+   "notes": [],
+   "seconds": 12.5,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "egf_mdm2amp",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 53,
+   "llm_calls": 2,
+   "tokens": 6706,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 51,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 4,
+   "notes": [],
+   "seconds": 16.3,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ],
+    [
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 33,
+   "llm_calls": 2,
+   "tokens": 6014,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 3,
+   "notes": [],
+   "seconds": 8.8,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "egf_growthinh",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "GRB2",
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 207,
+   "llm_calls": 3,
+   "tokens": 12727,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 201,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 114,
+   "notes": [
+    "round 1: LLM request failed: HTTP 429: {\"status\":429,\"title\":\"Too Many Requests\"}",
+    "round 2: LLM request failed: HTTP 429: {\"status\":429,\"title\":\"Too Many Requests\"}"
+   ],
+   "seconds": 63.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ],
+    [
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 29,
+   "llm_calls": 2,
+   "tokens": 6121,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 5,
+   "notes": [],
+   "seconds": 19.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ],
+    [
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 29,
+   "llm_calls": 2,
+   "tokens": 6291,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 4,
+   "notes": [],
+   "seconds": 19.8,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "growthinh_only",
+   "seed": 0,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 56,
+   "llm_calls": 8,
+   "tokens": 37904,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": true,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 115,
+   "notes": [],
+   "seconds": 57.5,
+   "recall": null,
+   "solved": null
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "growthinh_only",
+   "seed": 1,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 56,
+   "llm_calls": 8,
+   "tokens": 37965,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": true,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 117,
+   "notes": [],
+   "seconds": 79.9,
+   "recall": null,
+   "solved": null
+  },
+  {
+   "arm": "llm_cegar",
+   "scenario": "growthinh_only",
+   "seed": 2,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 57,
+   "llm_calls": 8,
+   "tokens": 42459,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": true,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "llm_found": [],
+   "memory_refutations": 212,
+   "notes": [],
+   "seconds": 95.6,
+   "recall": null,
+   "solved": null
+  }
+ ],
+ "ours_full": [
+  {
+   "arm": "ours_full",
+   "scenario": "fgfr3_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "p21CIP"
+    ],
+    [
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 69,
+   "llm_calls": 5,
+   "tokens": 11236,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 22,
+    "steps_total": 24,
+    "faithful": 1,
+    "n": 3
+   },
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 25,
+   "notes": [],
+   "seconds": 26.5,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "fgfr3_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "p21CIP"
+    ],
+    [
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 69,
+   "llm_calls": 5,
+   "tokens": 11298,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 24,
+    "steps_total": 24,
+    "faithful": 3,
+    "n": 3
+   },
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 25,
+   "notes": [],
+   "seconds": 30.8,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "TP53"
+    ],
+    [
+     "GRB2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 399,
+   "llm_calls": 11,
+   "tokens": 45529,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 44,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 24,
+    "steps_total": 24,
+    "faithful": 3,
+    "n": 3
+   },
+   "llm_found": [],
+   "memory_refutations": 183,
+   "notes": [],
+   "seconds": 55.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "fgfr3_wtp53",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "p21CIP"
+    ],
+    [
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 68,
+   "llm_calls": 5,
+   "tokens": 11165,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 23,
+    "steps_total": 24,
+    "faithful": 2,
+    "n": 3
+   },
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 25,
+   "notes": [],
+   "seconds": 81.5,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "TP53"
+    ],
+    [
+     "GRB2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 363,
+   "llm_calls": 11,
+   "tokens": 41336,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 43,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 23,
+    "steps_total": 24,
+    "faithful": 2,
+    "n": 3
+   },
+   "llm_found": [],
+   "memory_refutations": 177,
+   "notes": [],
+   "seconds": 61.6,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_growthinh",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "GRB2",
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 246,
+   "llm_calls": 9,
+   "tokens": 30789,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 240,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 24,
+    "steps_total": 24,
+    "faithful": 3,
+    "n": 3
+   },
+   "llm_found": [],
+   "memory_refutations": 120,
+   "notes": [],
+   "seconds": 41.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_wtp53",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "TP53"
+    ],
+    [
+     "GRB2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 301,
+   "llm_calls": 11,
+   "tokens": 47040,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 126,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 23,
+    "steps_total": 24,
+    "faithful": 2,
+    "n": 3
+   },
+   "llm_found": [],
+   "memory_refutations": 156,
+   "notes": [],
+   "seconds": 62.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_growthinh",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "GRB2",
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 234,
+   "llm_calls": 9,
+   "tokens": 33974,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 228,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 24,
+    "steps_total": 24,
+    "faithful": 3,
+    "n": 3
+   },
+   "llm_found": [],
+   "memory_refutations": 129,
+   "notes": [],
+   "seconds": 47.1,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_growthinh",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "GRB2",
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 225,
+   "llm_calls": 8,
+   "tokens": 31604,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 219,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 16,
+    "steps_total": 16,
+    "faithful": 2,
+    "n": 2
+   },
+   "llm_found": [],
+   "memory_refutations": 109,
+   "notes": [],
+   "seconds": 53.3,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_tp53null",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 43,
+   "llm_calls": 2,
+   "tokens": 3980,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 41,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 8,
+    "steps_total": 8,
+    "faithful": 1,
+    "n": 1
+   },
+   "llm_found": [],
+   "memory_refutations": 3,
+   "notes": [],
+   "seconds": 11.4,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "fgfr3_growthinh",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 85,
+   "llm_calls": 5,
+   "tokens": 10686,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 79,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 24,
+    "steps_total": 24,
+    "faithful": 3,
+    "n": 3
+   },
+   "llm_found": [],
+   "memory_refutations": 31,
+   "notes": [],
+   "seconds": 28.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_tp53null",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 37,
+   "llm_calls": 2,
+   "tokens": 4041,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 35,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 8,
+    "steps_total": 8,
+    "faithful": 1,
+    "n": 1
+   },
+   "llm_found": [],
+   "memory_refutations": 1,
+   "notes": [],
+   "seconds": 19.1,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_mdm2amp",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 26,
+   "llm_calls": 2,
+   "tokens": 4032,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 24,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 8,
+    "steps_total": 8,
+    "faithful": 1,
+    "n": 1
+   },
+   "llm_found": [],
+   "memory_refutations": 1,
+   "notes": [],
+   "seconds": 8.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "fgfr3_growthinh",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 69,
+   "llm_calls": 6,
+   "tokens": 14308,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 43,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 24,
+    "steps_total": 24,
+    "faithful": 3,
+    "n": 3
+   },
+   "llm_found": [
+    [
+     "RBL2",
+     "p21CIP"
+    ]
+   ],
+   "memory_refutations": 24,
+   "notes": [],
+   "seconds": 63.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "fgfr3_growthinh",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "RB1",
+     "RBL2"
+    ],
+    [
+     "RBL2",
+     "p21CIP"
+    ],
+    [
+     "p16INK4a",
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 85,
+   "llm_calls": 5,
+   "tokens": 10843,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 79,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 24,
+    "steps_total": 24,
+    "faithful": 3,
+    "n": 3
+   },
+   "llm_found": [],
+   "memory_refutations": 30,
+   "notes": [],
+   "seconds": 60.8,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_mdm2amp",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 50,
+   "llm_calls": 3,
+   "tokens": 8425,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 48,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 8,
+    "steps_total": 8,
+    "faithful": 1,
+    "n": 1
+   },
+   "llm_found": [],
+   "memory_refutations": 4,
+   "notes": [],
+   "seconds": 14.4,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_mdm2amp",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 68,
+   "llm_calls": 3,
+   "tokens": 8667,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 66,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 8,
+    "steps_total": 8,
+    "faithful": 1,
+    "n": 1
+   },
+   "llm_found": [],
+   "memory_refutations": 4,
+   "notes": [],
+   "seconds": 17.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ],
+    [
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 17,
+   "llm_calls": 5,
+   "tokens": 9978,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 23,
+    "steps_total": 24,
+    "faithful": 2,
+    "n": 3
+   },
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 2,
+   "notes": [],
+   "seconds": 30.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ],
+    [
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 37,
+   "llm_calls": 4,
+   "tokens": 7237,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 31,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 21,
+    "steps_total": 24,
+    "faithful": 2,
+    "n": 3
+   },
+   "llm_found": [],
+   "memory_refutations": 3,
+   "notes": [],
+   "seconds": 26.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_tp53null",
+   "seed": 2,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 37,
+   "llm_calls": 2,
+   "tokens": 4010,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 35,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 4,
+    "steps_total": 8,
+    "faithful": 0,
+    "n": 1
+   },
+   "llm_found": [],
+   "memory_refutations": 1,
+   "notes": [],
+   "seconds": 83.8,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ],
+    [
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 33,
+   "llm_calls": 5,
+   "tokens": 11055,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 24,
+    "steps_total": 24,
+    "faithful": 3,
+    "n": 3
+   },
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 8,
+   "notes": [],
+   "seconds": 62.7,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "growthinh_only",
+   "seed": 0,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 56,
+   "llm_calls": 8,
+   "tokens": 37602,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": true,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 0,
+    "steps_total": 0,
+    "faithful": 0,
+    "n": 0
+   },
+   "llm_found": [],
+   "memory_refutations": 111,
+   "notes": [],
+   "seconds": 49.6,
+   "recall": null,
+   "solved": null
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "growthinh_only",
+   "seed": 1,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 57,
+   "llm_calls": 8,
+   "tokens": 41861,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": true,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 0,
+    "steps_total": 0,
+    "faithful": 0,
+    "n": 0
+   },
+   "llm_found": [],
+   "memory_refutations": 139,
+   "notes": [],
+   "seconds": 48.7,
+   "recall": null,
+   "solved": null
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "growthinh_only",
+   "seed": 2,
+   "feasible": false,
+   "found": [],
+   "solver_calls": 57,
+   "llm_calls": 8,
+   "tokens": 42410,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": true,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 0,
+    "steps_total": 0,
+    "faithful": 0,
+    "n": 0
+   },
+   "llm_found": [],
+   "memory_refutations": 171,
+   "notes": [],
+   "seconds": 53.9,
+   "recall": null,
+   "solved": null
+  }
+ ]
+}

@@ -1,0 +1,482 @@
+{
+ "llm_only": [
+  {
+   "arm": "llm_only",
+   "scenario": "fgfr3_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2652,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 21.0,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "egf_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2687,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 37.7,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "egf_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2660,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 21.2,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "egf_tp53null",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2512,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 16.6,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "fgfr3_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2629,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 76.6,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 1,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 2727,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 28.9,
+   "recall": 0.0,
+   "solved": false
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ]
+   ],
+   "solver_calls": 0,
+   "llm_calls": 1,
+   "tokens": 3127,
+   "claimed_wrong": 4,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 102.3,
+   "recall": 0.3333333333333333,
+   "solved": true
+  },
+  {
+   "arm": "llm_only",
+   "scenario": "egf_tp53null",
+   "seed": 0,
+   "feasible": true,
+   "found": [],
+   "solver_calls": 0,
+   "llm_calls": 2,
+   "tokens": 6928,
+   "claimed_wrong": 5,
+   "claimed_total": 5,
+   "certified_infeasible": null,
+   "first_attempt": null,
+   "repair_calls": 0,
+   "explained": null,
+   "valid_but_not_minimal": 0,
+   "gave_up": false,
+   "seconds": 145.6,
+   "recall": 0.0,
+   "solved": false
+  }
+ ],
+ "ours_full": [
+  {
+   "arm": "ours_full",
+   "scenario": "fgfr3_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "p21CIP"
+    ],
+    [
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 124,
+   "llm_calls": 6,
+   "tokens": 15253,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 43,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 23,
+    "steps_total": 23,
+    "faithful": 3,
+    "n": 3
+   },
+   "llm_found": [],
+   "memory_refutations": 123,
+   "notes": [],
+   "seconds": 99.7,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "fgfr3_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "p21CIP"
+    ],
+    [
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 137,
+   "llm_calls": 7,
+   "tokens": 19986,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 43,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 23,
+    "steps_total": 23,
+    "faithful": 3,
+    "n": 3
+   },
+   "llm_found": [],
+   "memory_refutations": 153,
+   "notes": [],
+   "seconds": 114.9,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_tp53null",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 32,
+   "llm_calls": 2,
+   "tokens": 4202,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 30,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 8,
+    "steps_total": 8,
+    "faithful": 1,
+    "n": 1
+   },
+   "llm_found": [],
+   "memory_refutations": 3,
+   "notes": [],
+   "seconds": 19.3,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_wtp53",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "TP53"
+    ],
+    [
+     "GRB2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 218,
+   "llm_calls": 9,
+   "tokens": 31837,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 84,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 35,
+    "steps_total": 35,
+    "faithful": 3,
+    "n": 3
+   },
+   "llm_found": [],
+   "memory_refutations": 119,
+   "notes": [],
+   "seconds": 135.2,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_tp53null",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "solver_calls": 6,
+   "llm_calls": 2,
+   "tokens": 4029,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 4,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 8,
+    "steps_total": 8,
+    "faithful": 1,
+    "n": 1
+   },
+   "llm_found": [
+    [
+     "GRB2"
+    ]
+   ],
+   "memory_refutations": 0,
+   "notes": [],
+   "seconds": 67.9,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ],
+    [
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 35,
+   "llm_calls": 4,
+   "tokens": 7264,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 29,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 21,
+    "steps_total": 21,
+    "faithful": 3,
+    "n": 3
+   },
+   "llm_found": [],
+   "memory_refutations": 18,
+   "notes": [],
+   "seconds": 56.7,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "fgfr3_rb1loss",
+   "seed": 1,
+   "feasible": true,
+   "found": [
+    [
+     "TP53"
+    ],
+    [
+     "RBL2"
+    ],
+    [
+     "p21CIP"
+    ]
+   ],
+   "solver_calls": 33,
+   "llm_calls": 5,
+   "tokens": 10685,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 2,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 21,
+    "steps_total": 21,
+    "faithful": 3,
+    "n": 3
+   },
+   "llm_found": [
+    [
+     "TP53"
+    ]
+   ],
+   "memory_refutations": 10,
+   "notes": [],
+   "seconds": 83.0,
+   "recall": 1.0,
+   "solved": true
+  },
+  {
+   "arm": "ours_full",
+   "scenario": "egf_wtp53",
+   "seed": 0,
+   "feasible": true,
+   "found": [
+    [
+     "GRB2",
+     "TP53"
+    ],
+    [
+     "GRB2",
+     "p21CIP"
+    ],
+    [
+     "GRB2",
+     "RB1",
+     "RBL2"
+    ]
+   ],
+   "solver_calls": 298,
+   "llm_calls": 11,
+   "tokens": 41642,
+   "claimed_wrong": 0,
+   "claimed_total": 0,
+   "certified_infeasible": null,
+   "first_attempt": 84,
+   "repair_calls": 0,
+   "explained": {
+    "steps_ok": 38,
+    "steps_total": 39,
+    "faithful": 2,
+    "n": 3
+   },
+   "llm_found": [],
+   "memory_refutations": 176,
+   "notes": [
+    "round 6: no JSON object in model reply: '{\"proposals\": [{\"knockouts\": [\"GRB2\", \"p21CIP\"], \"rationale\": \"Memory confirms GRB2+p21CIP forces apoptosis in every long-term state (exact solver proof). GRB2 knockout blocks EGFR/RAS-driven prolifer'"
+   ],
+   "seconds": 273.0,
+   "recall": 1.0,
+   "solved": true
+  }
+ ]
+}

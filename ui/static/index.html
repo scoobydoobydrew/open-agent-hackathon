@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verified Knockout Agent</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%2322d3ee'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23070b14'/%3E%3C/svg%3E">
+  <script src="/vendor/tailwind.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'sans-serif'], mono: ['ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace'] },
+          colors: { ink: { 950: '#050912', 900: '#080d1a', 800: '#0d1426', 700: '#141d33' } },
+          keyframes: {
+            flow: { to: { strokeDashoffset: '-24' } },
+            ping2: { '0%': { transform: 'scale(1)', opacity: '.7' }, '100%': { transform: 'scale(2.1)', opacity: '0' } },
+            fadeUp: { from: { opacity: '0', transform: 'translateY(10px)' }, to: { opacity: '1', transform: 'none' } },
+            pop: { '0%': { transform: 'scale(.2)', opacity: '0' }, '60%': { transform: 'scale(1.25)' }, '100%': { transform: 'scale(1)', opacity: '1' } },
+            shimmer: { to: { backgroundPosition: '-200% 0' } },
+            floaty: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-6px)' } },
+          },
+          animation: { fadeUp: 'fadeUp .45s ease both', pop: 'pop .5s cubic-bezier(.2,.9,.3,1.3) both', shimmer: 'shimmer 2.2s linear infinite', floaty: 'floaty 5s ease-in-out infinite' },
+        },
+      },
+    }
+  </script>
+  <style>
+    html { color-scheme: dark; }
+    body { background: #050912; }
+    .glass { background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.09); backdrop-filter: blur(14px); box-shadow: 0 10px 50px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06); }
+    .grid-bg { background-image: linear-gradient(rgba(148,163,184,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,.06) 1px, transparent 1px); background-size: 34px 34px; mask-image: radial-gradient(ellipse at center, #000 40%, transparent 85%); }
+    .flow-edge { stroke-dasharray: 6 6; animation: flow 1.1s linear infinite; }
+    .node circle, .node rect, .node text, .node path { transition: fill .4s ease, stroke .4s ease, opacity .4s ease, r .4s ease; }
+    .node:hover .node-body { filter: brightness(1.25); }
+    .ping { transform-box: fill-box; transform-origin: center; animation: ping2 1.6s ease-out infinite; }
+    .tnode { transition: transform .5s cubic-bezier(.2,.8,.2,1), opacity .3s; }
+    .scroll-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+    .scroll-thin::-webkit-scrollbar-thumb { background: rgba(148,163,184,.25); border-radius: 8px; }
+    .scroll-thin::-webkit-scrollbar-track { background: transparent; }
+    .num { font-variant-numeric: tabular-nums; }
+    .shine { background: linear-gradient(110deg, transparent 20%, rgba(255,255,255,.18) 40%, transparent 60%); background-size: 200% 100%; }
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+  </style>
+</head>
+<body class="min-h-screen font-sans text-slate-200 antialiased selection:bg-cyan-400/30">
+  <!-- ambient background -->
+  <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div class="absolute -top-40 -left-32 h-[34rem] w-[34rem] rounded-full bg-cyan-500/20 blur-[120px]"></div>
+    <div class="absolute top-1/3 -right-40 h-[38rem] w-[38rem] rounded-full bg-fuchsia-600/15 blur-[140px]"></div>
+    <div class="absolute -bottom-52 left-1/3 h-[30rem] w-[30rem] rounded-full bg-indigo-600/20 blur-[130px]"></div>
+    <div class="grid-bg absolute inset-0"></div>
+  </div>
+
+  <header class="sticky top-0 z-40 border-b border-white/[.07] bg-ink-950/70 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-[1500px] flex-wrap items-center gap-x-6 gap-y-3 px-5 py-3">
+      <div class="flex items-center gap-3">
+        <div class="relative grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-cyan-400 to-fuchsia-500 shadow-[0_0_30px_rgba(34,211,238,.35)]">
+          <svg viewBox="0 0 24 24" class="h-6 w-6 text-ink-950" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3c0 6 12 6 12 12s-12 6-12 6M18 3c0 6-12 6-12 12s12 6 12 6"/><path d="M8 7h8M7 12h10M8 17h8" opacity=".7"/></svg>
+        </div>
+        <div class="leading-tight">
+          <div class="bg-gradient-to-r from-cyan-200 via-sky-300 to-fuchsia-300 bg-clip-text text-lg font-semibold tracking-tight text-transparent" data-i18n="app.title"></div>
+          <div class="text-[11px] uppercase tracking-[.18em] text-slate-400" data-i18n="app.tag"></div>
+        </div>
+      </div>
+      <nav id="tabs" class="flex flex-wrap gap-1 rounded-xl border border-white/10 bg-white/[.03] p-1"></nav>
+      <div class="ml-auto flex flex-wrap items-center gap-2" id="status"></div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-[1500px] px-5 pb-16 pt-5">
+    <div id="scenario-bar" class="mb-5"></div>
+    <section id="view-explore" class="hidden"></section>
+    <section id="view-search" class="hidden"></section>
+    <section id="view-agent" class="hidden"></section>
+    <section id="view-bench" class="hidden"></section>
+    <section id="view-how" class="hidden"></section>
+  </main>
+
+  <div id="tip" class="pointer-events-none fixed z-50 hidden max-w-xs rounded-xl border border-white/15 bg-ink-900/95 p-3 text-xs shadow-2xl backdrop-blur"></div>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
