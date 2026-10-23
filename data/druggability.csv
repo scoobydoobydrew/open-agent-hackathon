@@ -1,0 +1,24 @@
+gene,protein,druggable,example_agents,evidence_level,note,curation
+AKT,AKT1/2/3 kinases,yes,capivasertib; ipatasertib; MK-2206,approved_other_indication,Capivasertib is approved in breast cancer; pan-AKT inhibition causes hyperglycaemia,hand-curated; verify before citing
+ATM,ATM kinase,yes,AZD0156; AZD1390; KU-60019,clinical,Brain-penetrant inhibitors studied as radiosensitisers in early trials,hand-curated; verify before citing
+CDC25A,CDC25A phosphatase,yes,NSC 663284,preclinical,No CDC25 inhibitor has reached approval,hand-curated; verify before citing
+CHEK1_2,CHK1/CHK2 kinases,yes,prexasertib; rabusertib; SRA737,clinical,CHK1/2 inhibitors studied as chemo- and radiosensitisers; haematological toxicity,hand-curated; verify before citing
+CyclinA,cyclin A2,indirect,CDK2 inhibitors,preclinical,No direct cyclin inhibitors; reachable only through CDK2,hand-curated; verify before citing
+CyclinD1,cyclin D1,indirect,palbociclib; ribociclib; abemaciclib (CDK4/6),approved_other_indication,CDK4/6 inhibitors block cyclin D-CDK4/6 activity rather than cyclin D1 itself; approved in breast cancer,hand-curated; verify before citing
+CyclinE1,cyclin E1,indirect,CDK2 inhibitors,clinical,Reachable through CDK2 inhibitors that are in early trials,hand-curated; verify before citing
+E2F1,E2F1 transcription factor,no,,none,Transcription factor without direct inhibitors,hand-curated; verify before citing
+E2F3,E2F3 transcription factor,no,,none,Transcription factor without direct inhibitors,hand-curated; verify before citing
+EGFR,EGFR kinase,yes,erlotinib; gefitinib; osimertinib; cetuximab,approved_other_indication,Approved in lung and other cancers; not a standard bladder cancer therapy,hand-curated; verify before citing
+FGFR3,FGFR3 kinase,yes,erdafitinib,approved,Erdafitinib is approved for urothelial carcinoma with FGFR alterations,hand-curated; verify before citing
+GRB2,GRB2 adaptor protein,limited,SH2-domain inhibitors; antisense oligonucleotides,preclinical,Adaptor protein with no approved inhibitor,hand-curated; verify before citing
+MDM2,MDM2 ubiquitin ligase,yes,idasanutlin; milademetan; navtemadlin; nutlin-3,clinical,Inhibition stabilises p53 so it only helps when p53 is wild-type,hand-curated; verify before citing
+PI3K,PI3K catalytic subunit,yes,alpelisib; copanlisib; idelalisib,approved_other_indication,Isoform-selective drugs approved in breast cancer and lymphoma,hand-curated; verify before citing
+PTEN,PTEN phosphatase,no,,none,Tumour suppressor; therapies aim to restore it rather than inhibit it,hand-curated; verify before citing
+RAS,RAS GTPases,limited,sotorasib; adagrasib (KRAS G12C only),approved_other_indication,Only mutant-specific KRAS G12C inhibitors are approved; pan-RAS inhibitors are investigational,hand-curated; verify before citing
+RB1,RB1 tumour suppressor,no,,none,Tumour suppressor without inhibitors,hand-curated; verify before citing
+RBL2,RBL2 (p130) pocket protein,no,,none,Pocket protein without inhibitors,hand-curated; verify before citing
+SPRY,Sprouty,no,,none,No inhibitors known,hand-curated; verify before citing
+TP53,p53,no,pifithrin-alpha (research tool),preclinical,No clinical p53 inhibitor; inhibiting a tumour suppressor risks genomic instability,hand-curated; verify before citing
+p14ARF,p14ARF,no,,none,No inhibitors known,hand-curated; verify before citing
+p16INK4a,p16INK4a,no,,none,CDK4/6 inhibitors mimic its function rather than target it,hand-curated; verify before citing
+p21CIP,p21 (CDKN1A),no,,none,No inhibitors known,hand-curated; verify before citing

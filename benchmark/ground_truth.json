@@ -1,0 +1,210 @@
+{
+  "fgfr3_wtp53": {
+    "baseline": "SURVIVES",
+    "max_size_searched": 3,
+    "sets_evaluated": 1545,
+    "seconds": 8.82,
+    "minimal_sets": [
+      {
+        "knockouts": [
+          "TP53"
+        ],
+        "selective": true,
+        "toxic_in": []
+      },
+      {
+        "knockouts": [
+          "p21CIP"
+        ],
+        "selective": true,
+        "toxic_in": []
+      },
+      {
+        "knockouts": [
+          "RB1",
+          "RBL2"
+        ],
+        "selective": true,
+        "toxic_in": []
+      }
+    ]
+  },
+  "egf_wtp53": {
+    "baseline": "SURVIVES",
+    "max_size_searched": 3,
+    "sets_evaluated": 2007,
+    "seconds": 13.93,
+    "minimal_sets": [
+      {
+        "knockouts": [
+          "GRB2",
+          "TP53"
+        ],
+        "selective": false,
+        "toxic_in": [
+          "normal_resting_rt"
+        ]
+      },
+      {
+        "knockouts": [
+          "GRB2",
+          "p21CIP"
+        ],
+        "selective": false,
+        "toxic_in": [
+          "normal_resting_rt"
+        ]
+      },
+      {
+        "knockouts": [
+          "GRB2",
+          "RB1",
+          "RBL2"
+        ],
+        "selective": false,
+        "toxic_in": [
+          "normal_resting_rt"
+        ]
+      }
+    ]
+  },
+  "egf_growthinh": {
+    "baseline": "SURVIVES",
+    "max_size_searched": 3,
+    "sets_evaluated": 2048,
+    "seconds": 20.56,
+    "minimal_sets": [
+      {
+        "knockouts": [
+          "GRB2",
+          "RB1",
+          "RBL2"
+        ],
+        "selective": false,
+        "toxic_in": [
+          "normal_resting_rt"
+        ]
+      },
+      {
+        "knockouts": [
+          "GRB2",
+          "RBL2",
+          "p21CIP"
+        ],
+        "selective": false,
+        "toxic_in": [
+          "normal_resting_rt"
+        ]
+      },
+      {
+        "knockouts": [
+          "GRB2",
+          "p16INK4a",
+          "p21CIP"
+        ],
+        "selective": false,
+        "toxic_in": [
+          "normal_resting_rt"
+        ]
+      }
+    ]
+  },
+  "fgfr3_growthinh": {
+    "baseline": "SURVIVES",
+    "max_size_searched": 3,
+    "sets_evaluated": 1987,
+    "seconds": 11.42,
+    "minimal_sets": [
+      {
+        "knockouts": [
+          "RB1",
+          "RBL2"
+        ],
+        "selective": true,
+        "toxic_in": []
+      },
+      {
+        "knockouts": [
+          "RBL2",
+          "p21CIP"
+        ],
+        "selective": true,
+        "toxic_in": []
+      },
+      {
+        "knockouts": [
+          "p16INK4a",
+          "p21CIP"
+        ],
+        "selective": true,
+        "toxic_in": []
+      }
+    ]
+  },
+  "egf_tp53null": {
+    "baseline": "SURVIVES",
+    "max_size_searched": 3,
+    "sets_evaluated": 1563,
+    "seconds": 14.53,
+    "minimal_sets": [
+      {
+        "knockouts": [
+          "GRB2"
+        ],
+        "selective": true,
+        "toxic_in": []
+      }
+    ]
+  },
+  "egf_mdm2amp": {
+    "baseline": "SURVIVES",
+    "max_size_searched": 3,
+    "sets_evaluated": 1795,
+    "seconds": 16.62,
+    "minimal_sets": [
+      {
+        "knockouts": [
+          "GRB2"
+        ],
+        "selective": true,
+        "toxic_in": []
+      }
+    ]
+  },
+  "fgfr3_rb1loss": {
+    "baseline": "SURVIVES",
+    "max_size_searched": 3,
+    "sets_evaluated": 1163,
+    "seconds": 6.18,
+    "minimal_sets": [
+      {
+        "knockouts": [
+          "RBL2"
+        ],
+        "selective": true,
+        "toxic_in": []
+      },
+      {
+        "knockouts": [
+          "TP53"
+        ],
+        "selective": true,
+        "toxic_in": []
+      },
+      {
+        "knockouts": [
+          "p21CIP"
+        ],
+        "selective": true,
+        "toxic_in": []
+      }
+    ]
+  },
+  "growthinh_only": {
+    "baseline": "SURVIVES",
+    "max_size_searched": 4,
+    "sets_evaluated": 10903,
+    "seconds": 62.75,
+    "minimal_sets": []
+  }
+}

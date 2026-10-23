@@ -1,0 +1,36 @@
+node,gene,role,rule,regulators
+DNA_damage,DNA_damage,input,DNA_damage,DNA_damage+
+EGFR_stimulus,EGFR_stimulus,input,EGFR_stimulus,EGFR_stimulus+
+FGFR3_stimulus,FGFR3_stimulus,input,FGFR3_stimulus,FGFR3_stimulus+
+Growth_inhibitors,Growth_inhibitors,input,Growth_inhibitors,Growth_inhibitors+
+AKT,AKT,internal,PI3K,PI3K+
+ATM_high,ATM,internal,E2F1_medium&DNA_damage&ATM_medium,ATM_medium+;DNA_damage+;E2F1_medium+
+ATM_medium,ATM,internal,ATM_medium&ATM_high | DNA_damage,ATM_high+;ATM_medium+;DNA_damage+
+Apoptosis_high,Apoptosis,output,E2F1_medium&E2F1_high&Apoptosis_medium,Apoptosis_medium+;E2F1_high+;E2F1_medium+
+Apoptosis_medium,Apoptosis,output,E2F1_medium&E2F1_high | Apoptosis_medium&Apoptosis_high | TP53,Apoptosis_high+;Apoptosis_medium+;E2F1_high+;E2F1_medium+;TP53+
+CDC25A,CDC25A,internal,!RBL2&E2F3_medium&!CHEK1_2_medium | !RBL2&E2F1_medium&!CHEK1_2_medium,CHEK1_2_medium-;E2F1_medium+;E2F3_medium+;RBL2-
+CHEK1_2_high,CHEK1_2,internal,E2F1_medium&CHEK1_2_medium&ATM_medium,ATM_medium+;CHEK1_2_medium+;E2F1_medium+
+CHEK1_2_medium,CHEK1_2,internal,CHEK1_2_medium&CHEK1_2_high | ATM_medium,ATM_medium+;CHEK1_2_high+;CHEK1_2_medium+
+CyclinA,CyclinA,internal,!p21CIP&!RBL2&E2F3_medium&CDC25A | !p21CIP&!RBL2&E2F1_medium&CDC25A,CDC25A+;E2F1_medium+;E2F3_medium+;RBL2-;p21CIP-
+CyclinD1,CyclinD1,internal,!p21CIP&!p16INK4a&RAS | !p21CIP&!p16INK4a&AKT,AKT+;RAS+;p16INK4a-;p21CIP-
+CyclinE1,CyclinE1,internal,!p21CIP&!RBL2&E2F3_medium&CDC25A | !p21CIP&!RBL2&E2F1_medium&CDC25A,CDC25A+;E2F1_medium+;E2F3_medium+;RBL2-;p21CIP-
+E2F1_high,E2F1,internal,!RBL2&!RB1&E2F3_medium&E2F3_high&E2F1_medium&CHEK1_2_medium&CHEK1_2_high&ATM_medium&ATM_high | !RBL2&!RB1&RAS&E2F1_medium&CHEK1_2_medium&CHEK1_2_high&ATM_medium&ATM_high,ATM_high+;ATM_medium+;CHEK1_2_high+;CHEK1_2_medium+;E2F1_medium+;E2F3_high+;E2F3_medium+;RAS+;RB1-;RBL2-
+E2F1_medium,E2F1,internal,!RBL2&!RB1&RAS | !RBL2&!RB1&E2F3_medium | E2F1_medium&E2F1_high,E2F1_high+;E2F1_medium+;E2F3_medium+;RAS+;RB1-;RBL2-
+E2F3_high,E2F3,internal,!RB1&RAS&E2F3_medium&CHEK1_2_medium&CHEK1_2_high,CHEK1_2_high+;CHEK1_2_medium+;E2F3_medium+;RAS+;RB1-
+E2F3_medium,E2F3,internal,!RB1&RAS | E2F3_medium&E2F3_high,E2F3_high+;E2F3_medium+;RAS+;RB1-
+EGFR,EGFR,internal,SPRY&!GRB2&!FGFR3 | !GRB2&!FGFR3&EGFR_stimulus,EGFR_stimulus+;FGFR3-;GRB2-;SPRY+
+FGFR3,FGFR3,internal,!GRB2&FGFR3_stimulus&!EGFR,EGFR-;FGFR3_stimulus+;GRB2-
+GRB2,GRB2,internal,!SPRY&!GRB2&FGFR3 | EGFR,EGFR+;FGFR3+;GRB2-;SPRY-
+MDM2,MDM2,internal,!p14ARF&TP53&!RB1&!ATM_medium | !p14ARF&!RB1&!ATM_medium&AKT,AKT+;ATM_medium-;RB1-;TP53+;p14ARF-
+PI3K,PI3K,internal,RAS&!PTEN&GRB2,GRB2+;PTEN-;RAS+
+PTEN,PTEN,internal,TP53,TP53+
+RAS,RAS,internal,GRB2 | FGFR3 | EGFR,EGFR+;FGFR3+;GRB2+
+RB1,RB1,internal,!p16INK4a&!CyclinE1&!CyclinD1&!CyclinA,CyclinA-;CyclinD1-;CyclinE1-;p16INK4a-
+RBL2,RBL2,internal,!CyclinE1&!CyclinD1,CyclinD1-;CyclinE1-
+SPRY,SPRY,internal,RAS,RAS+
+TP53,TP53,internal,!MDM2&E2F1_medium&E2F1_high | !MDM2&CHEK1_2_medium&ATM_medium,ATM_medium+;CHEK1_2_medium+;E2F1_high+;E2F1_medium+;MDM2-
+p14ARF,p14ARF,internal,E2F1_medium,E2F1_medium+
+p16INK4a,p16INK4a,internal,!RB1&Growth_inhibitors,Growth_inhibitors+;RB1-
+p21CIP,p21CIP,internal,TP53&!CyclinE1&!AKT | Growth_inhibitors&!CyclinE1&!AKT,AKT-;CyclinE1-;Growth_inhibitors+;TP53+
+Growth_arrest,Growth_arrest,output,p21CIP | RBL2 | RB1,RB1+;RBL2+;p21CIP+
+Proliferation,Proliferation,output,CyclinE1 | CyclinA,CyclinA+;CyclinE1+
