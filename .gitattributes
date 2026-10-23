@@ -1,0 +1,4 @@
+# The vendored H-MEM reference must stay byte-identical to upstream (UPSTREAM.json holds SHA-256 per file).
+hmem/** -text
+# shell scripts must keep LF on Windows checkouts
+*.sh text eol=lf
