@@ -11,7 +11,7 @@ import * as how from './how.js';
 addStrings({
   en: { 'app.title': 'Verified Knockout Agent', 'app.tag': 'Neuro-symbolic · proof-backed', 'tab.explore': 'Explore',
         'tab.search': 'Search', 'tab.agent': 'Agent', 'tab.bench': 'Benchmark', 'tab.how': 'How it works',
-        'st.data': 'Data layer', 'st.llm': 'LLM', 'st.solver': 'Solver', 'st.zetaris': 'Zetaris', 'st.local': 'local CSV',
+        'st.data': 'Data layer', 'st.llm': 'LLM', 'st.solver': 'Solver', 'st.zetaris': 'Zetaris', 'st.local': 'local CSV', 'st.starting': 'starting Zetaris…',
         'st.local.tip': 'Zetaris is not reachable, so the agent reads data/*.csv (shown in every report). Start the Zetaris containers, then click to reconnect.',
         'st.zetaris.tip': 'Network, scenarios and drug data come from Zetaris with SQL.', 'st.llm.off': 'no API key',
         'bar.custom': 'Custom inputs', 'bar.reset': 'reset', 'bar.inputs': 'Conditions', 'bar.lesions': 'Tumour lesions',
@@ -19,7 +19,7 @@ addStrings({
         'in.Growth_inhibitors': 'Anti-growth', 'bar.goal': 'Goal: apoptosis in every long-term state' },
   el: { 'app.title': 'Verified Knockout Agent', 'app.tag': 'Νευρο-συμβολικό · με αποδείξεις', 'tab.explore': 'Εξερεύνηση',
         'tab.search': 'Αναζήτηση', 'tab.agent': 'Agent', 'tab.bench': 'Benchmark', 'tab.how': 'Πώς λειτουργεί',
-        'st.data': 'Data layer', 'st.llm': 'LLM', 'st.solver': 'Solver', 'st.zetaris': 'Zetaris', 'st.local': 'τοπικά CSV',
+        'st.data': 'Data layer', 'st.llm': 'LLM', 'st.solver': 'Solver', 'st.zetaris': 'Zetaris', 'st.local': 'τοπικά CSV', 'st.starting': 'εκκίνηση Zetaris…',
         'st.local.tip': 'Το Zetaris δεν είναι προσβάσιμο, οπότε ο agent διαβάζει τα data/*.csv (φαίνεται σε κάθε report). Ξεκίνα τα containers του Zetaris και κάνε κλικ για επανασύνδεση.',
         'st.zetaris.tip': 'Δίκτυο, σενάρια και φάρμακα έρχονται από το Zetaris με SQL.', 'st.llm.off': 'χωρίς API key',
         'bar.custom': 'Προσαρμοσμένες είσοδοι', 'bar.reset': 'επαναφορά', 'bar.inputs': 'Συνθήκες', 'bar.lesions': 'Βλάβες όγκου',
@@ -53,11 +53,17 @@ function show(id) {
   location.hash = id; renderTabs();
 }
 
+let healing = false;
 async function retry() {
-  const r = await fetch('/api/reconnect').then(x => x.json());
-  store.meta = await getMeta();
-  renderStatus();
-  if (r.data_source !== 'zetaris') document.getElementById('status').animate([{ transform: 'translateX(-4px)' }, { transform: 'translateX(4px)' }, { transform: 'none' }], 250);
+  if (healing) return;
+  healing = true; renderStatus();
+  // the server restarts the Zetaris containers in the background; poll until it is back (or gives up)
+  for (let i = 0; i < 50; i++) {
+    const r = await fetch('/api/reconnect').then(x => x.json()).catch(() => ({ healing: false }));
+    if (r.data_source === 'zetaris' || (!r.healing && i > 0)) break;
+    await new Promise(res => setTimeout(res, 4000));
+  }
+  healing = false; store.meta = await getMeta(); renderStatus();
 }
 
 function renderStatus() {
@@ -66,7 +72,7 @@ function renderStatus() {
   const cell = 'flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[.03] px-2.5 py-1 text-xs';
   box.append(
     h('div', { class: cell + (zet ? '' : ' cursor-pointer hover:bg-white/10'), title: zet ? t('st.zetaris.tip') : t('st.local.tip'), onclick: zet ? null : retry },
-      h('span', { class: 'text-slate-500' }, t('st.data')), badge(zet ? t('st.zetaris') : t('st.local'), zet ? 'green' : 'amber')),
+      h('span', { class: 'text-slate-500' }, t('st.data')), badge(zet ? t('st.zetaris') : healing ? t('st.starting') : t('st.local'), zet ? 'green' : 'amber')),
     h('div', { class: cell },
       h('span', { class: 'text-slate-500' }, t('st.llm')), badge(m.llm.available ? m.llm.model.split('/').pop() : t('st.llm.off'), m.llm.available ? 'cyan' : 'amber')),
     h('div', { class: cell },
@@ -108,6 +114,7 @@ async function boot() {
   renderStatus(); renderScenarioBar();
   onScenario(renderScenarioBar);
   onLang(() => { renderStatus(); renderScenarioBar(); renderTabs(); });
+  if (store.meta.data_source !== 'zetaris') retry();
   const start = location.hash.slice(1);
   show(TABS.some(([id]) => id === start) ? start : 'explore');
 }

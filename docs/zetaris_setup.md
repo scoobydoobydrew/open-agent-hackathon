@@ -33,3 +33,14 @@ It should print `35 zetaris` (verified: the three tables return 35, 13 and 23 ro
 - `POST /api/proxy/query/sql/start` with headers `Authorization: Bearer <idToken>`, `X-Org-ID`, `X-Request-ID`
   and body `{"select": "<SELECT ...>", "pageLimit": n}`. Only `SELECT` is accepted.
 - The port 8888 mentioned in some notes is the internal API; the gateway lives on 3000.
+
+## After a laptop or Docker restart
+Zetaris' `driver` container often fails to start after Docker Desktop restarts (`error mounting ... spark-defaults.conf: not a
+directory`, exit 127), while ui, api and postgres come back. The agent then falls back to the local CSV files and says so.
+
+- **Automatic:** `python ui/server.py` notices this and recreates the driver itself (about 30 s; the chip shows "starting Zetaris...").
+  Clicking the chip repeats it. Disable with `ZETARIS_AUTOHEAL=0`. The folder with Zetaris' docker-compose.yml is
+  `ZETARIS_DIR` (default `~/Desktop/zetaris-platform`).
+- **Manual:** `bash scripts/zetaris_up.sh`.
+- **Optional, at every login:** `powershell -ExecutionPolicy Bypass -File scripts\install_autostart.ps1` registers a scheduled task.
+- Docker Desktop itself must be running (Settings, General, "Start Docker Desktop when you sign in").

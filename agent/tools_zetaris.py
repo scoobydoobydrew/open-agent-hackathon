@@ -11,6 +11,7 @@ from __future__ import annotations
 import csv
 import os
 import re
+import time
 import uuid
 from pathlib import Path
 from typing import Any
@@ -91,6 +92,17 @@ class DataLayer:
         self.client = client or ZetarisClient()
         self.allow_fallback = allow_fallback
         self.source = "unknown"
+        self._down_until = 0.0
+
+    def _q(self, sql: str):
+        """Query Zetaris; after a failure skip it for a minute so one outage costs one timeout, not one per query."""
+        if time.time() < self._down_until:
+            raise ZetarisError("Zetaris was unreachable a moment ago")
+        try:
+            return self.client.query(sql)
+        except ZetarisError:
+            self._down_until = time.time() + 60
+            raise
 
     def _local(self, table: str) -> list[dict[str, str]]:
         with (DATA_DIR / TABLE_FILES[table]).open(encoding="utf-8") as fh:
@@ -99,7 +111,7 @@ class DataLayer:
     def select(self, sql_template: str, table: str) -> list[dict[str, Any]]:
         """Run ``sql_template`` (with {t} for the table) on Zetaris, else read the CSV."""
         try:
-            rows = self.client.query(sql_template.format(t=self.client.table(table)))
+            rows = self._q(sql_template.format(t=self.client.table(table)))
             self.source = "zetaris"
             return rows
         except ZetarisError as exc:
@@ -134,7 +146,7 @@ class DataLayer:
                "FROM (SELECT DISTINCT gene FROM {t} WHERE role = 'internal') i "
                f"LEFT JOIN {self.client.table('druggability')} d ON i.gene = d.gene")
         try:
-            rows = self.client.query(sql.format(t=self.client.table("p53_interactions")))
+            rows = self._q(sql.format(t=self.client.table("p53_interactions")))
             self.source = "zetaris"
             return rows
         except ZetarisError as exc:

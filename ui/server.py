@@ -31,6 +31,7 @@ from agent.llm import LLMError, NemotronClient  # noqa: E402
 from agent.main import CEGARAgent  # noqa: E402
 from agent.memory import HMem  # noqa: E402
 from agent.tools_zetaris import DataLayer  # noqa: E402
+from agent.zetaris_heal import heal  # noqa: E402
 from solver.attractors import analyze  # noqa: E402
 from solver.boolean_net import INPUT, OUTPUT, BooleanNetwork  # noqa: E402
 from solver.cegar import CegarSearch  # noqa: E402
@@ -182,6 +183,26 @@ class State:
 
 
 STATE: State | None = None
+HEAL = {"running": False, "last": ""}
+
+
+def start_heal() -> bool:
+    """Bring Zetaris back in the background (Docker restarts break its driver container); no-op if already running."""
+    if HEAL["running"] or os.getenv("ZETARIS_AUTOHEAL", "1") == "0":
+        return False
+    HEAL["running"], HEAL["last"] = True, "starting"
+
+    def work() -> None:
+        try:
+            HEAL["last"] = heal(log=lambda m: HEAL.update(last=m))
+            state().reconnect(force=True)
+        except Exception as exc:  # keep the UI alive whatever Docker does
+            HEAL["last"] = f"error: {exc}"
+        finally:
+            HEAL["running"] = False
+
+    threading.Thread(target=work, daemon=True).start()
+    return True
 
 
 def state() -> State:
@@ -274,7 +295,9 @@ class Handler(BaseHTTPRequestHandler):
                 state().reconnect()
                 return self._json(state().meta())
             if url.path == "/api/reconnect":
-                return self._json({"data_source": state().reconnect(force=True)})
+                if state().data.source != "zetaris":
+                    start_heal()
+                return self._json({"data_source": state().data.source, "healing": HEAL["running"], "last": HEAL["last"]})
             if url.path == "/api/replay":
                 name = Path(qs.get("name", "")).name
                 path = REPLAYS / f"{name}.json"
@@ -347,6 +370,8 @@ def main() -> None:
     ap.add_argument("--host", default="127.0.0.1")
     args = ap.parse_args()
     state()  # fail early and warm up
+    if state().data.source != "zetaris":
+        start_heal()
     srv = ThreadingHTTPServer((args.host, args.port), Handler)
     srv.daemon_threads = True
     print(f"UI on http://{args.host}:{args.port}  (data layer: {state().data.source})", flush=True)

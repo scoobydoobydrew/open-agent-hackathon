@@ -203,3 +203,19 @@ def test_search_keeps_going_until_every_requested_solution_is_found():
     rep = agent(ScriptedLLM([{"proposals": [], "give_up": False}] * 3), target_solutions=3, max_rounds=3,
                 explain=False).run("fgfr3_wtp53")
     assert {tuple(s.knockouts) for s in rep.solutions} == {("TP53",), ("p21CIP",), ("RB1", "RBL2")}
+
+
+def test_one_zetaris_outage_costs_one_timeout(monkeypatch):
+    calls = []
+
+    class Down:
+        def query(self, sql):
+            calls.append(sql)
+            raise ZetarisError("timed out")
+
+        def table(self, name):
+            return f"db.{name}"
+
+    layer = DataLayer(client=Down())
+    layer.network_rows(); layer.scenarios(); layer.druggability()
+    assert len(calls) == 1 and layer.source.startswith("local-csv")
