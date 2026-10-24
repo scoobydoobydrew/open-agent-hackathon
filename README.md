@@ -1,4 +1,4 @@
-# A verified agent for radiation-resistant tumours: knockouts that provably force apoptosis, and why
+# A verified agent for radiation-resistant tumours: knockouts that provably force apoptosis, and why (κανουμε για το δικτυο του 2015)
 
 An LLM agent finds gene knockouts that push a tumour cell into apoptosis after radiation. **A formal solver checks
 every proposal exactly**, a counterexample-guided search finds (or proves there is no) minimal knockout set, and every
