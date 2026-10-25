@@ -29,6 +29,7 @@ from solver.verifier import (FORCED, SAFE, SURVIVES, Scenario, Verification, Ver
 from . import prompts
 from .llm import ChatClient, LLMError, NemotronClient, extract_json
 from .memory import DEFAULT_PATH, HMem
+from .sql_tool import run_sql, schema_text, summarise
 from .tools_zetaris import DataLayer
 
 EVIDENCE_RANK = {"approved": 0, "approved_other_indication": 1, "clinical": 2, "preclinical": 3, "none": 4}
@@ -69,6 +70,7 @@ class RunReport:
     rounds: int = 0
     solver_calls: int = 0              # every solver call of the run
     cegar_solver_calls: int = 0        # of which made by the counterexample-guided search
+    sql_calls: int = 0                 # SQL queries the LLM ran on the data layer (run_sql tool)
     fallback_solver_calls: int = 0     # of which made while completing the search after the LLM rounds
     calls_to_first_solution: int | None = None
     first_solution_found_by: str = ""
@@ -85,7 +87,7 @@ class CEGARAgent:
     def __init__(self, llm: ChatClient, data: DataLayer | None = None, memory_mode: str = "persistent",
                  memory_path=DEFAULT_PATH, max_size: int = 3, max_rounds: int = 6, per_round: int = 3,
                  target_solutions: int = 3, explain: bool = True, cegar: bool = True, fallback: bool = True,
-                 cegar_budget: int = 40, log: Callable[[str], None] = print,
+                 cegar_budget: int = 40, sql_tool: bool = False, log: Callable[[str], None] = print,
                  on_event: Callable[[dict], None] | None = None):
         assert memory_mode in ("persistent", "session", "off")
         self.llm, self.data, self.log = llm, data or DataLayer(), log
@@ -93,6 +95,7 @@ class CEGARAgent:
         self.per_round, self.target, self.explain = per_round, target_solutions, explain
         self.cegar, self.fallback, self.cegar_budget = cegar, fallback, cegar_budget
         self.on_event = on_event
+        self.sql_tool, self._data_notes = sql_tool, "none"
         self.rows = self.data.network_rows()
         self.net = BooleanNetwork.from_rows(self.rows)
         self.verifier = Verifier(self.net)
@@ -210,7 +213,36 @@ class CEGARAgent:
             goal="; ".join(f"{k}={v}" for k, v in scenario.goal.items()),
             candidates=", ".join(candidates), max_size=self.max_size,
             rules=prompts.format_rules(self.rows), drugs=prompts.format_drugs(drug_rows, candidates),
-            memory=memory, history="\n".join(history) or "none yet", n=n)
+            memory=memory, data=self._data_notes, history="\n".join(history) or "none yet", n=n)
+
+    def _explore_data(self, scenario: Scenario, candidates: list[str], report: RunReport) -> str:
+        """Let the LLM query the Zetaris data layer with run_sql before it proposes anything (at most two LLM turns)."""
+        previous, notes = "", []
+        for turn in range(2):
+            try:
+                reply = self._ask(prompts.SQL_SYSTEM, prompts.SQL_USER.format(
+                    sid=scenario.name, description=scenario.description, candidates=", ".join(candidates),
+                    schema=schema_text(self.data.client.database), max_queries=2, previous=previous))
+            except LLMError as exc:
+                report.notes.append(f"sql tool: {exc}")
+                break
+            failed = []
+            for q in (reply.get("queries") or [])[:2]:
+                if not isinstance(q, dict) or not q.get("sql"):
+                    continue
+                purpose = str(q.get("purpose", "lookup"))[:120]
+                res = run_sql(self.data, str(q["sql"]))
+                report.sql_calls += 1
+                self._emit("sql_call", purpose=purpose, sql=res["sql"], ok=res["ok"], n_rows=len(res["rows"]),
+                           rows=res["rows"][:8], error=res["error"], turn=turn + 1)
+                self.log(f"    sql [{'ok' if res['ok'] else 'fail'}] {purpose}")
+                notes.append(summarise(res, purpose))
+                if not res["ok"]:
+                    failed.append(f"- {res['sql']}\n  error: {res['error']}")
+            if not failed or turn == 1 or self.data.source != "zetaris":
+                break
+            previous = "Your previous queries failed, fix them:\n" + "\n".join(failed) + "\n"
+        return "\n".join(notes) if notes else "none"
 
     def propose_only(self, scenario_id: str, n: int = 5) -> tuple[list[tuple[str, ...]], bool]:
         """One LLM call and no verification: what the model claims on its own (benchmark baseline)."""
@@ -251,6 +283,8 @@ class CEGARAgent:
             report.notes.append("apoptosis is already forced without any knockout")
             return self._finish(report, t0, calls0, None)
 
+        if self.sql_tool:
+            self._data_notes = self._explore_data(scenario, candidates, report)
         search = None
         if self.cegar:
             search = CegarSearch(
@@ -437,7 +471,7 @@ def main() -> None:
 
     agent = CEGARAgent(NemotronClient(), memory_mode=args.memory, max_size=args.max_size,
                        max_rounds=args.max_rounds, per_round=args.per_round, target_solutions=args.solutions,
-                       explain=not args.no_explain)
+                       explain=not args.no_explain, sql_tool=True)
     report = agent.run(args.scenario)
     RUNS_DIR.mkdir(exist_ok=True)
     out = RUNS_DIR / f"{report.scenario}-{agent.run_id}.json"

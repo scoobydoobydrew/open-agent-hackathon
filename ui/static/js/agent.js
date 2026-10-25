@@ -7,6 +7,7 @@ import { SHORT, current, onScenario, store } from './store.js';
 
 addStrings({
   en: {
+    'ag.sql': 'SQL tool call (run_sql)', 'ag.sql.rows': '{n} rows', 'ag.sql.failed': 'refused or failed',
     'ag.title': 'The agent at work', 'ag.sub': 'The LLM proposes, the solver checks every proposal exactly, counterexamples go back to the LLM and into the search.',
     'ag.replay': 'Replay recorded run', 'ag.live': 'Run live', 'ag.skip': 'Skip animation', 'ag.stop': 'Stop', 'ag.noreplay': 'No recording for this scenario yet',
     'ag.nokey': 'Needs NVIDIA_API_KEY', 'ag.custom': 'Live runs use the preset scenarios', 'ag.empty.t': 'See the whole loop', 'ag.empty.p': 'Replay a recorded run (works offline) or run it live against Nemotron. Every verdict comes from the exact solver.',
@@ -23,6 +24,7 @@ addStrings({
     'ag.stats': 'Run so far', 'ag.props': 'proposals', 'ag.wrong': 'refuted', 'ag.solutions': 'solutions', 'ag.ev': 'drug evidence', 'ag.start': 'Start',
   },
   el: {
+    'ag.sql': 'Κλήση εργαλείου SQL (run_sql)', 'ag.sql.rows': '{n} γραμμές', 'ag.sql.failed': 'απορρίφθηκε ή απέτυχε',
     'ag.title': 'Ο agent σε δράση', 'ag.sub': 'Το LLM προτείνει, ο solver ελέγχει κάθε πρόταση ακριβώς, και τα counterexamples γυρίζουν στο LLM και στην αναζήτηση.',
     'ag.replay': 'Αναπαραγωγή καταγεγραμμένου run', 'ag.live': 'Ζωντανή εκτέλεση', 'ag.skip': 'Παράλειψη animation', 'ag.stop': 'Στοπ', 'ag.noreplay': 'Δεν υπάρχει ακόμα καταγραφή για αυτό το σενάριο',
     'ag.nokey': 'Χρειάζεται NVIDIA_API_KEY', 'ag.custom': 'Οι ζωντανές εκτελέσεις χρησιμοποιούν τα έτοιμα σενάρια', 'ag.empty.t': 'Δες ολόκληρο τον βρόχο', 'ag.empty.p': 'Αναπαρήγαγε ένα καταγεγραμμένο run (δουλεύει offline) ή τρέξ’ το ζωντανά με το Nemotron. Κάθε ετυμηγορία προέρχεται από τον ακριβή solver.',
@@ -132,6 +134,7 @@ function handle(ev) {
     case 'round': run.round = ev.n; run.search = null; return onRound(ev);
     case 'llm_reply': run.llm++; if (run.skeleton) { run.skeleton.remove(); run.dom = run.dom.filter(x => x !== run.skeleton); run.skeleton = null; } return paintStats();
     case 'llm_error': return add(h('div', { class: 'animate-fadeUp rounded-xl border border-amber-300/30 bg-amber-400/10 p-3 text-xs text-amber-200' }, '⚠ ' + t('ag.llmerr') + (ev.message ? ` (${ev.message.slice(0, 80)})` : '')));
+    case 'sql_call': return onSql(ev);
     case 'proposal': return onProposal(ev);
     case 'search_visit': return onSearch(ev);
     case 'shrunk': return add(h('div', { class: 'animate-fadeUp pl-4 text-xs text-slate-400' }, '↘ ' + t('ag.shrunk', { a: `{${ev.knockouts.join(', ')}}`, b: `{${ev.minimal.join(', ')}}` })));
@@ -152,6 +155,17 @@ function onStart(ev) {
     h('div', { class: 'mt-2 flex flex-wrap items-center gap-1.5 text-xs' }, h('span', { class: 'text-slate-500' }, t('ag.baseline') + ':'), badge(ev.baseline === 'FORCED' ? t('ag.forced') : t('ag.survive'), verdictTone(ev.baseline)),
       ...Object.entries(ph).map(([k, v]) => chip(`${k.replace('Apoptosis_high', 'apoptosis').replace('Apoptosis_medium', 'apop.partial').replace('Growth_arrest', 'arrest').replace('Proliferation', 'prolif.')}=${v}`, 'slate')))));
   showOnGraph([], true);
+}
+
+function onSql(ev) {
+  const head = Object.keys(ev.rows[0] || {});
+  add(h('div', { class: `animate-fadeUp rounded-xl p-3 ring-1 ring-inset ${ev.ok ? 'bg-emerald-400/[.07] ring-emerald-300/25' : 'bg-rose-400/[.07] ring-rose-300/30'}` },
+    h('div', { class: 'mb-1.5 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-emerald-200' }, '🗄 ' + t('ag.sql'), badge('Zetaris', 'green'),
+      badge(ev.ok ? t('ag.sql.rows', { n: ev.n_rows }) : t('ag.sql.failed'), ev.ok ? 'slate' : 'red')),
+    h('div', { class: 'mb-1.5 text-xs italic text-slate-400' }, ev.purpose),
+    h('pre', { class: 'scroll-thin overflow-auto rounded-lg bg-black/40 p-2 font-mono text-[11px] leading-snug text-cyan-200' }, ev.sql),
+    ev.ok && ev.rows.length ? h('div', { class: 'mt-2 flex flex-wrap gap-1.5' }, ...ev.rows.slice(0, 6).map(r => chip(head.map(k => String(r[k]).slice(0, 28)).join(' · '), 'slate'))) : null,
+    !ev.ok ? h('div', { class: 'mt-1.5 text-xs text-rose-200' }, ev.error) : null));
 }
 
 function onRound(ev) {

@@ -360,7 +360,7 @@ class Handler(BaseHTTPRequestHandler):
         target = len(st.truth.get(qs.get("scenario", ""), {}).get("minimal_sets", [])) or 3
         agent = CEGARAgent(llm, st.data, memory_mode="session", max_size=int(qs.get("max_size") or 3),
                            max_rounds=int(qs.get("rounds") or 5), per_round=3, target_solutions=min(target, 3),
-                           explain=qs.get("explain", "1") == "1", log=lambda _: None, on_event=emit)
+                           explain=qs.get("explain", "1") == "1", sql_tool=True, log=lambda _: None, on_event=emit)
         agent.run(qs["scenario"])
 
 

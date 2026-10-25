@@ -219,3 +219,17 @@ def test_one_zetaris_outage_costs_one_timeout(monkeypatch):
     layer = DataLayer(client=Down())
     layer.network_rows(); layer.scenarios(); layer.druggability()
     assert len(calls) == 1 and layer.source.startswith("local-csv")
+
+
+def test_llm_client_prefers_meterless_when_configured(monkeypatch):
+    from agent.llm import NemotronClient
+    monkeypatch.setenv("NVIDIA_API_KEY", "nvidia-key")
+    for var in ("METERLESS_API_KEY", "METERLESS_BASE_URL"):
+        monkeypatch.delenv(var, raising=False)
+    nv = NemotronClient()
+    assert nv.provider == "nvidia" and nv.api_key == "nvidia-key" and "nvidia.com" in nv.base_url
+    monkeypatch.setenv("METERLESS_API_KEY", "m-key")
+    monkeypatch.setenv("METERLESS_BASE_URL", "https://example.test/v1/")
+    mt = NemotronClient()
+    assert mt.provider == "meterless" and mt.api_key == "m-key" and mt.base_url == "https://example.test/v1"
+    assert NemotronClient(api_key="explicit").provider == "nvidia"      # explicit arguments win

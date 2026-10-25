@@ -45,21 +45,28 @@ class NemotronClient:
     def __init__(self, api_key: str | None = None, model: str | None = None,
                  base_url: str | None = None, timeout: int = 180, retries: int = 3,
                  thinking: bool | None = None):
-        self.api_key = api_key or os.getenv("NVIDIA_API_KEY", "").strip()
+        # The hackathon's runtime credits are served by Meterless as an OpenAI-compatible endpoint; without those
+        # variables the agent calls NVIDIA's endpoint directly. Explicit arguments always win.
+        meterless = (os.getenv("METERLESS_API_KEY", "").strip(), os.getenv("METERLESS_BASE_URL", "").strip())
+        use_meterless = api_key is None and base_url is None and all(meterless)
+        self.provider = "meterless" if use_meterless else "nvidia"
+        self.api_key = api_key or (meterless[0] if use_meterless else os.getenv("NVIDIA_API_KEY", "").strip())
         self.model = model or os.getenv("NEMOTRON_MODEL", DEFAULT_MODEL)
-        self.base_url = (base_url or os.getenv("LLM_BASE_URL", DEFAULT_BASE_URL)).rstrip("/")
+        self.base_url = (base_url or (meterless[1] if use_meterless else os.getenv("LLM_BASE_URL", DEFAULT_BASE_URL))).rstrip("/")
         self.timeout = timeout
         self.retries = retries
         # Measured on this model: with thinking on, a 5k-character prompt still had no answer after
         # 16000 tokens (268 s). Thinking off answers in about 2 s, so it is the default.
         self.thinking = (os.getenv("NEMOTRON_THINKING", "0") == "1") if thinking is None else thinking
         if not self.api_key:
-            raise LLMError("NVIDIA_API_KEY is not set")
+            raise LLMError("NVIDIA_API_KEY (or METERLESS_API_KEY and METERLESS_BASE_URL) is not set")
 
     def complete(self, messages: list[dict], max_tokens: int = 2048, temperature: float = 0.2) -> LLMResponse:
         payload = {"model": self.model, "messages": messages, "max_tokens": max_tokens,
                    "temperature": temperature,
                    "chat_template_kwargs": {"enable_thinking": self.thinking}}
+        if self.provider != "nvidia":
+            payload.pop("chat_template_kwargs")          # not part of the plain OpenAI schema; added back if accepted
         headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
         last = ""
         for attempt in range(self.retries):
@@ -81,6 +88,9 @@ class NemotronClient:
                     return LLMResponse(content, msg.get("reasoning_content") or "",
                                        usage.get("prompt_tokens", 0), usage.get("completion_tokens", 0), finish)
                 last = f"HTTP {r.status_code}: {r.text[:200]}"
+                if r.status_code == 400 and "chat_template_kwargs" in payload:
+                    payload.pop("chat_template_kwargs")        # endpoint rejects the extension: retry plainly
+                    continue
                 if r.status_code not in (429, 500, 502, 503, 504):
                     break
             time.sleep(2 ** attempt)

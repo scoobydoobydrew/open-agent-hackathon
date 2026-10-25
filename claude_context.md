@@ -4,7 +4,7 @@ Open Agent Hackathon 2026 (build window 22-27 Oct 2026, 23:45 UTC), Track 02 "Th
 The independent solver core is reused for the Meta Global AI Developer Hackathon (26 Oct - 4 Nov); Meta-specific code
 (Llama adapter, Meta benchmarks) must be written inside Meta's own window, after 26 Oct.
 
-## What exists (all tested: `python -m pytest`, 67 tests)
+## What exists (all tested: `python -m pytest`, 82 tests)
 - `solver/` exact asynchronous attractor analysis + Z3, counterexample-guided complete search (`cegar.py`), checked
   explanations (`explain.py`). No LLM dependency.
 - `agent/` orchestrator (`main.py`), Nemotron REST client (`llm.py`), Zetaris tool (`tools_zetaris.py`), H-MEM style memory
@@ -32,6 +32,13 @@ The independent solver core is reused for the Meta Global AI Developer Hackathon
   `benchmark/ground_truth.json`) so the agent cannot read the answers.
 - H-MEM: the official Meterless engine is vendored unmodified in `hmem/` (UPSTREAM.json + SHA-256 test); conformance 13/13.
   `agent/memory.py` uses it through `agent/hmem_engine.py` (Node bridge); the counterexample cache is a separate, non-H-MEM structure.
+
+## Hackathon rules (from the user's own notes, unofficial; first git commit has the screenshots)
+Scoring: Impact 30, Technical 20, Innovation 15, Demo 15, Product UX 10, Sponsor tech 10 (Zetaris, Meterless/Nemotron,
+Cursor mention). Deliverables by 27 Oct 23:45 UTC: demo video 1-4 min, deck, GitHub repo (README, setup, .env ignored),
+sponsor write-up (`docs/SPONSOR_WRITEUP.md`). The LLM uses a `run_sql` tool on Zetaris (`agent/sql_tool.py`, `sql_tool=True` in
+the CLI/UI/recordings, off in benchmarks). The client uses METERLESS_BASE_URL/KEY when set. The repo was written with
+Claude Code, not Cursor: do not claim Cursor.
 
 ## Key result (shapes the pitch)
 The LLM alone is wrong 91% of the time and invents solutions for the impossible scenario. The symbolic

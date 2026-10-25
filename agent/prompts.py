@@ -37,6 +37,9 @@ Boolean update rules of the model (node: rule; ! = NOT, & = AND, | = OR; asynchr
 Druggability of the candidate genes (from the data layer):
 {drugs}
 
+Results of the SQL queries you ran on the Zetaris data layer:
+{data}
+
 Memory from earlier runs:
 {memory}
 
@@ -108,3 +111,18 @@ def format_attempt(i: int, knockouts: Sequence[str], verdict: str, ce: Mapping |
     if ce.get("why_goal_fails"):
         lines.append("  why apoptosis is not reached:\n" + "\n".join("    " + l for l in _trim(ce["why_goal_fails"]).splitlines()))
     return "\n".join(lines)
+
+
+SQL_SYSTEM = """You are a cancer systems-biology agent. Before proposing knockouts you may look things up in a Zetaris data
+layer with SQL. You never answer data questions from memory: you ask the database. Reply with JSON only."""
+
+SQL_USER = """SCENARIO {sid}: {description}
+Candidate genes for knockout: {candidates}
+
+{schema}
+
+Write at most {max_queries} SELECT queries whose results would help you choose knockouts (for example: which candidate
+genes have a drug that can inhibit them, and how strong the evidence is; or what regulates a gene). Each query must
+read only the tables above, use their full names and be a single SELECT (joins between the tables are welcome).
+{previous}Reply with exactly this JSON:
+{{"queries": [{{"purpose": "<what you want to learn>", "sql": "<SELECT ...>"}}]}}"""

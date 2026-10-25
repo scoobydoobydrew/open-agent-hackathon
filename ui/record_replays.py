@@ -27,7 +27,7 @@ def record(sid: str, rounds: int, max_size: int) -> Path:
     events: list[dict] = []
     llm = NemotronClient()
     agent = CEGARAgent(llm, DataLayer(), memory_mode="session", max_size=max_size, max_rounds=rounds, per_round=3,
-                       target_solutions=target, explain=True, log=lambda _: None, on_event=events.append)
+                       target_solutions=target, explain=True, sql_tool=True, log=lambda _: None, on_event=events.append)
     t0 = time.time()
     agent.run(sid)
     OUT.mkdir(exist_ok=True)

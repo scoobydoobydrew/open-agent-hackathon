@@ -186,6 +186,19 @@ be switched in the bar at the top, which creates a custom scenario that Explore 
 - `data/druggability.csv` is hand-curated from general knowledge and not verified; check before citing.
 - Ground truth is model-derived (exhaustive on the same model), not literature-derived.
 
+## How we built it
+- **Development tooling:** the code, tests and documents were written in agentic coding sessions with **Claude Code**
+  (Anthropic). Every claim in this README was checked against a measurement in the repo before it was written.
+- **Runtime LLM:** NVIDIA Nemotron (`nemotron-3.5-lightning-30b-a3b` by default) over an OpenAI-compatible REST endpoint.
+  The client uses Meterless' endpoint when `METERLESS_API_KEY` and `METERLESS_BASE_URL` are set and NVIDIA's otherwise.
+  Keys live only in `.env` (ignored by git); the code reads them at runtime.
+- **Meterless:** we use the **H-MEM** engine from the Meterless engines repository (vendored unmodified, conformance
+  13/13, see above). The prompt for lesson mining follows the spec's mining pipeline.
+- **Zetaris:** three tables in the `open_agent` database; the LLM queries them itself through a read-only `run_sql` tool
+  (single `SELECT`, our three tables only, row limit), and the agent also runs a `JOIN` between the network rules and the
+  drug-evidence table. See [docs/zetaris_setup.md](docs/zetaris_setup.md).
+- **Tool-calling loop with a cost cap:** at most 2 SQL turns, 5 to 6 proposal rounds, and a bounded solver budget per round.
+
 ## Setup
 
 ```bash
