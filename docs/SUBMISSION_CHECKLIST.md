@@ -1,25 +1,25 @@
 # Submission checklist (deadline 27 Oct 2026, 23:45 UTC)
 
-Source: your own workshop notes (screenshots in the first git commit). They are a summary, not the official text:
+Source: the workshop notes (screenshots from the first commit, since removed). They are a summary, not the official text:
 confirm each point on https://hackathon.genai.works before submitting.
 
-## Deliverables (from the notes)
+## Deliverables (from the notes) and where each one is
 | deliverable | status |
 |---|---|
-| Demo video, 1 to 4 minutes: agent working, the solution explained, sponsor tools mentioned | **you**: script in `docs/PITCH.md` |
-| Slide deck: problem, solution, architecture diagram, tech stack, where Zetaris and Nemotron are used | **you**: outline in `docs/PITCH.md`; the diagram is the "How it works" tab |
-| GitHub repository: clean code, setup instructions, full README, `.env` ignored | done (see below) |
+| Demo video, 1 to 4 minutes: agent working, the solution explained, sponsor tools mentioned | `docs/submission/demo.mp4` (3:31, captions and synthetic voice-over). Script: `docs/submission/record_demo.py` |
+| Slide deck: problem, solution, architecture diagram, tech stack, where Zetaris and Nemotron are used | `docs/submission/deck.pdf` (7 slides) and `deck.pptx` (same slides as pictures, with speaker notes) |
+| GitHub repository: clean code, setup instructions, full README, `.env` ignored | done |
 | Sponsor integration write-up for the form | text ready: `docs/SPONSOR_WRITEUP.md` |
 | HackOS: team workspace, task board, claim sponsor credits | **you** |
 
-## Scoring (from the notes) and where we stand
+## Scoring (from the notes) and what we show
 | criterion | points | what we show |
 |---|---|---|
 | Impact | 30 | a real question (radiation-surviving tumours), measured honestly, with proofs of impossibility |
-| Technical | 20 | exact solver, complete search, 67+ tests, reproducible benchmark |
+| Technical | 20 | exact solver, complete search, 82 tests, reproducible benchmark |
 | Innovation | 15 | LLM proposes, solver proves, explanation re-checked; official H-MEM engine |
-| Demo | 15 | 1 to 4 minute video: use the script, record the replay, not a live run |
-| Product UX | 10 | the UI (Explore, Search, Agent timeline with SQL calls, Benchmark) |
+| Demo | 15 | the video: Explore, Search (with a proof of impossibility), Agent replay with SQL calls, Benchmark |
+| Product UX | 10 | the UI (Explore, Search, Agent timeline with SQL calls, Benchmark, How it works) |
 | Sponsor tech | 10 | Zetaris via REST + LLM-written SQL tool + JOIN; Nemotron; Meterless H-MEM; development tool statement |
 
 ## Done in the repo
@@ -27,24 +27,41 @@ confirm each point on https://hackathon.genai.works before submitting.
 - [x] Nemotron through an OpenAI-compatible endpoint; Meterless endpoint supported through `METERLESS_API_KEY` and `METERLESS_BASE_URL`.
 - [x] Zetaris as the data layer (`open_agent` database), the LLM's `run_sql` tool, and a SQL JOIN; the UI shows the data-layer chip.
 - [x] Official Meterless H-MEM engine, vendored unmodified, conformance 13/13.
-- [x] "How we built it" section in the README.
-- [x] `.env` is in `.gitignore` and no secret is in the history of `main`.
+- [x] "How we built it" section in the README (the code was written with Claude Code; Cursor was not used and is not claimed).
+- [x] `.env` is in `.gitignore`; no secret and no 28 MB platform zip in the history.
+- [x] Every commit is dated 22 Oct 2026 or later (the two 21 Oct commits were dropped from the history, no dates were edited).
 
 ## You still need to do
-- [ ] **Push:** `git push --force-with-lease origin main` (history was rewritten locally to drop a 28 MB zip that contained local passwords).
-- [ ] Claim the sponsor credits on the HackOS task board; if Meterless gives you a `METERLESS_BASE_URL` and key, put them in `.env` (the client switches to them automatically; I could not test that endpoint without a key).
-- [ ] **Cursor:** the notes award points for saying the code was written in Cursor. This repo was written with Claude Code, so the README says so. Only add Cursor if you really used it, in the README "How we built it" and in `docs/SPONSOR_WRITEUP.md`.
-- [ ] Record the demo video and make the deck (outline in `docs/PITCH.md`); paste `docs/SPONSOR_WRITEUP.md` into the form.
-- [ ] Check the rules about commits inside the build window: the two oldest commits are dated 21 Oct (README and screenshots), before the window opened on 22 Oct 00:00 UTC.
-- [ ] Make the repository public (or share it with the judges) only after the push.
+1. **Push.** The local history was rewritten (the zip with local passwords is gone, the 21 Oct commits are gone), so it no
+   longer matches what is on GitHub. Pick one:
+   - keep the repository and overwrite its history: `git push --force-with-lease origin main`, or
+   - cleanest (GitHub keeps old commits reachable by their hash until a repository is deleted): delete the repository on
+     GitHub, create it again with the same name and the same public setting, then `git remote -v` (it should still point
+     at it) and `git push -u origin main`.
+   Then open the repository in a private window and check that `docs/submission/`, the README and the commit dates look right.
+2. **HackOS:** claim the sponsor credits on the task board. If Meterless gives you a `METERLESS_BASE_URL` and key, put them
+   in `.env` (the client switches to them automatically; that endpoint could not be tested without a key).
+3. **Watch the video once, with sound** (`docs/submission/demo.mp4`) and upload it where the form asks (YouTube unlisted, Drive
+   or Loom, whatever the form accepts). If you prefer your own voice, record it over `demo_silent.mp4`; the text is in
+   `docs/submission/record_demo.py`.
+4. **Upload the deck** (`deck.pdf`, or `deck.pptx` if the form wants PowerPoint).
+5. **Fill the form:** repository URL `https://github.com/scoobydoobydrew/open-agent-hackathon`, track 02, the text from
+   `docs/SPONSOR_WRITEUP.md`, the video and the deck.
+6. Re-read the official rules at https://hackathon.genai.works (team names, what must be in the repo, anything the notes missed).
 
-## Before recording the demo
+## Regenerating the submission material
 ```bash
 bash scripts/zetaris_up.sh                 # the UI also does this itself; the chip must read "Zetaris"
 (cd hmem/reference && npm install)         # once, for H-MEM
 python -m pytest                           # expect all green
-python ui/server.py                        # http://localhost:8765
+python ui/server.py                        # http://localhost:8765, leave it running
+pip install playwright imageio-ffmpeg python-pptx
+python docs/submission/capture_screens.py  # screenshots for the deck
+python docs/submission/render_deck.py      # deck.pdf and slides/*.png
+python docs/submission/build_pptx.py       # deck.pptx with notes
+python docs/submission/record_demo.py      # demo.mp4 (Windows: Edge and the built-in voice)
 ```
+Generated files (`shots/`, `slides/`, `deck.pptx`, `demo*.mp4`) are git-ignored; `deck.pdf` is kept in the repository.
 
 ## Let someone else check the setup
 A judge who can run the repo in 5 minutes scores higher (per the notes). Test it on a clean checkout:

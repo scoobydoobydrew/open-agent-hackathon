@@ -21,7 +21,7 @@ unmodified (SHA-256 per file checked by a test; conformance 13/13), and the agen
 with source, confidence and provenance, retrieves it with the canonical ranking for the next prompt, grades recalled facts
 with the exact feedback deltas and keeps an append-only ledger. Dream proposals are never approved automatically.
 
-**Development tool.** Written with Claude Code (Anthropic). [Add here if you also used Cursor, and which models.]
+**Development tool.** Written with Claude Code (Anthropic), from the first solver test to the final deck and demo video.
 
 **What the numbers say (8 scenarios, exhaustive ground truth).** The LLM alone proposes a wrong knockout set 91% of the time
 and invents a solution for the one scenario that has none. With the solver and the complete counterexample-guided search the

@@ -15,3 +15,10 @@ ui/record.log
 hmem/reference/node_modules/
 hmem/dist/
 node_modules/
+
+# generated submission material (regenerate with docs/submission/*.py)
+docs/submission/_video/
+docs/submission/shots/
+docs/submission/slides/
+docs/submission/deck.pptx
+docs/submission/demo*.mp4

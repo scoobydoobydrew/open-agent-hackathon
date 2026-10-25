@@ -52,6 +52,8 @@ Tips: record the replay rather than a live LLM run (no latency, no API surprises
 (`bash scripts/zetaris_up.sh` if it shows local CSV); switch EN/EL in the header if the audience prefers Greek.
 
 ## Deck outline (7 slides)
+The finished deck is `docs/submission/deck.pdf` (source `deck.html`); the finished video is `docs/submission/demo.mp4`.
+The outline below is the plan it was built from.
 1. Problem: radiation-surviving cells; LLMs hallucinate interventions.
 2. Idea: propose, prove, explain (diagram from the How-it-works tab).
 3. Exact analysis and a search that cannot miss (one sentence on completeness).

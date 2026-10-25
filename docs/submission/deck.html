@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Verified Knockout Agent</title>
+<style>
+  :root { --bg:#050912; --ink:#e8edf6; --mute:#8f9bb3; --cyan:#22d3ee; --fuch:#e879f9; --green:#34d399; --rose:#fb7185; --amber:#fbbf24; --violet:#a78bfa; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { background:#000; }
+  body { font-family:"Segoe UI", Inter, Calibri, Arial, sans-serif; color:var(--ink); }
+  .slide { position:relative; width:1920px; height:1080px; overflow:hidden; background:var(--bg); page-break-after:always; padding:84px 110px; }
+  .slide::before { content:""; position:absolute; inset:0; background:
+      radial-gradient(900px 600px at 8% -5%, rgba(34,211,238,.20), transparent 70%),
+      radial-gradient(800px 650px at 100% 40%, rgba(232,121,249,.14), transparent 70%),
+      radial-gradient(900px 600px at 40% 115%, rgba(99,102,241,.20), transparent 70%); }
+  .slide > * { position:relative; }
+  .eyebrow { font-size:24px; letter-spacing:.2em; text-transform:uppercase; color:var(--cyan); font-weight:600; }
+  h1 { font-size:116px; line-height:1.02; font-weight:800; letter-spacing:-.02em; }
+  h2 { font-size:62px; line-height:1.1; font-weight:800; letter-spacing:-.01em; margin-top:18px; max-width:1500px; }
+  .grad { background:linear-gradient(90deg,#67e8f9,#93c5fd 45%,#f0abfc); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  p, li { font-size:34px; line-height:1.4; color:#c9d3e6; }
+  .card { background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.03)); border:1px solid rgba(255,255,255,.12); border-radius:28px; box-shadow:0 20px 70px rgba(0,0,0,.45); }
+  .shot { border-radius:22px; border:1px solid rgba(255,255,255,.14); box-shadow:0 24px 80px rgba(0,0,0,.55); overflow:hidden; }
+  .shot img { display:block; width:100%; height:100%; object-fit:cover; }
+  .num { font-size:120px; font-weight:800; line-height:1; letter-spacing:-.03em; }
+  .lab { font-size:30px; color:#dbe4f5; margin-top:10px; line-height:1.25; }
+  .sub { font-size:25px; color:var(--mute); margin-top:8px; line-height:1.3; }
+  .chip { display:inline-block; font-family:Consolas, "Courier New", monospace; font-size:27px; padding:4px 14px; border-radius:10px; background:rgba(34,211,238,.14); border:1px solid rgba(34,211,238,.4); color:#a5f3fc; }
+  .foot { position:absolute !important; left:110px; right:110px; bottom:42px; font-size:22px; color:#6b7893; display:flex; justify-content:space-between; }
+</style></head>
+<body>
+
+<!-- 1 TITLE -->
+<section class="slide" id="s1">
+  <div class="shot" style="position:absolute;right:-60px;top:150px;width:1080px;height:760px;opacity:.9"><img src="shots/explore_forced.png" style="object-position:30% 55%"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,#050912 38%,rgba(5,9,18,.55) 70%,rgba(5,9,18,0) 100%)"></div>
+  <div style="position:absolute;left:110px;top:150px;width:1000px">
+    <div class="eyebrow">Open Agent Hackathon 2026 · Track 02</div>
+    <div class="eyebrow" style="color:#c4b5fd;margin-top:8px">The Agent That Can Explain Why</div>
+    <h1 style="margin-top:56px"><span class="grad">Verified<br>Knockout<br>Agent</span></h1>
+    <p style="font-size:44px;margin-top:48px;color:#e8edf6;line-height:1.3">An LLM proposes.<br>An exact solver proves.<br>The explanation is checked.</p>
+  </div>
+  <div class="foot" style="color:#9aa6bf;font-size:26px"><span>Andreas Petros Rigoutsos · team “cache me if u can”</span><span>Nemotron · Zetaris · Meterless H-MEM</span></div>
+</section>
+
+<!-- 2 PROBLEM -->
+<section class="slide" id="s2">
+  <div class="eyebrow">The problem</div>
+  <h2>A tumour cell can survive radiation. An LLM will happily tell you how to stop it, <span class="grad">right or wrong</span></h2>
+  <div style="display:flex;gap:70px;margin-top:70px">
+    <div style="flex:1.1">
+      <p style="margin-bottom:34px">After radiation, a tumour with working p53 stops its cell cycle and repairs instead of dying.</p>
+      <p style="margin-bottom:34px">Which genes should we switch off so the cell commits to <b style="color:#fff">apoptosis</b>? The combinations explode and every wrong guess is a wasted experiment.</p>
+      <p>We measured what an LLM does when asked, with no checker behind it:</p>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:30px">
+      <div class="card" style="padding:44px 52px"><div class="num" style="color:var(--rose)">91%</div><div class="lab">of its knockout proposals are wrong</div></div>
+      <div class="card" style="padding:44px 52px"><div class="num" style="color:var(--amber);font-size:84px;padding:18px 0">invents</div><div class="lab">a solution for the one scenario where none exists</div><div class="sub">Nemotron 3.5, 8 scenarios, exhaustive ground truth</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>Published model: Remy et al., Cancer Research 2015 (35 genes)</span><span>2</span></div>
+</section>
+
+<!-- 3 ARCHITECTURE -->
+<section class="slide" id="s3">
+  <div class="eyebrow">The idea</div>
+  <h2>Propose, prove, explain: <span class="grad">every claim goes through the solver</span></h2>
+  <div style="display:flex;align-items:stretch;gap:0;margin-top:70px">
+    <div class="card" style="flex:1;padding:34px 28px;border-color:rgba(52,211,153,.5)"><div style="font-size:50px">🗄️</div><div style="font-size:36px;font-weight:800;margin-top:10px">Zetaris</div><div class="sub" style="font-size:26px;color:#b8c4dc">network rules, scenarios, drug evidence over SQL REST. The LLM writes its own <span class="chip" style="font-size:22px">run_sql</span></div></div>
+    <div style="align-self:center;font-size:54px;color:var(--cyan);padding:0 14px">→</div>
+    <div class="card" style="flex:1;padding:34px 28px;border-color:rgba(34,211,238,.5)"><div style="font-size:50px">🧠</div><div style="font-size:36px;font-weight:800;margin-top:10px">Nemotron</div><div class="sub" style="font-size:26px;color:#b8c4dc">proposes knockouts with a rationale, writes SQL, words the explanation</div></div>
+    <div style="align-self:center;font-size:54px;color:var(--cyan);padding:0 14px">→</div>
+    <div class="card" style="flex:1;padding:34px 28px;border-color:rgba(167,139,250,.55)"><div style="font-size:50px">⚖️</div><div style="font-size:36px;font-weight:800;margin-top:10px">Exact solver</div><div class="sub" style="font-size:26px;color:#b8c4dc">every long-term state, including oscillations (Z3 + attractors). Verdict or a counterexample</div></div>
+    <div style="align-self:center;font-size:54px;color:var(--cyan);padding:0 14px">→</div>
+    <div class="card" style="flex:1;padding:34px 28px;border-color:rgba(232,121,249,.5)"><div style="font-size:50px">🌳</div><div style="font-size:36px;font-weight:800;margin-top:10px">Complete search</div><div class="sub" style="font-size:26px;color:#b8c4dc">finds every minimal set or proves that none exists</div></div>
+    <div style="align-self:center;font-size:54px;color:var(--cyan);padding:0 14px">→</div>
+    <div class="card" style="flex:1;padding:34px 28px;border-color:rgba(251,191,36,.5)"><div style="font-size:50px">📜</div><div style="font-size:36px;font-weight:800;margin-top:10px">Checked explanation</div><div class="sub" style="font-size:26px;color:#b8c4dc">proof steps re-checked against the rules; stray claims are flagged</div></div>
+  </div>
+  <div style="display:flex;gap:30px;margin-top:34px">
+    <div class="card" style="flex:1.4;padding:26px 34px;display:flex;align-items:center;gap:22px"><div style="font-size:44px">↺</div><div><div style="font-size:32px;font-weight:700">Counterexample feedback</div><div class="sub" style="font-size:25px">the surviving state names the genes that keep the cell alive; they go back to the LLM and into the search</div></div></div>
+    <div class="card" style="flex:1.6;padding:26px 34px;display:flex;align-items:center;gap:22px"><div style="font-size:44px">🧬</div><div><div style="font-size:32px;font-weight:700">Official Meterless H-MEM memory</div><div class="sub" style="font-size:25px">store · ranked retrieval · feedback deltas · audit ledger. Conformance suite 13/13</div></div></div>
+  </div>
+  <div class="foot"><span>Human approval boundary for dream proposals · UI with offline replays</span><span>3</span></div>
+</section>
+
+<!-- 4 WHY IT CANNOT MISS -->
+<section class="slide" id="s4">
+  <div class="eyebrow">Why it works</div>
+  <h2>A failure tells us what to try next, so the search <span class="grad">cannot miss</span></h2>
+  <div style="display:flex;gap:56px;margin-top:40px">
+    <div style="width:740px">
+      <div class="card" style="padding:20px 30px;margin-bottom:16px"><div style="font-size:28px;color:var(--cyan);font-weight:700">1 · A knockout fails</div><p style="font-size:26px;margin-top:4px">The solver returns the surviving state and the genes <b style="color:#fff">active</b> in it.</p></div>
+      <div class="card" style="padding:20px 30px;margin-bottom:16px"><div style="font-size:28px;color:var(--cyan);font-weight:700">2 · Only those genes can break it</div><p style="font-size:26px;margin-top:4px">Adding a gene that is already off changes nothing.</p></div>
+      <div class="card" style="padding:20px 30px;margin-bottom:22px"><div style="font-size:28px;color:var(--cyan);font-weight:700">3 · So extend only with them</div><p style="font-size:26px;margin-top:4px">Nothing is skipped: every minimal solution is found, or the queue runs dry and <b style="color:#fff">impossibility is proved</b>.</p></div>
+      <div style="display:flex;gap:22px">
+        <div class="card" style="padding:18px 26px;flex:1"><div class="num" style="font-size:66px;color:var(--green)">34×</div><div class="lab" style="font-size:24px;margin-top:6px">fewer solver calls than brute force</div></div>
+        <div class="card" style="padding:18px 26px;flex:1"><div class="num" style="font-size:66px;color:var(--violet)">56</div><div class="lab" style="font-size:24px;margin-top:6px">calls to prove “none up to 4 genes” (brute force: 10,903)</div></div>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:18px">
+      <div class="shot" style="height:410px"><img src="shots/search_tree.png" style="object-position:50% 78%"></div>
+      <div class="shot" style="height:250px"><img src="shots/search_proof.png" style="object-position:100% 52%"></div>
+    </div>
+  </div>
+  <div class="foot"><span>Search tree growing live in the UI · “No solution exists”: a proof, not a failure to find one</span><span>4</span></div>
+</section>
+
+<!-- 5 DEMO -->
+<section class="slide" id="s5">
+  <div class="eyebrow">What it looks like</div>
+  <h2>Click a gene and get an exact verdict with a <span class="grad">proof you can read</span></h2>
+  <div style="display:flex;gap:44px;margin-top:40px">
+    <div style="flex:1.05"><div class="shot" style="height:520px"><img src="shots/explore_forced.png" style="object-position:50% 40%"></div>
+      <p style="font-size:27px;margin-top:18px"><b style="color:#fff">Explore:</b> knock out <span class="chip" style="font-size:24px">TP53</span> and apoptosis is forced in every long-term state, with numbered proof steps.</p></div>
+    <div style="flex:1"><div class="shot" style="height:520px"><img src="shots/agent_solution.png" style="object-position:25% 62%"></div>
+      <p style="font-size:27px;margin-top:18px"><b style="color:#fff">Agent:</b> LLM proposals with rationale, counterexamples fed back, then a verified solution with checked steps.</p></div>
+  </div>
+  <div class="foot"><span>Real runs recorded against Zetaris and Nemotron · replays work offline</span><span>5</span></div>
+</section>
+
+<!-- 6 RESULTS -->
+<section class="slide" id="s6">
+  <div class="eyebrow">Measured, not promised</div>
+  <h2>Never wrong with the solver, and honest about <span class="grad">where the LLM helps</span></h2>
+  <div style="display:flex;gap:50px;margin-top:40px">
+    <div class="card" style="flex:1.15;padding:30px 44px 18px">
+      <div style="font-size:28px;font-weight:700;margin-bottom:18px">Finds a valid minimal knockout set</div>
+      <div id="bars"></div>
+    </div>
+    <div style="flex:.9;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:22px">
+      <div class="card" style="padding:26px 30px;display:flex;flex-direction:column;justify-content:center"><div class="num" style="font-size:84px;color:var(--rose)">91%</div><div class="lab" style="font-size:26px">LLM-alone proposals wrong</div></div>
+      <div class="card" style="padding:26px 30px;display:flex;flex-direction:column;justify-content:center"><div class="num" style="font-size:84px;color:var(--green)">34×</div><div class="lab" style="font-size:26px">fewer solver calls</div></div>
+      <div class="card" style="padding:26px 30px;display:flex;flex-direction:column;justify-content:center"><div class="num" style="font-size:84px;color:var(--violet)">13/13</div><div class="lab" style="font-size:26px">official H-MEM conformance</div></div>
+      <div class="card" style="padding:26px 30px;display:flex;flex-direction:column;justify-content:center"><div class="num" style="font-size:84px;color:var(--cyan)">97%</div><div class="lab" style="font-size:26px">explanation steps stayed inside the proof</div></div>
+    </div>
+  </div>
+  <p style="font-size:27px;margin-top:26px;color:#e3c97a">Honest reading: on this network the search is symbolic and needs no LLM. The LLM gives the interface and the wording, and every claim it makes is checked.</p>
+  <div class="foot"><span>8 scenarios · exhaustive-solver ground truth · 3 repeats per LLM arm · 82 automated tests</span><span>6</span></div>
+</section>
+
+<!-- 7 SPONSORS LIMITS NEXT -->
+<section class="slide" id="s7">
+  <div class="eyebrow">Sponsors, limits, next</div>
+  <h2>Built on the sponsor stack, <span class="grad">upfront about its limits</span></h2>
+  <div style="display:flex;gap:34px;margin-top:50px">
+    <div class="card" style="flex:1;padding:36px 40px">
+      <div style="font-size:36px;font-weight:800;color:var(--green);margin-bottom:18px">Sponsor tech</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:14px">
+        <li style="font-size:28px"><b style="color:#fff">Zetaris</b> data layer: 3 tables over REST, LLM-written <span class="chip" style="font-size:22px">run_sql</span>, SQL JOIN</li>
+        <li style="font-size:28px"><b style="color:#fff">Nemotron</b>: proposals, SQL and explanations; thinking off after we measured it (268 s vs 2 s)</li>
+        <li style="font-size:28px"><b style="color:#fff">Meterless H-MEM</b>: official engine, unmodified, 13/13</li>
+        <li style="font-size:28px">Built with <b style="color:#fff">Claude Code</b></li>
+      </ul></div>
+    <div class="card" style="flex:1;padding:36px 40px">
+      <div style="font-size:36px;font-weight:800;color:var(--amber);margin-bottom:18px">Honest limits</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:14px">
+        <li style="font-size:28px">In-silico hypotheses on <b style="color:#fff">one</b> published model, not clinical claims</li>
+        <li style="font-size:28px">Solutions are loss of tumour suppressors: no drug. No DNA-damage-response target appears, so the model misses mechanisms</li>
+        <li style="font-size:28px">Exact engine: about 21 free nodes. A 53-node model returned <span class="chip" style="font-size:22px;color:#fde68a;background:rgba(251,191,36,.14);border-color:rgba(251,191,36,.4)">UNKNOWN</span></li>
+      </ul></div>
+    <div class="card" style="flex:1;padding:36px 40px">
+      <div style="font-size:36px;font-weight:800;color:var(--violet);margin-bottom:18px">Next</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:14px">
+        <li style="font-size:28px">Symbolic (BDD/SAT) attractor backend with an engine router</li>
+        <li style="font-size:28px">Validate against published knockouts and CRISPR screens</li>
+        <li style="font-size:28px">Tumour mutation profile → scenario, druggable-only search</li>
+        <li style="font-size:28px">Same solver, other models and LLMs</li>
+      </ul></div>
+  </div>
+  <p style="font-size:32px;margin-top:34px;color:#e8edf6"><b>The takeaway:</b> a system that proves what it claims, and says “impossible” when it is.</p>
+  <div class="foot"><span>github.com/scoobydoobydrew/open-agent-hackathon</span><span>7</span></div>
+</section>
+
+<script>
+  const rows = [["Brute force",100,"#94a3b8"],["LLM only",26,"#fb7185"],["LLM + feedback",29,"#fb923c"],["Search, no LLM",100,"#34d399"],["LLM + search",100,"#22d3ee"],["Full system",100,"#a78bfa"]];
+  document.getElementById("bars").innerHTML = rows.map(([n,v,c]) => `
+    <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:26px;margin-bottom:5px"><span>${n}</span><span style="color:#fff;font-weight:700">${v}%</span></div>
+    <div style="height:24px;border-radius:12px;background:rgba(255,255,255,.08);overflow:hidden"><div style="height:100%;width:${v}%;border-radius:12px;background:linear-gradient(90deg,${c}66,${c})"></div></div></div>`).join("");
+</script>
+</body></html>

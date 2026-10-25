@@ -130,7 +130,8 @@ Scored against exhaustive-solver ground truth, 8 scenarios, 3 repeats per LLM ar
 | full system (adds explanations) | 100% | n/a | 114 | yes | 43 s |
 
 - On the impossible scenario (`growthinh_only`) the search proves in about 56 solver calls that no set of up to 4 genes
-  works; brute force needs 10,903.
+  works; brute force needs 10,903. (The Search tab without memory replay uses 139 solver calls for the same proof: the
+  benchmark shares counterexamples across a session, so about 95 nodes are refuted from memory and only 56 reach the solver.)
 - Explanations: of 400 chosen steps, 387 (96.8%) stayed inside the proven steps; 42 of 50 explanations were fully clean.
   The steps themselves are correct by construction, so this measures the LLM's wording.
 - LLM time is dominated by API latency. API errors affected the LLM arms: 11 of 192 LLM rounds in `llm_feedback` failed
