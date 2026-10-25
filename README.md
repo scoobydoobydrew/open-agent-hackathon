@@ -12,6 +12,24 @@ explanation is built from solver-proven steps and checked against the model's ru
 
 Track 02 ("The Agent That Can Explain Why"). Built with NVIDIA Nemotron, Zetaris and the official Meterless H-MEM engine.
 
+## Meterless engine requirement: where it is used and how to check it in one minute
+
+- **Engine:** H-MEM, the official reference implementation, vendored unmodified in `hmem/` (checksums in `hmem/UPSTREAM.json`).
+- **Working feature that depends on it:** the agent's memory across runs. Every verified proposal and solution is stored as
+  an H-MEM record (with `source`, `confidence`, `provenance`); the next run recalls the best ones with the engine's
+  ranking into the proposer prompt; recalled facts are graded with the engine's feedback deltas; every operation lands in
+  the engine's audit ledger. Code: `agent/memory.py`, `agent/hmem_engine.py`, `hmem/bridge.ts`.
+- **Passing test:**
+  ```bash
+  (cd hmem/reference && npm install)        # once; needs Node.js
+  python -m pytest tests/test_hmem.py -v    # 11 passed, including the official conformance suite (13/13)
+  python -m agent.memory status             # live engine state: records, layers, ledger
+  ```
+  Without `npm install` these tests are skipped (not failed) and the agent says in its report that it ran without the engine.
+- **Meterless endpoint:** if `METERLESS_BASE_URL` and `METERLESS_API_KEY` are set in `.env`, the LLM calls go through the
+  Meterless OpenAI-compatible endpoint instead of NVIDIA's directly. That path is implemented but was not tested against a
+  live Meterless key; the H-MEM engine itself runs locally and is tested as above.
+
 ## What it does
 
 Given a scenario (for example "FGFR3-driven tumour, wild-type p53, after radiation"), the agent:

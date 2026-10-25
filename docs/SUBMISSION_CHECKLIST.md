@@ -31,6 +31,14 @@ confirm each point on https://hackathon.genai.works before submitting.
 - [x] `.env` is in `.gitignore`; no secret and no 28 MB platform zip in the history.
 - [x] Every commit is dated 22 Oct 2026 or later (the two 21 Oct commits were dropped from the history, no dates were edited).
 
+## Updated onboarding guide (Build section)
+- Cursor is optional and no Cursor credits come with the event: any coding tool is fine, so Claude Code is declared as is.
+- The core requirement stands: at least one Meterless engine implemented in a working feature, shown by a passing test or a
+  live demo. Here: H-MEM as the agent's memory; passing test `python -m pytest tests/test_hmem.py` (11 passed, after
+  `cd hmem/reference && npm install`); the README has a "Meterless engine requirement" block at the top for the judges.
+- The NVIDIA key and the Meterless Runtime token go in Nightshift and the app's settings, per the guide's Power section.
+  Read that section on HackOS; the repo reads the same values from `.env` (`NVIDIA_API_KEY`, `METERLESS_API_KEY`, `METERLESS_BASE_URL`).
+
 ## You still need to do
 1. **Push.** The local history was rewritten (the zip with local passwords is gone, the 21 Oct commits are gone), so it no
    longer matches what is on GitHub. Pick one:
