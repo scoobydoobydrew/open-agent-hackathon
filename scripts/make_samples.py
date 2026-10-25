@@ -1,0 +1,63 @@
+"""Run the agent on sample inputs and keep readable outputs and traces under docs/samples/.
+
+    python scripts/make_samples.py                       # three scenarios, LLM through Nightshift (or the labelled fallback)
+    SAMPLE_MODE=true python scripts/make_samples.py      # no LLM, no network: symbolic search on the local files only
+
+Per scenario it writes <id>.md (the report), <id>.events.jsonl (every proposal, verdict, SQL call, search step and LLM
+request in order) and <id>.llm-trace.jsonl (one line per LLM request: provider, requested and routed model, latency,
+tokens; no prompts and no keys).
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+from agent.llm import ChatClient, LLMError, NemotronClient, NoLLM  # noqa: E402
+from agent.main import CEGARAgent, to_markdown  # noqa: E402
+
+DEFAULT = ["fgfr3_wtp53", "egf_tp53null", "growthinh_only"]
+OUT = ROOT / "docs" / "samples"
+
+
+def run_one(sid: str, out: Path, max_size: int, rounds: int) -> None:
+    trace = out / f"{sid}.llm-trace.jsonl"
+    trace.unlink(missing_ok=True)
+    try:
+        llm: ChatClient = NemotronClient(trace_path=trace)
+    except LLMError as exc:
+        print(f"  no LLM ({exc}); running the symbolic search only")
+        llm = NoLLM(str(exc))
+    events: list[dict] = []
+    agent = CEGARAgent(llm, memory_mode="session", max_size=max_size, max_rounds=rounds, per_round=3,
+                       target_solutions=3, explain=True, sql_tool=True, log=lambda _: None, on_event=events.append)
+    report = agent.run(sid)
+    (out / f"{sid}.md").write_text(to_markdown(report) + "\n", encoding="utf-8")
+    with (out / f"{sid}.events.jsonl").open("w", encoding="utf-8") as fh:
+        for ev in events:
+            if ev["type"] in ("search_visit", "search_init"):          # thousands of tree steps: keep the summary events
+                continue
+            fh.write(json.dumps(ev, ensure_ascii=False, default=str) + "\n")
+    print(f"  {sid}: {len(report.solutions)} solution(s), {report.solver_calls} solver calls, "
+          f"{report.llm_calls} LLM calls via {report.llm_provider or 'none'} {report.llm_models}")
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("scenarios", nargs="*", default=DEFAULT)
+    ap.add_argument("--out", type=Path, default=OUT)
+    ap.add_argument("--max-size", type=int, default=3)
+    ap.add_argument("--rounds", type=int, default=4)
+    args = ap.parse_args()
+    args.out.mkdir(parents=True, exist_ok=True)
+    for sid in args.scenarios:
+        run_one(sid, args.out, args.max_size, args.rounds)
+    print("written to", args.out)
+
+
+if __name__ == "__main__":
+    main()

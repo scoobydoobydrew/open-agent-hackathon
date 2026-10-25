@@ -1,8 +1,9 @@
-# A verified agent for radiation-resistant tumours: knockouts that provably force apoptosis, and why (κανουμε για το δικτυο του 2015)
+# Verified Knockout Agent: gene knockouts that provably force apoptosis in radiation-resistant tumour cells
 
 An LLM agent finds gene knockouts that push a tumour cell into apoptosis after radiation. **A formal solver checks
 every proposal exactly**, a counterexample-guided search finds (or proves there is no) minimal knockout set, and every
-explanation is built from solver-proven steps and checked against the model's rules.
+explanation is built from solver-proven steps and checked against the model's rules. Network used: the published
+2015 bladder-tumorigenesis model (Remy et al.).
 
 > **What we measured, honestly.** An LLM on its own proposes wrong knockout sets 91% of the time and invents an answer
 > for a case where none exists. Our verified loop is never wrong. The *search* is carried by the symbolic
@@ -10,9 +11,41 @@ explanation is built from solver-proven steps and checked against the model's ru
 > calls than brute force. The LLM's job here is the interface, the wording of explanations, and (via memory) lessons
 > across runs. See [Results](#results) and [Limitations](#limitations).
 
-Track 02 ("The Agent That Can Explain Why"). Built with NVIDIA Nemotron, Zetaris and the official Meterless H-MEM engine.
+Open Agent Hackathon 2026, Track 02 ("The Agent That Can Explain Why"). Sponsor technology: **Zetaris** (data layer),
+**Meterless Nightshift** (primary AI provider) and **Meterless H-MEM** (memory engine), **NVIDIA Nemotron** (the model).
 
-## Meterless engine requirement: where it is used and how to check it in one minute
+## Quick start from a clean clone
+
+```bash
+git clone https://github.com/scoobydoobydrew/open-agent-hackathon && cd open-agent-hackathon
+python -m venv venv && source venv/bin/activate        # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env                                   # Windows: copy .env.example .env
+SAMPLE_MODE=true python ui/server.py                   # PowerShell: $env:SAMPLE_MODE="true"; python ui/server.py
+```
+
+Open http://localhost:8765. **`SAMPLE_MODE=true` needs no account, no key and no running service**: the data comes from
+`data/*.csv`, no LLM is called, and Explore, Search and Benchmark are live computations by the real solver. The Agent tab
+replays recorded real runs (Zetaris SQL calls, Nemotron proposals, solver counterexamples). Tests: `python -m pytest`.
+
+For the full system (all three sponsor services), see the next two sections.
+
+## Sponsor technology: what is used, where, and how to check it
+
+| sponsor | role in this project | code | check it |
+|---|---|---|---|
+| **Zetaris** | the agent's data layer: the 35 network rules, the scenarios and a drug-evidence table are SQL tables in the `open_agent` database; the agent reads them over the Zetaris REST gateway, the **LLM writes its own read-only `run_sql` queries**, and a SQL `JOIN` ranks candidate genes | `agent/tools_zetaris.py`, `agent/sql_tool.py`, [docs/zetaris_setup.md](docs/zetaris_setup.md) | the UI chip "Data layer: Zetaris"; `SQL tool call` cards in a run; `tests/test_sql_tool.py` |
+| **Meterless Nightshift** | the **primary AI provider**: every LLM request goes to the local Nightshift runtime (`http://127.0.0.1:8088/v1`, OpenAI-compatible) with the runtime token and a `meterless-app` header; Nightshift routes it to Nemotron using the NVIDIA key stored in *its* Providers tab, so no NVIDIA key lives in this project | `agent/llm.py` | the UI chip "LLM: Nightshift · nemotron-…"; every request is logged with the model that handled it ([Logs and traces](#logs-and-traces)); `tests/test_llm.py` (contract, headers, routed model, fallback) |
+| **Meterless H-MEM** (engine) | the agent's memory across runs: every verified result is an H-MEM record, the next prompt gets the engine's ranked recall, recalled facts are graded with the engine's feedback deltas, every operation is in the audit ledger | `agent/memory.py`, `agent/hmem_engine.py`, `hmem/` (official reference, vendored unmodified) | `python -m pytest tests/test_hmem.py -v` (conformance 13/13 included when `npm install` was run); `python -m agent.memory status`; the "H-MEM recalled N memories" lines in the Agent tab |
+| **NVIDIA Nemotron** | the runtime LLM (`nvidia/nemotron-3.5-lightning-30b-a3b`, pinned): proposes knockouts, writes the SQL, words the explanations; a 550B model was benchmarked for explanations | requests through Nightshift (`agent/llm.py`) | the model id in the Agent timeline (`LLM request · proposals · Meterless Nightshift · nemotron-3.5-lightning-30b-a3b`) |
+
+What is unique about this use of the sponsor technology: the LLM is not trusted anywhere. Zetaris is queried with SQL the
+model writes but a guard validates (single `SELECT`, our three tables, row limit); Nightshift/Nemotron proposals are
+checked by an exact solver and fed back as counterexamples; H-MEM remembers only solver-verified facts, and the memory of
+a failure becomes a sound shortcut (a stored surviving state refutes later proposals without a solver call). See
+[How we built it](#how-we-built-it).
+
+### Meterless engine requirement: where it is used and how to check it in one minute
 
 - **Engine:** H-MEM, the official reference implementation, vendored unmodified in `hmem/` (checksums in `hmem/UPSTREAM.json`).
 - **Working feature that depends on it:** the agent's memory across runs. Every verified proposal and solution is stored as
@@ -21,14 +54,70 @@ Track 02 ("The Agent That Can Explain Why"). Built with NVIDIA Nemotron, Zetaris
   the engine's audit ledger. Code: `agent/memory.py`, `agent/hmem_engine.py`, `hmem/bridge.ts`.
 - **Passing test:**
   ```bash
-  (cd hmem/reference && npm install)        # once; needs Node.js
-  python -m pytest tests/test_hmem.py -v    # 11 passed, including the official conformance suite (13/13)
+  python -m pytest tests/test_hmem.py -v    # needs only Node.js: the built bridge is committed (hmem/dist/bridge.mjs)
   python -m agent.memory status             # live engine state: records, layers, ledger
+  (cd hmem/reference && npm install)        # optional: also runs the official conformance suite (13/13) and the rebuild check
   ```
-  Without `npm install` these tests are skipped (not failed) and the agent says in its report that it ran without the engine.
-- **Meterless endpoint:** if `METERLESS_BASE_URL` and `METERLESS_API_KEY` are set in `.env`, the LLM calls go through the
-  Meterless OpenAI-compatible endpoint instead of NVIDIA's directly. That path is implemented but was not tested against a
-  live Meterless key; the H-MEM engine itself runs locally and is tested as above.
+  Without Node.js the H-MEM tests are skipped, and the agent says in its report that it ran without the engine.
+
+## Dependencies and configuration
+
+| need | for | required? |
+|---|---|---|
+| Python 3.10+ and `pip install -r requirements.txt` (Z3, numpy, scipy, requests, python-dotenv) | everything | yes |
+| Node.js 18+ | the H-MEM engine (no `npm install` needed to run it) | for memory; the agent runs without it and says so |
+| **Zetaris** platform (Docker, `docker compose up -d`, three tables in the `open_agent` database) | the data layer | for the full system; without it the agent reads `data/*.csv` and says `local-csv` in every report |
+| **Meterless Nightshift** running locally, with the NVIDIA key set in its Providers tab | the primary AI provider | for live LLM runs; without it the agent falls back to NVIDIA directly (labelled "fallback") or, with no key, to the symbolic search |
+
+Configuration lives in `.env` (git-ignored; `.env.example` has placeholders only):
+
+| variable | meaning |
+|---|---|
+| `NIGHTSHIFT_TOKEN` or `NIGHTSHIFT_TOKEN_FILE` | the Nightshift runtime token (or the path of its `proxy-token` file). Never the NVIDIA key |
+| `NIGHTSHIFT_BASE_URL` | default `http://127.0.0.1:8088/v1` |
+| `NIGHTSHIFT_APP` | value of the `meterless-app` header, default `verified-knockout-agent` |
+| `NEMOTRON_MODEL` | default `nvidia/nemotron-3.5-lightning-30b-a3b`; any id Nightshift serves works (for example `meterless/auto`) |
+| `ZETARIS_GATEWAY_URL`, `ZETARIS_USER`, `ZETARIS_PASS`, `ZETARIS_DB` | the Zetaris gateway (port 3000) and the database name (`open_agent`) |
+| `NVIDIA_API_KEY` | optional **fallback only**, used when Nightshift is not reachable; the UI and every trace line then say "NVIDIA direct (fallback)" |
+| `SAMPLE_MODE=true` | no call to Zetaris, Nightshift or NVIDIA: local files, symbolic search, recorded replays |
+
+## Usage and sample inputs
+
+```bash
+python ui/server.py                                     # the interactive UI: http://localhost:8765
+python -m agent.main --scenario fgfr3_wtp53             # the agent from the command line, prints a ranked report
+python -m agent.main --scenario growthinh_only          # a scenario where no solution exists: the agent proves it
+python scripts/make_samples.py                          # rewrites docs/samples/ (3 scenarios: reports and traces)
+```
+
+Scenario ids (the input of the agent): `fgfr3_wtp53`, `egf_wtp53`, `egf_growthinh`, `fgfr3_growthinh`, `egf_tp53null`,
+`egf_mdm2amp`, `fgfr3_rb1loss`, `growthinh_only` (no solution exists). The UI also lets you set your own inputs
+(radiation, EGF, FGFR3, anti-growth signal, tumour lesions) in the bar at the top.
+
+**Three sample inputs and their outputs** (committed in [`docs/samples/`](docs/samples/): the report `<id>.md`, the ordered event
+log `<id>.events.jsonl`, and, for runs with an LLM, `<id>.llm-trace.jsonl` with the provider and model of every request):
+
+| input (`--scenario`) | meaning | output |
+|---|---|---|
+| `fgfr3_wtp53` | FGFR3-driven tumour, wild-type p53, after radiation | three minimal sets, all selective: `TP53`, `p21CIP`, `RB1 + RBL2`, each with a solver derivation of why apoptosis holds |
+| `egf_tp53null` | EGF-driven tumour that already lost TP53 | one minimal set: `GRB2` (selective); a drug-evidence line for it from Zetaris |
+| `growthinh_only` | quiescent anti-growth tissue, no growth signal | **no solution exists**: the search proves that no set of up to 3 genes forces apoptosis |
+
+The committed samples are produced by `SAMPLE_MODE=true python scripts/make_samples.py` (no LLM, no network, reproducible by
+anyone): the solutions and proofs come from the solver and the search, which need no LLM. Runs with an LLM add the
+proposals with their rationale, the Zetaris SQL the model wrote, the H-MEM recall lines and the worded explanation steps,
+and a trace of which model handled each request; they are produced by the same script without `SAMPLE_MODE`.
+
+## Logs and traces
+
+- `runs/llm-trace.jsonl`: one line per LLM request, written by `agent/llm.py`: provider (`nightshift`, or `nvidia-direct`
+  with `fallback: true`), the requested model, **the routed model that actually handled the request** (read from
+  Nightshift's receipt), latency, tokens, and any `meterless-*` response headers. No prompts, no keys.
+- `runs/<scenario>-<id>.json`: the full report of each CLI run (proposals, verdicts, counterexamples, explanations).
+- The Agent tab shows the same trail live: every `LLM request` line names the provider and the model, every
+  `SQL tool call` card shows the query Zetaris ran, every `H-MEM recalled N memories` line shows what the memory engine
+  injected into the prompt.
+- `docs/samples/*.events.jsonl` and `*.llm-trace.jsonl`: committed examples of both logs.
 
 ## What it does
 
@@ -54,7 +143,7 @@ switches EGFR/RAS signalling on without a ligand and kills the resting normal ce
  Zetaris (SQL over REST)  --network, scenarios, drugs-->  Agent (agent/main.py)
                                                            |  propose              ^ counterexample
                                                            v                       | (surviving state,
-                                       Nemotron (agent/llm.py)                     |  active genes)
+                          Nemotron via Meterless Nightshift (agent/llm.py)         |  active genes)
                                                            |                       |
                                                            v                       |
                           Solver (solver/): Z3 stable states + exact asynchronous attractor analysis
@@ -130,7 +219,8 @@ property-tested, but it is solver-specific, so it lives beside the memory record
 Known limits: the reference's numeric-conflict heuristic reads digits inside gene symbols (`E2F1` vs `E2F3`) as
 conflicting numbers, so `status` reports false conflicts. They are only queued for review and the agent never calls
 `autoResolve`. Dream proposals live in the engine process, so approve them in the same `agent.memory dream` session.
-The engine needs Node.js (`cd hmem/reference && npm install` once); without it the agent still runs, says so in the
+The engine needs only Node.js (the built bridge `hmem/dist/bridge.mjs` is committed; `npm install` in `hmem/reference` is for
+the conformance suite and the rebuild check); without Node.js the agent still runs, says so in the
 report, and uses only the counterexample cache.
 
 ## Results
@@ -208,9 +298,12 @@ be switched in the bar at the top, which creates a custom scenario that Explore 
 ## How we built it
 - **Development tooling:** the code, tests and documents were written in agentic coding sessions with **Claude Code**
   (Anthropic). Every claim in this README was checked against a measurement in the repo before it was written.
-- **Runtime LLM:** NVIDIA Nemotron (`nemotron-3.5-lightning-30b-a3b` by default) over an OpenAI-compatible REST endpoint.
-  The client uses Meterless' endpoint when `METERLESS_API_KEY` and `METERLESS_BASE_URL` are set and NVIDIA's otherwise.
-  Keys live only in `.env` (ignored by git); the code reads them at runtime.
+- **Runtime LLM:** NVIDIA Nemotron (`nemotron-3.5-lightning-30b-a3b`, pinned) through **Meterless Nightshift**, the
+  primary provider (OpenAI-compatible `/v1/chat/completions` on the local runtime, runtime token plus `meterless-app`
+  header). The NVIDIA key is configured in Nightshift's Providers tab, not here. If Nightshift is not reachable the
+  client says so and, only if `NVIDIA_API_KEY` is set, calls NVIDIA directly and labels every request as a fallback.
+  Keys live only in `.env` (ignored by git). The benchmark numbers below were measured with direct NVIDIA calls before
+  Nightshift was the provider; the model and the prompts are the same.
 - **Meterless:** we use the **H-MEM** engine from the Meterless engines repository (vendored unmodified, conformance
   13/13, see above). The prompt for lesson mining follows the spec's mining pipeline.
 - **Zetaris:** three tables in the `open_agent` database; the LLM queries them itself through a read-only `run_sql` tool
@@ -218,23 +311,12 @@ be switched in the bar at the top, which creates a custom scenario that Explore 
   drug-evidence table. See [docs/zetaris_setup.md](docs/zetaris_setup.md).
 - **Tool-calling loop with a cost cap:** at most 2 SQL turns, 5 to 6 proposal rounds, and a bounded solver budget per round.
 
-## Setup
-
-```bash
-python -m venv venv && venv\Scripts\activate       # Windows
-pip install -r requirements.txt
-cp .env.example .env                                # add NVIDIA_API_KEY (and Zetaris credentials)
-(cd hmem/reference && npm install)                  # once: the official H-MEM engine
-python -m pytest                                    # 61 tests, about a minute
-python -m agent.main --scenario egf_wtp53 --memory session
-```
+## More setup notes
 
 Without Zetaris credentials or tables the agent reads `data/*.csv` and says `data layer: local-csv (...)` in every
 report. To use Zetaris see [docs/zetaris_setup.md](docs/zetaris_setup.md): the gateway is on port 3000, only `SELECT` is
-accepted, and the three tables live in the `open_agent` database (`ZETARIS_DB`).
-
-Scenarios: `fgfr3_wtp53`, `egf_wtp53`, `egf_growthinh`, `fgfr3_growthinh`, `egf_tp53null`, `egf_mdm2amp`,
-`fgfr3_rb1loss`, `growthinh_only` (no solution exists).
+accepted, and the three tables live in the `open_agent` database (`ZETARIS_DB`). The quick start and the dependency
+table above are the whole setup; the only service that needs manual work is Zetaris (creating the three tables once).
 
 ## Portability
 

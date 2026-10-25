@@ -96,6 +96,8 @@ class DataLayer:
 
     def _q(self, sql: str):
         """Query Zetaris; after a failure skip it for a minute so one outage costs one timeout, not one per query."""
+        if os.getenv("SAMPLE_MODE", "").strip().lower() in ("1", "true", "yes", "on"):
+            raise ZetarisError("SAMPLE_MODE is on")
         if time.time() < self._down_until:
             raise ZetarisError("Zetaris was unreachable a moment ago")
         try:

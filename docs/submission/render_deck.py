@@ -15,7 +15,7 @@ with sync_playwright() as p:
     pg = b.new_page(viewport={"width": 1920, "height": 1080})
     pg.goto((HERE / "deck.html").as_uri())
     pg.wait_for_timeout(800)
-    for i in range(1, 8):
+    for i in range(1, 10):
         pg.locator(f"#s{i}").screenshot(path=OUT / f"slide{i}.png")
     pg.pdf(path=HERE / "deck.pdf", width="1920px", height="1080px", print_background=True,
            margin={"top": "0", "right": "0", "bottom": "0", "left": "0"})

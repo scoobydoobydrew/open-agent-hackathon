@@ -9,6 +9,9 @@ Our only code here is `bridge.ts`, a JSON-lines wrapper that forwards calls to t
 `agent/hmem_engine.py`. `agent/memory.py` uses the engine for the agent's knowledge.
 
 ```bash
-cd hmem/reference && npm install                              # once (tsx, esbuild)
+cd hmem/reference && npm install                              # once (tsx, esbuild): conformance suite and rebuild only
 node reference/node_modules/tsx/dist/cli.mjs conformance/runner.ts   # official suite: 13/13
 ```
+
+`dist/bridge.mjs` is the committed build of `bridge.ts` plus the unmodified reference (esbuild), so running the agent needs only
+Node.js. `tests/test_hmem.py` rebuilds it and fails if the committed file differs.

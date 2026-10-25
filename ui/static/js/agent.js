@@ -18,6 +18,8 @@ addStrings({
     'ag.search.q': '{n} in queue', 'ag.search.found': 'working', 'ag.shrunk': 'Shrunk {a} to {b}: a smaller subset already works', 'ag.sol': 'Verified solution', 'ag.by': 'found by',
     'ag.by.llm': 'the LLM', 'ag.by.cegar': 'the search', 'ag.sel': 'selective', 'ag.toxic': 'not selective', 'ag.toxic.in': 'also kills the resting normal cell',
     'ag.steps': 'Why it works: proven steps', 'ag.check': '{ok}/{n} steps clean', 'ag.deriv': 'Full solver derivation', 'ag.show': 'Show on network', 'ag.llmerr': 'LLM unavailable this round; the search continued on its own',
+    'ag.llmreq': 'LLM request · {p}', 'ag.provider': 'Provider', 'ag.models': 'handled by',
+    'ag.mem.recalled': 'H-MEM recalled {n} memories into this prompt', 'ag.mem.empty': 'H-MEM: nothing stored for this scenario yet', 'ag.mem.state': 'Official H-MEM engine', 'ag.mem.records': 'records', 'ag.mem.ledger': 'audit ledger',
     'ag.done': 'Run finished', 'ag.rounds': 'rounds', 'ag.solver': 'solver calls', 'ag.llmcalls': 'LLM calls', 'ag.tokens': 'tokens', 'ag.secs': 'seconds', 'ag.refut': 'memory refutations',
     'ag.proved': 'No solution exists', 'ag.proved.p': 'The complete search ran dry: no knockout set within the size limit forces apoptosis. A proof, not a guess.',
     'ag.net': 'Surviving state of the selected proposal', 'ag.net.p': 'Click any proposal or solution to see its state on the network.', 'ag.live.err': 'Live run failed',
@@ -35,6 +37,8 @@ addStrings({
     'ag.search.q': '{n} στην ουρά', 'ag.search.found': 'δουλεύει', 'ag.shrunk': 'Μίκρυνε από {a} σε {b}: μικρότερο υποσύνολο ήδη δουλεύει', 'ag.sol': 'Επαληθευμένη λύση', 'ag.by': 'βρέθηκε από',
     'ag.by.llm': 'το LLM', 'ag.by.cegar': 'την αναζήτηση', 'ag.sel': 'εκλεκτική', 'ag.toxic': 'μη εκλεκτική', 'ag.toxic.in': 'σκοτώνει και το ήρεμο φυσιολογικό κύτταρο',
     'ag.steps': 'Γιατί δουλεύει: αποδεδειγμένα βήματα', 'ag.check': '{ok}/{n} βήματα καθαρά', 'ag.deriv': 'Πλήρης παραγωγή του solver', 'ag.show': 'Δες στο δίκτυο', 'ag.llmerr': 'Το LLM δεν ήταν διαθέσιμο σε αυτόν τον γύρο· η αναζήτηση συνέχισε μόνη της',
+    'ag.llmreq': 'Αίτημα LLM · {p}', 'ag.provider': 'Πάροχος', 'ag.models': 'το χειρίστηκε το',
+    'ag.mem.recalled': 'Το H-MEM ανακάλεσε {n} μνήμες σε αυτό το prompt', 'ag.mem.empty': 'H-MEM: δεν υπάρχει ακόμη τίποτα για αυτό το σενάριο', 'ag.mem.state': 'Επίσημη μηχανή H-MEM', 'ag.mem.records': 'εγγραφές', 'ag.mem.ledger': 'ledger ελέγχου',
     'ag.done': 'Το run ολοκληρώθηκε', 'ag.rounds': 'γύροι', 'ag.solver': 'κλήσεις solver', 'ag.llmcalls': 'κλήσεις LLM', 'ag.tokens': 'tokens', 'ag.secs': 'δευτερόλεπτα', 'ag.refut': 'απορρίψεις από μνήμη',
     'ag.proved': 'Δεν υπάρχει λύση', 'ag.proved.p': 'Η πλήρης αναζήτηση άδειασε: κανένα σύνολο knockout εντός ορίου μεγέθους δεν επιβάλλει απόπτωση. Απόδειξη, όχι εικασία.',
     'ag.net': 'Κατάσταση επιβίωσης της επιλεγμένης πρότασης', 'ag.net.p': 'Κάνε κλικ σε πρόταση ή λύση για να δεις την κατάστασή της στο δίκτυο.', 'ag.live.err': 'Η ζωντανή εκτέλεση απέτυχε',
@@ -134,6 +138,9 @@ function handle(ev) {
     case 'round': run.round = ev.n; run.search = null; return onRound(ev);
     case 'llm_reply': run.llm++; if (run.skeleton) { run.skeleton.remove(); run.dom = run.dom.filter(x => x !== run.skeleton); run.skeleton = null; } return paintStats();
     case 'llm_error': return add(h('div', { class: 'animate-fadeUp rounded-xl border border-amber-300/30 bg-amber-400/10 p-3 text-xs text-amber-200' }, '⚠ ' + t('ag.llmerr') + (ev.message ? ` (${ev.message.slice(0, 80)})` : '')));
+    case 'llm_call': return onLlmCall(ev);
+    case 'memory_recall': return onMemoryRecall(ev);
+    case 'memory_state': run.mem = ev; return;
     case 'sql_call': return onSql(ev);
     case 'proposal': return onProposal(ev);
     case 'search_visit': return onSearch(ev);
@@ -155,6 +162,20 @@ function onStart(ev) {
     h('div', { class: 'mt-2 flex flex-wrap items-center gap-1.5 text-xs' }, h('span', { class: 'text-slate-500' }, t('ag.baseline') + ':'), badge(ev.baseline === 'FORCED' ? t('ag.forced') : t('ag.survive'), verdictTone(ev.baseline)),
       ...Object.entries(ph).map(([k, v]) => chip(`${k.replace('Apoptosis_high', 'apoptosis').replace('Apoptosis_medium', 'apop.partial').replace('Growth_arrest', 'arrest').replace('Proliferation', 'prolif.')}=${v}`, 'slate')))));
   showOnGraph([], true);
+}
+
+const PROVIDER = { nightshift: 'Meterless Nightshift', nvidia: 'NVIDIA direct (fallback)', 'nvidia-direct': 'NVIDIA direct (fallback)' };
+function onLlmCall(ev) {
+  const purpose = { proposals: 'proposals', explanation: 'explanation', sql: 'SQL' }[ev.purpose] || ev.purpose;
+  add(h('div', { class: 'animate-fadeUp flex flex-wrap items-center gap-1.5 pl-4 text-[11px] text-slate-500' },
+    '⚙ ' + t('ag.llmreq', { p: purpose }), badge(PROVIDER[ev.provider] || ev.provider || '?', ev.provider === 'nightshift' ? 'green' : 'amber'),
+    badge((ev.model || '').split('/').pop(), 'cyan'), `${ev.latency}s · ${fmt(ev.tokens)} tokens`));
+}
+
+function onMemoryRecall(ev) {
+  add(h('div', { class: 'animate-fadeUp flex flex-wrap items-center gap-1.5 pl-4 text-[11px] text-slate-500' },
+    '🧠 ' + (ev.n ? t('ag.mem.recalled', { n: ev.n }) : t('ag.mem.empty')), ev.strategy ? badge(ev.strategy, 'violet') : null,
+    ev.n && ev.preview && ev.preview[0] ? h('span', { class: 'italic text-slate-500' }, '“' + ev.preview[0] + '…”') : null));
 }
 
 function onSql(ev) {
@@ -234,7 +255,9 @@ function onDone(ev) {
   const tile = (label, v) => h('div', { class: 'rounded-xl bg-white/[.04] p-2.5 text-center ring-1 ring-inset ring-white/5' }, h('div', { class: 'num text-lg font-semibold text-white' }, fmt(v)), h('div', { class: 'text-[10px] uppercase tracking-wider text-slate-500' }, label));
   run.finalEl = h('div', { class: `${card} animate-fadeUp p-4` }, h('div', { class: 'mb-2 text-sm font-semibold text-white' }, '🏁 ' + t('ag.done')),
     r.certified_infeasible ? h('div', { class: 'mb-3 rounded-xl bg-violet-400/10 p-3 ring-1 ring-inset ring-violet-300/40' }, h('div', { class: 'text-sm font-bold text-violet-200' }, '∎ ' + t('ag.proved')), h('div', { class: 'mt-1 text-xs text-slate-300' }, t('ag.proved.p'))) : null,
-    h('div', { class: 'grid grid-cols-3 gap-2' }, tile(t('ag.rounds'), r.rounds), tile(t('ag.solver'), r.solver_calls), tile(t('ag.llmcalls'), r.llm_calls), tile(t('ag.tokens'), r.tokens), tile(t('ag.secs'), r.seconds), tile(t('ag.refut'), r.memory_refutations + r.cegar_replays)));
+    h('div', { class: 'grid grid-cols-3 gap-2' }, tile(t('ag.rounds'), r.rounds), tile(t('ag.solver'), r.solver_calls), tile(t('ag.llmcalls'), r.llm_calls), tile(t('ag.tokens'), r.tokens), tile(t('ag.secs'), r.seconds), tile(t('ag.refut'), r.memory_refutations + r.cegar_replays)),
+    r.llm_provider ? h('div', { class: 'mt-3 flex flex-wrap items-center gap-1.5 text-xs text-slate-400' }, t('ag.provider') + ':', badge(PROVIDER[r.llm_provider] || r.llm_provider, r.llm_provider === 'nightshift' ? 'green' : 'amber'), t('ag.models') + ':', ...(r.llm_models || []).map(m => badge(m.split('/').pop(), 'cyan'))) : null,
+    run.mem && run.mem.available ? h('div', { class: 'mt-2 flex flex-wrap items-center gap-1.5 text-xs text-slate-400' }, '🧠 ' + t('ag.mem.state') + ':', badge(`${run.mem.records} ${t('ag.mem.records')}`, 'violet'), t('ag.mem.ledger') + ':', ...Object.entries(run.mem.ledger || {}).map(([k, v]) => badge(`${k} ${v}`, 'slate'))) : null);
   clear(ui.final).append(run.finalEl);
   paintStats();
 }

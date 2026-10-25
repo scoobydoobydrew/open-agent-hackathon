@@ -44,15 +44,17 @@
 <section class="slide" id="s2">
   <div class="eyebrow">The problem</div>
   <h2>A tumour cell can survive radiation. An LLM will happily tell you how to stop it, <span class="grad">right or wrong</span></h2>
-  <div style="display:flex;gap:70px;margin-top:70px">
+  <div style="display:flex;gap:70px;margin-top:44px">
     <div style="flex:1.1">
-      <p style="margin-bottom:34px">After radiation, a tumour with working p53 stops its cell cycle and repairs instead of dying.</p>
-      <p style="margin-bottom:34px">Which genes should we switch off so the cell commits to <b style="color:#fff">apoptosis</b>? The combinations explode and every wrong guess is a wasted experiment.</p>
-      <p>We measured what an LLM does when asked, with no checker behind it:</p>
+      <p style="margin-bottom:22px;font-size:32px">After radiation, a tumour with working p53 stops its cell cycle and repairs instead of dying.</p>
+      <p style="margin-bottom:22px;font-size:32px">Which genes should we switch off so the cell commits to <b style="color:#fff">apoptosis</b>? The combinations explode and every wrong guess is a wasted experiment.</p>
+      <div class="card" style="padding:26px 34px;border-color:rgba(52,211,153,.45)"><div style="font-size:26px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:8px">Who it is for</div>
+        <p style="font-size:28px;line-height:1.35">Computational oncology and radiobiology groups choosing which knockouts to test, target-discovery teams that need a ranked and explained shortlist, and reviewers who must be able to check the reasoning.</p></div>
     </div>
-    <div style="flex:1;display:flex;flex-direction:column;gap:30px">
-      <div class="card" style="padding:44px 52px"><div class="num" style="color:var(--rose)">91%</div><div class="lab">of its knockout proposals are wrong</div></div>
-      <div class="card" style="padding:44px 52px"><div class="num" style="color:var(--amber);font-size:84px;padding:18px 0">invents</div><div class="lab">a solution for the one scenario where none exists</div><div class="sub">Nemotron 3.5, 8 scenarios, exhaustive ground truth</div></div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:26px">
+      <p style="font-size:30px;margin-bottom:-4px">We measured what an LLM does when asked, with no checker behind it:</p>
+      <div class="card" style="padding:40px 52px"><div class="num" style="color:var(--rose)">91%</div><div class="lab">of its knockout proposals are wrong</div></div>
+      <div class="card" style="padding:36px 52px"><div class="num" style="color:var(--amber);font-size:84px;padding:12px 0">invents</div><div class="lab">a solution for the one scenario where none exists</div><div class="sub">Nemotron 3.5, 8 scenarios, exhaustive ground truth</div></div>
     </div>
   </div>
   <div class="foot"><span>Published model: Remy et al., Cancer Research 2015 (35 genes)</span><span>2</span></div>
@@ -62,10 +64,10 @@
 <section class="slide" id="s3">
   <div class="eyebrow">The idea</div>
   <h2>Propose, prove, explain: <span class="grad">every claim goes through the solver</span></h2>
-  <div style="display:flex;align-items:stretch;gap:0;margin-top:70px">
+  <div style="display:flex;align-items:stretch;gap:0;margin-top:46px">
     <div class="card" style="flex:1;padding:34px 28px;border-color:rgba(52,211,153,.5)"><div style="font-size:50px">🗄️</div><div style="font-size:36px;font-weight:800;margin-top:10px">Zetaris</div><div class="sub" style="font-size:26px;color:#b8c4dc">network rules, scenarios, drug evidence over SQL REST. The LLM writes its own <span class="chip" style="font-size:22px">run_sql</span></div></div>
     <div style="align-self:center;font-size:54px;color:var(--cyan);padding:0 14px">→</div>
-    <div class="card" style="flex:1;padding:34px 28px;border-color:rgba(34,211,238,.5)"><div style="font-size:50px">🧠</div><div style="font-size:36px;font-weight:800;margin-top:10px">Nemotron</div><div class="sub" style="font-size:26px;color:#b8c4dc">proposes knockouts with a rationale, writes SQL, words the explanation</div></div>
+    <div class="card" style="flex:1;padding:34px 28px;border-color:rgba(34,211,238,.5)"><div style="font-size:50px">🧠</div><div style="font-size:36px;font-weight:800;margin-top:10px">Nemotron</div><div class="sub" style="font-size:26px;color:#b8c4dc">via Meterless Nightshift: proposes knockouts, writes SQL, words the explanation</div></div>
     <div style="align-self:center;font-size:54px;color:var(--cyan);padding:0 14px">→</div>
     <div class="card" style="flex:1;padding:34px 28px;border-color:rgba(167,139,250,.55)"><div style="font-size:50px">⚖️</div><div style="font-size:36px;font-weight:800;margin-top:10px">Exact solver</div><div class="sub" style="font-size:26px;color:#b8c4dc">every long-term state, including oscillations (Z3 + attractors). Verdict or a counterexample</div></div>
     <div style="align-self:center;font-size:54px;color:var(--cyan);padding:0 14px">→</div>
@@ -132,40 +134,88 @@
     </div>
   </div>
   <p style="font-size:27px;margin-top:26px;color:#e3c97a">Honest reading: on this network the search is symbolic and needs no LLM. The LLM gives the interface and the wording, and every claim it makes is checked.</p>
-  <div class="foot"><span>8 scenarios · exhaustive-solver ground truth · 3 repeats per LLM arm · 82 automated tests</span><span>6</span></div>
+  <div class="foot"><span>8 scenarios · exhaustive-solver ground truth · 3 repeats per LLM arm · 91 automated tests</span><span>6</span></div>
 </section>
 
-<!-- 7 SPONSORS LIMITS NEXT -->
+<!-- 7 SPONSORS -->
 <section class="slide" id="s7">
-  <div class="eyebrow">Sponsors, limits, next</div>
-  <h2>Built on the sponsor stack, <span class="grad">upfront about its limits</span></h2>
-  <div style="display:flex;gap:34px;margin-top:50px">
-    <div class="card" style="flex:1;padding:36px 40px">
-      <div style="font-size:36px;font-weight:800;color:var(--green);margin-bottom:18px">Sponsor tech</div>
-      <ul style="list-style:none;display:flex;flex-direction:column;gap:14px">
-        <li style="font-size:28px"><b style="color:#fff">Zetaris</b> data layer: 3 tables over REST, LLM-written <span class="chip" style="font-size:22px">run_sql</span>, SQL JOIN</li>
-        <li style="font-size:28px"><b style="color:#fff">Nemotron</b>: proposals, SQL and explanations; thinking off after we measured it (268 s vs 2 s)</li>
-        <li style="font-size:28px"><b style="color:#fff">Meterless H-MEM</b>: official engine, unmodified, 13/13</li>
-        <li style="font-size:28px">Built with <b style="color:#fff">Claude Code</b></li>
+  <div class="eyebrow">Sponsor technology</div>
+  <h2>Three sponsors, each doing <span class="grad">real work</span> in the loop</h2>
+  <div style="display:flex;gap:28px;margin-top:44px">
+    <div class="card" style="flex:1;padding:30px 34px;border-color:rgba(52,211,153,.5)">
+      <div style="font-size:42px;font-weight:800;color:var(--green)">Zetaris</div>
+      <div class="sub" style="font-size:24px;margin:0 0 14px">the data layer</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:16px">
+        <li style="font-size:28px">Network rules, scenarios and drug evidence are 3 SQL tables in <span class="chip" style="font-size:23px">open_agent</span></li>
+        <li style="font-size:28px">The LLM writes its own <span class="chip" style="font-size:23px">run_sql</span> queries; a guard allows one SELECT on our tables</li>
+        <li style="font-size:28px">A SQL JOIN ranks candidate genes. Benchmark answers are kept out of the tables</li>
       </ul></div>
+    <div class="card" style="flex:1;padding:30px 34px;border-color:rgba(167,139,250,.55)">
+      <div style="font-size:42px;font-weight:800;color:var(--violet)">Meterless</div>
+      <div class="sub" style="font-size:24px;margin:0 0 14px">Nightshift + H-MEM engine</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:16px">
+        <li style="font-size:28px"><b style="color:#fff">Nightshift</b> is the primary AI provider: every request goes through the local runtime, and the model that answered is logged</li>
+        <li style="font-size:28px"><b style="color:#fff">H-MEM</b>, official and unmodified, is the memory: store, ranked recall into the next prompt, feedback, audit ledger</li>
+        <li style="font-size:28px">Test: 12 tests, conformance 13/13</li>
+      </ul></div>
+    <div class="card" style="flex:1;padding:30px 34px;border-color:rgba(34,211,238,.5)">
+      <div style="font-size:42px;font-weight:800;color:var(--cyan)">NVIDIA Nemotron</div>
+      <div class="sub" style="font-size:24px;margin:0 0 14px">the model, reached through Nightshift</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:16px">
+        <li style="font-size:28px"><span class="chip" style="font-size:23px">nemotron-3.5-lightning-30b-a3b</span> proposes knockouts, writes SQL, words explanations</li>
+        <li style="font-size:28px">The NVIDIA key stays in Nightshift, never in the project</li>
+        <li style="font-size:28px">Measured: thinking on 268 s, off 2 s. The 550B model words better (99.4% vs 94.6% clean) but proposes no better</li>
+      </ul></div>
+  </div>
+  <div class="card" style="margin-top:28px;padding:22px 36px;border-color:rgba(251,191,36,.45)"><p style="font-size:28px;color:#e8edf6"><b style="color:var(--amber)">What is unique:</b> nobody in the loop is trusted. The model writes SQL but a guard validates it, proposes knockouts but an exact solver judges them, and the memory keeps only solver-verified facts.</p></div>
+  <div class="foot"><span>Zetaris · Meterless Nightshift · Meterless H-MEM · NVIDIA Nemotron</span><span>7</span></div>
+</section>
+
+<!-- 8 TECH STACK -->
+<section class="slide" id="s8">
+  <div class="eyebrow">Technical stack</div>
+  <h2>Exact reasoning at the core, <span class="grad">sponsor services around it</span></h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:34px">
+    <div class="card" style="padding:24px 34px"><div style="font-size:30px;font-weight:800;color:var(--violet);margin-bottom:12px">Solver</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px"><span class="chip">Python</span><span class="chip">Z3</span><span class="chip">numpy · scipy</span><span class="chip">asynchronous attractors (terminal SCCs)</span><span class="chip">counterexample-guided search</span></div></div>
+    <div class="card" style="padding:24px 34px"><div style="font-size:30px;font-weight:800;color:var(--cyan);margin-bottom:12px">Agent</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px"><span class="chip">Nightshift /v1 (OpenAI-compatible)</span><span class="chip">Nemotron</span><span class="chip">Zetaris REST + SQL</span><span class="chip">H-MEM (Node bridge)</span></div></div>
+    <div class="card" style="padding:24px 34px"><div style="font-size:30px;font-weight:800;color:var(--green);margin-bottom:12px">Interface</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px"><span class="chip">stdlib HTTP server + SSE</span><span class="chip">vanilla JS modules</span><span class="chip">Tailwind (vendored)</span><span class="chip">SVG network</span><span class="chip">EN / EL</span></div></div>
+    <div class="card" style="padding:24px 34px"><div style="font-size:30px;font-weight:800;color:var(--amber);margin-bottom:12px">Quality</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px"><span class="chip">pytest, 91 tests</span><span class="chip">exhaustive ground truth</span><span class="chip">reproducible benchmark</span><span class="chip">SAMPLE_MODE offline</span></div></div>
+  </div>
+  <div style="display:flex;gap:22px;margin-top:22px">
+    <div class="card" style="flex:1;padding:24px 34px"><div style="font-size:28px;font-weight:800;margin-bottom:6px">Built in the window</div><p style="font-size:25px">Solver, search, explanation checker, agent, SQL tool, Nightshift client, memory integration, UI, benchmark, all tests</p></div>
+    <div class="card" style="flex:1;padding:24px 34px"><div style="font-size:28px;font-weight:800;margin-bottom:6px">Pre-existing, declared</div><p style="font-size:25px">Remy et al. 2015 network · official H-MEM reference (Apache-2.0) · open-source libraries</p></div>
+  </div>
+  <div class="foot"><span>Runs from a clean clone: <b>SAMPLE_MODE=true python ui/server.py</b> needs no account, key or service</span><span>8</span></div>
+</section>
+
+<!-- 9 LIMITS AND FUTURE -->
+<section class="slide" id="s9">
+  <div class="eyebrow">Limits and future enhancements</div>
+  <h2>Upfront about the limits, <span class="grad">clear about what comes next</span></h2>
+  <div style="display:flex;gap:34px;margin-top:44px">
     <div class="card" style="flex:1;padding:36px 40px">
       <div style="font-size:36px;font-weight:800;color:var(--amber);margin-bottom:18px">Honest limits</div>
       <ul style="list-style:none;display:flex;flex-direction:column;gap:14px">
         <li style="font-size:28px">In-silico hypotheses on <b style="color:#fff">one</b> published model, not clinical claims</li>
         <li style="font-size:28px">Solutions are loss of tumour suppressors: no drug. No DNA-damage-response target appears, so the model misses mechanisms</li>
         <li style="font-size:28px">Exact engine: about 21 free nodes. A 53-node model returned <span class="chip" style="font-size:22px;color:#fde68a;background:rgba(251,191,36,.14);border-color:rgba(251,191,36,.4)">UNKNOWN</span></li>
+        <li style="font-size:28px">On this network the search needs no LLM: the LLM adds interface, SQL and checked wording</li>
       </ul></div>
     <div class="card" style="flex:1;padding:36px 40px">
-      <div style="font-size:36px;font-weight:800;color:var(--violet);margin-bottom:18px">Next</div>
+      <div style="font-size:36px;font-weight:800;color:var(--violet);margin-bottom:18px">Future enhancements</div>
       <ul style="list-style:none;display:flex;flex-direction:column;gap:14px">
-        <li style="font-size:28px">Symbolic (BDD/SAT) attractor backend with an engine router</li>
+        <li style="font-size:28px">Symbolic (BDD/SAT) attractor backend with an engine router, for larger networks</li>
         <li style="font-size:28px">Validate against published knockouts and CRISPR screens</li>
-        <li style="font-size:28px">Tumour mutation profile → scenario, druggable-only search</li>
-        <li style="font-size:28px">Same solver, other models and LLMs</li>
+        <li style="font-size:28px">Tumour mutation profile becomes the scenario; druggable-only search</li>
+        <li style="font-size:28px">More Meterless engines (World Model, Markovian) and other models behind the same solver</li>
       </ul></div>
   </div>
   <p style="font-size:32px;margin-top:34px;color:#e8edf6"><b>The takeaway:</b> a system that proves what it claims, and says “impossible” when it is.</p>
-  <div class="foot"><span>github.com/scoobydoobydrew/open-agent-hackathon</span><span>7</span></div>
+  <div class="foot"><span>github.com/scoobydoobydrew/open-agent-hackathon</span><span>9</span></div>
 </section>
 
 <script>

@@ -32,7 +32,7 @@ def record(sid: str, rounds: int, max_size: int) -> Path:
     agent.run(sid)
     OUT.mkdir(exist_ok=True)
     path = OUT / f"{sid}.json"
-    path.write_text(json.dumps({"scenario": sid, "model": llm.model, "recorded_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+    path.write_text(json.dumps({"scenario": sid, "model": llm.model, "provider": getattr(llm, "provider", ""), "recorded_at": time.strftime("%Y-%m-%d %H:%M:%S"),
                                 "seconds": round(time.time() - t0, 1), "events": events}, default=str), encoding="utf-8")
     return path
 

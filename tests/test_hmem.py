@@ -8,15 +8,17 @@ from pathlib import Path
 
 import pytest
 
-from agent.hmem_engine import HMemEngine, HMemUnavailable, ensure_bundle
+from agent.hmem_engine import BUNDLE, ESBUILD, HMemEngine, HMemUnavailable, build_bundle, ensure_bundle
 from agent.memory import HMem
 from solver.boolean_net import BooleanNetwork
 from solver.verifier import FORCED, SURVIVES, Scenario, Verifier
 
 ROOT = Path(__file__).resolve().parent.parent
 HM = ROOT / "hmem"
-pytestmark = pytest.mark.skipif(not shutil.which("node") or not (HM / "reference" / "node_modules").exists(),
-                                reason="needs Node and `npm install` in hmem/reference")
+# The built bridge is committed, so the engine tests need only Node; the official suite and the rebuild need `npm install`.
+pytestmark = pytest.mark.skipif(not shutil.which("node") or not BUNDLE.exists(), reason="needs Node.js")
+needs_npm = pytest.mark.skipif(not (HM / "reference" / "node_modules").exists(),
+                               reason="needs `npm install` in hmem/reference")
 
 
 @pytest.fixture(scope="module")
@@ -38,12 +40,20 @@ def test_vendored_reference_is_unmodified():
         assert hashlib.sha256((HM / rel).read_bytes()).hexdigest() == digest, f"{rel} differs from upstream"
 
 
+@needs_npm
 def test_official_conformance_suite_is_green():
     runner = HM / "conformance" / "runner.ts"
     tsx = HM / "reference" / "node_modules" / "tsx" / "dist" / "cli.mjs"
     out = subprocess.run(["node", str(tsx), str(runner)], capture_output=True, text=True, timeout=180)
     assert out.returncode == 0, out.stdout[-1500:] + out.stderr[-500:]
     assert "13/13 checks passed" in out.stdout
+
+
+@needs_npm
+def test_committed_bundle_is_exactly_what_the_vendored_sources_build(tmp_path):
+    """The bridge the agent runs is the unmodified reference plus our bridge.ts, not something else."""
+    rebuilt = build_bundle(tmp_path / "bridge.mjs")
+    assert rebuilt.read_bytes() == BUNDLE.read_bytes()
 
 
 # -- the engine behind the Python client follows the spec -----------------------------------------------------------

@@ -27,7 +27,7 @@ from urllib.parse import parse_qs, urlparse
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from agent.llm import LLMError, NemotronClient  # noqa: E402
+from agent.llm import LLMError, NemotronClient, llm_status, sample_mode  # noqa: E402
 from agent.main import CEGARAgent  # noqa: E402
 from agent.memory import HMem  # noqa: E402
 from agent.tools_zetaris import DataLayer  # noqa: E402
@@ -151,8 +151,7 @@ class State:
                               "max_size": self.truth.get(sid, {}).get("max_size_searched", 3)})
         return {"graph": self.graph, "scenarios": scenarios, "known_solutions": solutions,
                 "replays": self.replay_names(), "data_source": self.data.source,
-                "llm": {"available": bool(os.getenv("NVIDIA_API_KEY")),
-                        "model": os.getenv("NEMOTRON_MODEL", "nvidia/nemotron-3.5-lightning-30b-a3b")},
+                "llm": llm_status(),
                 "benchmark": self.benchmark()}
 
     # -- verify --------------------------------------------------------------------------------
@@ -188,7 +187,7 @@ HEAL = {"running": False, "last": ""}
 
 def start_heal() -> bool:
     """Bring Zetaris back in the background (Docker restarts break its driver container); no-op if already running."""
-    if HEAL["running"] or os.getenv("ZETARIS_AUTOHEAL", "1") == "0":
+    if HEAL["running"] or os.getenv("ZETARIS_AUTOHEAL", "1") == "0" or sample_mode():
         return False
     HEAL["running"], HEAL["last"] = True, "starting"
 

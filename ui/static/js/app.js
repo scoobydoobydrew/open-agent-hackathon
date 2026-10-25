@@ -66,6 +66,12 @@ async function retry() {
   healing = false; store.meta = await getMeta(); renderStatus();
 }
 
+function llmLabel(l) {
+  if (!l.available) return l.provider === 'sample-mode' ? 'SAMPLE_MODE' : t('st.llm.off');
+  const model = l.model.split('/').pop();
+  return l.provider === 'nightshift' ? `Nightshift · ${model}` : `NVIDIA direct (fallback) · ${model}`;
+}
+
 function renderStatus() {
   const m = store.meta, box = clear($('#status'));
   const zet = m.data_source === 'zetaris';
@@ -73,8 +79,8 @@ function renderStatus() {
   box.append(
     h('div', { class: cell + (zet ? '' : ' cursor-pointer hover:bg-white/10'), title: zet ? t('st.zetaris.tip') : t('st.local.tip'), onclick: zet ? null : retry },
       h('span', { class: 'text-slate-500' }, t('st.data')), badge(zet ? t('st.zetaris') : healing ? t('st.starting') : t('st.local'), zet ? 'green' : 'amber')),
-    h('div', { class: cell },
-      h('span', { class: 'text-slate-500' }, t('st.llm')), badge(m.llm.available ? m.llm.model.split('/').pop() : t('st.llm.off'), m.llm.available ? 'cyan' : 'amber')),
+    h('div', { class: cell, title: m.llm.note || '' },
+      h('span', { class: 'text-slate-500' }, t('st.llm')), badge(llmLabel(m.llm), m.llm.available && !m.llm.fallback ? 'cyan' : 'amber')),
     h('div', { class: cell },
       h('span', { class: 'text-slate-500' }, t('st.solver')), badge('Z3 + exact attractors', 'violet')),
     h('div', { class: 'flex overflow-hidden rounded-lg border border-white/10 text-xs' },

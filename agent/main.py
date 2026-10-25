@@ -27,7 +27,7 @@ from solver.verifier import (FORCED, SAFE, SURVIVES, Scenario, Verification, Ver
                              knockout_constants)
 
 from . import prompts
-from .llm import ChatClient, LLMError, NemotronClient, extract_json
+from .llm import ChatClient, LLMError, NemotronClient, NoLLM, extract_json
 from .memory import DEFAULT_PATH, HMem
 from .sql_tool import run_sql, schema_text, summarise
 from .tools_zetaris import DataLayer
@@ -77,6 +77,8 @@ class RunReport:
     memory_refutations: int = 0        # LLM proposals refuted from memory
     cegar_replays: int = 0             # search nodes refuted from memory
     llm_calls: int = 0
+    llm_provider: str = ""             # Meterless Nightshift, or a labelled fallback
+    llm_models: list[str] = field(default_factory=list)   # models that actually handled the requests
     tokens: int = 0
     seconds: float = 0.0
     certified_infeasible: bool | None = None
@@ -103,6 +105,8 @@ class CEGARAgent:
         self.run_id = uuid.uuid4().hex[:8]
         self._tokens = 0
         self._llm_calls = 0
+        self._providers: set[str] = set()
+        self._models: set[str] = set()
         self._t0 = time.perf_counter()
 
     def _emit(self, kind: str, **data) -> None:
@@ -111,13 +115,20 @@ class CEGARAgent:
             self.on_event({"type": kind, "t": round(time.perf_counter() - self._t0, 2), **data})
 
     # -- LLM plumbing --------------------------------------------------------------------------
-    def _ask(self, system: str, user: str, max_tokens: int = 2048) -> dict:
+    def _ask(self, system: str, user: str, max_tokens: int = 2048, purpose: str = "proposals") -> dict:
         """One JSON reply; a reply cut off by the token limit is retried once with twice the room."""
         for attempt in range(2):
             reply = self.llm.complete([{"role": "system", "content": system}, {"role": "user", "content": user}],
                                       max_tokens=max_tokens * (attempt + 1))
             self._llm_calls += 1
             self._tokens += reply.prompt_tokens + reply.completion_tokens
+            # which provider and which model handled this request (Nightshift reports the routed model)
+            provider = getattr(reply, "provider", "")
+            model = getattr(reply, "routed_model", "") or getattr(self.llm, "model", "")
+            self._providers.add(provider)
+            self._models.add(model)
+            self._emit("llm_call", purpose=purpose, provider=provider, model=model,
+                       latency=getattr(reply, "latency", 0.0), tokens=reply.prompt_tokens + reply.completion_tokens)
             try:
                 return extract_json(reply.content)
             except LLMError:
@@ -162,7 +173,7 @@ class CEGARAgent:
                 selectivity=("selective: the resting normal cell survives" if not toxic else
                              f"NOT selective: also kills normal cells in {toxic}"),
                 drugs="; ".join(f"{d['gene']}: {d['evidence_level'] or 'unknown'}" for d in sol.drugs),
-                steps=prompts.format_steps(steps, origin)), max_tokens=1800)
+                steps=prompts.format_steps(steps, origin)), max_tokens=1800, purpose="explanation")
         except LLMError as exc:
             self.log(f"  (explanation skipped: {exc})")
             return None
@@ -222,7 +233,8 @@ class CEGARAgent:
             try:
                 reply = self._ask(prompts.SQL_SYSTEM, prompts.SQL_USER.format(
                     sid=scenario.name, description=scenario.description, candidates=", ".join(candidates),
-                    schema=schema_text(self.data.client.database), max_queries=2, previous=previous))
+                    schema=schema_text(self.data.client.database), max_queries=2, previous=previous),
+                    purpose="sql")
             except LLMError as exc:
                 report.notes.append(f"sql tool: {exc}")
                 break
@@ -319,11 +331,12 @@ class CEGARAgent:
 
         for rnd in range(1, self.max_rounds + 1):
             report.rounds = rnd
-            prompt = self._proposer_prompt(
-                scenario, candidates, drug_rows, history, self.per_round,
-                "No earlier experience with this scenario." if self.memory_mode == "off"
-                else self.memory.recall_text(scenario))
+            recall = ("No earlier experience with this scenario." if self.memory_mode == "off"
+                      else self.memory.recall_text(scenario))
+            prompt = self._proposer_prompt(scenario, candidates, drug_rows, history, self.per_round, recall)
             self._emit("round", n=rnd, prompt_chars=len(prompt))
+            if self.memory_mode != "off":      # what the official H-MEM engine put into this prompt
+                self._emit("memory_recall", round=rnd, **getattr(self.memory, "last_recall", {}))
             reply: dict = {}
             try:
                 reply = self._ask(prompts.PROPOSER_SYSTEM, prompt)
@@ -420,6 +433,10 @@ class CEGARAgent:
     def _finish(self, report: RunReport, t0: float, calls0: int, search) -> RunReport:
         report.solver_calls = self.verifier.calls - calls0
         report.llm_calls, report.tokens = self._llm_calls, self._tokens
+        if self.memory_mode != "off":
+            self._emit("memory_state", **self.memory.summary())
+        report.llm_provider = "+".join(sorted(p for p in self._providers if p))
+        report.llm_models = sorted(m for m in self._models if m)
         report.seconds = round(time.perf_counter() - t0, 1)
         self._emit("done", report=asdict(report))
         return report
@@ -454,7 +471,7 @@ def to_markdown(r: RunReport) -> str:
         out.append("")
     out += ["---", f"model {r.model} | data layer {r.data_source} | memory {r.memory_mode} | rounds {r.rounds} | "
             f"solver calls {r.solver_calls} (search {r.cegar_solver_calls}, replayed from memory {r.cegar_replays}) | "
-            f"LLM calls {r.llm_calls} | tokens {r.tokens} | {r.seconds}s"]
+            f"LLM calls {r.llm_calls} via {r.llm_provider or 'none'} ({', '.join(r.llm_models) or 'no model'}) | tokens {r.tokens} | {r.seconds}s"]
     return "\n".join(out)
 
 
@@ -469,7 +486,13 @@ def main() -> None:
     ap.add_argument("--no-explain", action="store_true")
     args = ap.parse_args()
 
-    agent = CEGARAgent(NemotronClient(), memory_mode=args.memory, max_size=args.max_size,
+    try:
+        llm: ChatClient = NemotronClient()
+    except LLMError as exc:
+        print(f"No LLM: {exc}")
+        print("Continuing with the symbolic search only.")
+        llm = NoLLM(str(exc))
+    agent = CEGARAgent(llm, memory_mode=args.memory, max_size=args.max_size,
                        max_rounds=args.max_rounds, per_round=args.per_round, target_solutions=args.solutions,
                        explain=not args.no_explain, sql_tool=True)
     report = agent.run(args.scenario)

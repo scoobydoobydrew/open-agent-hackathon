@@ -202,6 +202,7 @@ class HMem:
         """Reinjection block for the next prompt: the official ranking and the domain-grouped context format."""
         eng = self.engine
         fallback = "No earlier experience with this scenario."
+        self.last_recall = {"n": 0, "strategy": "", "reason": "", "preview": []}
         if eng is None:
             return fallback
         q = f"In scenario {scenario.name} ({_conditions(scenario)}), knocking out genes forces apoptosis? {scenario.description}"
@@ -210,6 +211,9 @@ class HMem:
             return fallback
         by_id = {v["id"]: k for k, v in self._index.items()}
         self._retrieved |= {by_id[m["memory"]["id"]] for m in res["memories"] if m["memory"]["id"] in by_id}
+        self.last_recall = {"n": len(res["memories"]), "strategy": res["trace"].get("strategy", ""),
+                            "reason": res["trace"].get("retrievalReason", ""),
+                            "preview": [str(m["memory"].get("content", ""))[:150] for m in res["memories"][:3]]}
         return res["context"] + f"\n(retrieval: {res['trace']['retrievalReason']}; strategy {res['trace']['strategy']})"
 
     # -- H-MEM: mining -----------------------------------------------------------------------------

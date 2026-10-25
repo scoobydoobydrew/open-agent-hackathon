@@ -1,77 +1,68 @@
-# Submission checklist (deadline 27 Oct 2026, 23:45 UTC)
+# Submission checklist (deadline 27 Oct 2026, 23:45 UTC, on HackOS)
 
-Source: the workshop notes (screenshots from the first commit, since removed). They are a summary, not the official text:
-confirm each point on https://hackathon.genai.works before submitting.
+Source: the official "Submission Requirements" document of the hackathon (where it and the Official Rules disagree, the
+Rules apply). Status: **done** = in the repository now, **you** = needs you, **after Nightshift** = needs the Nightshift
+runtime running on your PC.
 
-## Deliverables (from the notes) and where each one is
-| deliverable | status |
-|---|---|
-| Demo video, 1 to 4 minutes: agent working, the solution explained, sponsor tools mentioned | `docs/submission/demo.mp4` (3:31, captions and synthetic voice-over). Script: `docs/submission/record_demo.py` |
-| Slide deck: problem, solution, architecture diagram, tech stack, where Zetaris and Nemotron are used | `docs/submission/deck.pdf` (7 slides) and `deck.pptx` (same slides as pictures, with speaker notes) |
-| GitHub repository: clean code, setup instructions, full README, `.env` ignored | done |
-| Sponsor integration write-up for the form | text ready: `docs/SPONSOR_WRITEUP.md` |
-| HackOS: team workspace, task board, claim sponsor credits | **you** |
-
-## Scoring (from the notes) and what we show
-| criterion | points | what we show |
+## The four components
+| component | requirement | status |
 |---|---|---|
-| Impact | 30 | a real question (radiation-surviving tumours), measured honestly, with proofs of impossibility |
-| Technical | 20 | exact solver, complete search, 82 tests, reproducible benchmark |
-| Innovation | 15 | LLM proposes, solver proves, explanation re-checked; official H-MEM engine |
-| Demo | 15 | the video: Explore, Search (with a proof of impossibility), Agent replay with SQL calls, Benchmark |
-| Product UX | 10 | the UI (Explore, Search, Agent timeline with SQL calls, Benchmark, How it works) |
-| Sponsor tech | 10 | Zetaris via REST + LLM-written SQL tool + JOIN; Nemotron; Meterless H-MEM; development tool statement |
+| Demo video | 1 to 4 minutes; main workflow, how the agent solves the challenge, key features, Zetaris and Meterless integration, **one real request through Nightshift**; no keys on screen | **after Nightshift**: `docs/submission/record_demo.py` rebuilds it from the running UI |
+| Slide deck | problem and target users, solution, workflow/architecture, tech stack, Zetaris and Meterless use, what was unique, product visuals, future enhancements | done: `docs/submission/deck.pdf` (9 slides, one per point); screenshots are refreshed **after Nightshift** |
+| GitHub repository | public; README with setup, usage, dependencies; sample inputs and outputs; logs with the model per request; test of the Meterless engine; `.env.example`; `SAMPLE_MODE` fallback | done, except `docs/samples/` with LLM runs (**after Nightshift**) |
+| Sponsor technology explanation | Zetaris, Meterless engines and their test, Nightshift connection, NVIDIA, what was unique | done: `docs/SPONSOR_WRITEUP.md` |
 
-## Done in the repo
-- [x] Tests (`python -m pytest`), reproducible benchmark, honest README with limits and data provenance.
-- [x] Nemotron through an OpenAI-compatible endpoint; Meterless endpoint supported through `METERLESS_API_KEY` and `METERLESS_BASE_URL`.
-- [x] Zetaris as the data layer (`open_agent` database), the LLM's `run_sql` tool, and a SQL JOIN; the UI shows the data-layer chip.
-- [x] Official Meterless H-MEM engine, vendored unmodified, conformance 13/13.
-- [x] "How we built it" section in the README (the code was written with Claude Code; Cursor was not used and is not claimed).
-- [x] `.env` is in `.gitignore`; no secret and no 28 MB platform zip in the history.
-- [x] Every commit is dated 22 Oct 2026 or later (the two 21 Oct commits were dropped from the history, no dates were edited).
+## Sponsor requirements
+- [x] **Zetaris as the data layer** (`open_agent` database, LLM-written `run_sql` tool, SQL JOIN).
+- [x] **A Meterless engine in a working feature with a passing test**: official H-MEM as the agent's memory;
+  `python -m pytest tests/test_hmem.py` (12 tests, conformance 13/13 when `npm install` was run). The built bridge is
+  committed, so a clean clone needs only Node.js.
+- [x] **Nightshift as the primary AI provider (code)**: `agent/llm.py` calls the local runtime first, logs the routed model
+  of every request, and falls back to NVIDIA directly only when Nightshift is unreachable, always labelled.
+  Covered by `tests/test_llm.py` against a stand-in runtime. **Not yet run against the real Nightshift: after Nightshift.**
+- [ ] **NVIDIA through Nightshift, with the model shown per request** (needed for the DGX Spark award): the UI and the trace
+  show the routed model; to be proven with a real run: **after Nightshift**.
+- [x] Claude Code is the only development tool claimed (Cursor is optional and was not used).
 
-## Updated onboarding guide (Build section)
-- Cursor is optional and no Cursor credits come with the event: any coding tool is fine, so Claude Code is declared as is.
-- The core requirement stands: at least one Meterless engine implemented in a working feature, shown by a passing test or a
-  live demo. Here: H-MEM as the agent's memory; passing test `python -m pytest tests/test_hmem.py` (11 passed, after
-  `cd hmem/reference && npm install`); the README has a "Meterless engine requirement" block at the top for the judges.
-- The NVIDIA key and the Meterless Runtime token go in Nightshift and the app's settings, per the guide's Power section.
-  Read that section on HackOS; the repo reads the same values from `.env` (`NVIDIA_API_KEY`, `METERLESS_API_KEY`, `METERLESS_BASE_URL`).
+## Done in the repository
+- [x] 91 tests (`python -m pytest`), reproducible benchmark, honest README with limits and data provenance.
+- [x] `.env` is git-ignored, `.env.example` has placeholders only, no secret in the history.
+- [x] `SAMPLE_MODE=true python ui/server.py` runs from a clean clone with no account, key or service (checked on a simulated clean
+  clone: 89 passed, 2 skipped that need `npm install`).
+- [x] Every commit is dated 22 Oct 2026 or later.
+- [x] Pre-existing components listed for the form (`docs/SPONSOR_WRITEUP.md`, last section).
 
-## You still need to do
-1. **Push.** The local history was rewritten (the zip with local passwords is gone, the 21 Oct commits are gone), so it no
-   longer matches what is on GitHub. Pick one:
-   - keep the repository and overwrite its history: `git push --force-with-lease origin main`, or
-   - cleanest (GitHub keeps old commits reachable by their hash until a repository is deleted): delete the repository on
-     GitHub, create it again with the same name and the same public setting, then `git remote -v` (it should still point
-     at it) and `git push -u origin main`.
-   Then open the repository in a private window and check that `docs/submission/`, the README and the commit dates look right.
-2. **HackOS:** claim the sponsor credits on the task board. If Meterless gives you a `METERLESS_BASE_URL` and key, put them
-   in `.env` (the client switches to them automatically; that endpoint could not be tested without a key).
-3. **Watch the video once, with sound** (`docs/submission/demo.mp4`) and upload it where the form asks (YouTube unlisted, Drive
-   or Loom, whatever the form accepts). If you prefer your own voice, record it over `demo_silent.mp4`; the text is in
-   `docs/submission/record_demo.py`.
-4. **Upload the deck** (`deck.pdf`, or `deck.pptx` if the form wants PowerPoint).
-5. **Fill the form:** repository URL `https://github.com/scoobydoobydrew/open-agent-hackathon`, track 02, the text from
-   `docs/SPONSOR_WRITEUP.md`, the video and the deck.
-6. Re-read the official rules at https://hackathon.genai.works (team names, what must be in the repo, anything the notes missed).
+## What you do now (needed for the real Nightshift run)
+1. Install **Meterless Nightshift** for Windows from https://meterless.ai/Nightshift/WIN/ (the page asks for a 64-bit Windows
+   10/11 PC with a dedicated GPU; see the Participant Setup Guide in the HackOS Resource Center, or ask in the help desk if
+   you have no GPU).
+2. In Nightshift's **Providers tab** add your NVIDIA key. It does not go into this project.
+3. Find the Nightshift **runtime token** (the `proxy-token` file in its state directory, or its Connect link) and put it in
+   `.env` as `NIGHTSHIFT_TOKEN=...`, or point `NIGHTSHIFT_TOKEN_FILE=` at the file. Do not paste it in chat.
+4. Tell me when Nightshift is running; I check `python -c "from agent.llm import llm_status; print(llm_status())"`, run the
+   three sample scenarios, refresh the screenshots, re-record the video and rebuild the deck.
+
+## At the end (you)
+1. `git push` (the history was already pushed cleanly once).
+2. On HackOS: team with your name in it, **one primary track (Track 02)**, project name and description, roster correct *before*
+   the first submission is created (the team locks then), pre-existing components declared (see `docs/SPONSOR_WRITEUP.md`).
+3. Upload the video and the deck, paste the sponsor explanation, give the repository URL
+   `https://github.com/scoobydoobydrew/open-agent-hackathon`.
+4. Claim the sponsor credits on the HackOS task board. Submit early; nothing can be fixed after the deadline.
+5. Check the repository in a private browser window: public, README renders, no `.env`, no keys.
 
 ## Regenerating the submission material
 ```bash
-bash scripts/zetaris_up.sh                 # the UI also does this itself; the chip must read "Zetaris"
-(cd hmem/reference && npm install)         # once, for H-MEM
-python -m pytest                           # expect all green
-python ui/server.py                        # http://localhost:8765, leave it running
+python ui/server.py                        # http://localhost:8765 (leave it running; the chips must read Zetaris and Nightshift)
 pip install playwright imageio-ffmpeg python-pptx
+python scripts/make_samples.py             # docs/samples/: reports, event logs, per-request model traces
 python docs/submission/capture_screens.py  # screenshots for the deck
 python docs/submission/render_deck.py      # deck.pdf and slides/*.png
-python docs/submission/build_pptx.py       # deck.pptx with notes
+python docs/submission/build_pptx.py       # deck.pptx with speaker notes
 python docs/submission/record_demo.py      # demo.mp4 (Windows: Edge and the built-in voice)
 ```
 Generated files (`shots/`, `slides/`, `deck.pptx`, `demo*.mp4`) are git-ignored; `deck.pdf` is kept in the repository.
 
 ## Let someone else check the setup
-A judge who can run the repo in 5 minutes scores higher (per the notes). Test it on a clean checkout:
-`git clone`, `python -m venv venv`, `pip install -r requirements.txt`, `cp .env.example .env`, `python -m pytest`,
-`python ui/server.py`. Without Zetaris or an API key the UI still runs on the local CSV files and the recorded replays.
+A judge who can run the repo in 5 minutes scores higher. Clean checkout: `git clone`, `python -m venv venv`,
+`pip install -r requirements.txt`, `cp .env.example .env`, `SAMPLE_MODE=true python ui/server.py`, `python -m pytest`.

@@ -2,7 +2,8 @@
 
 The engine runs as a Node child process behind hmem/bridge.ts. Every call forwards to the reference services
 (store, retrieval, ledger, conflicts, sleep, dreaming, mining), so the spec behaviour is the reference's, not a port.
-Setup once: ``cd hmem/reference && npm install``. The bundle is built automatically on first use.
+The built bridge (hmem/dist/bridge.mjs: the unmodified reference plus our JSON bridge) is committed, so a clean clone
+needs only Node.js. ``cd hmem/reference && npm install`` is needed just to rebuild it or to run the official conformance suite.
 """
 from __future__ import annotations
 
@@ -24,20 +25,30 @@ class HMemUnavailable(RuntimeError):
     """Node or the reference dependencies are missing; callers degrade gracefully."""
 
 
-def ensure_bundle() -> Path:
-    sources = [HMEM_DIR / "bridge.ts", *(HMEM_DIR / "reference" / "src").glob("*.ts")]
-    if BUNDLE.exists() and BUNDLE.stat().st_mtime >= max(p.stat().st_mtime for p in sources):
-        return BUNDLE
+def build_bundle(out: Path = BUNDLE) -> Path:
+    """Bundle bridge.ts with the vendored reference using esbuild (needs ``npm install`` in hmem/reference)."""
     if not shutil.which("node"):
         raise HMemUnavailable("Node.js is not installed (needed for the official H-MEM reference implementation)")
     if not ESBUILD.exists():
         raise HMemUnavailable("run `npm install` in hmem/reference first")
-    BUNDLE.parent.mkdir(exist_ok=True)
-    done = subprocess.run(["node", str(ESBUILD), str(HMEM_DIR / "bridge.ts"), "--bundle", "--platform=node", "--format=esm",
-                           f"--outfile={BUNDLE}", "--log-level=error"], capture_output=True, text=True)
+    out.parent.mkdir(exist_ok=True)
+    done = subprocess.run(["node", str(ESBUILD), "hmem/bridge.ts", "--bundle", "--platform=node", "--format=esm",
+                           f"--outfile={out}", "--log-level=error"], capture_output=True, text=True, cwd=HMEM_DIR.parent)
     if done.returncode != 0:
         raise HMemUnavailable(f"could not build the H-MEM bridge: {done.stderr[:300]}")
-    return BUNDLE
+    return out
+
+
+def ensure_bundle() -> Path:
+    """The committed bundle is used as it is; it is rebuilt only when esbuild is installed and a source is newer."""
+    if BUNDLE.exists() and not ESBUILD.exists():
+        if not shutil.which("node"):
+            raise HMemUnavailable("Node.js is not installed (needed for the official H-MEM reference implementation)")
+        return BUNDLE
+    sources = [HMEM_DIR / "bridge.ts", *(HMEM_DIR / "reference" / "src").glob("*.ts")]
+    if BUNDLE.exists() and BUNDLE.stat().st_mtime >= max(p.stat().st_mtime for p in sources):
+        return BUNDLE
+    return build_bundle()
 
 
 class HMemEngine:
