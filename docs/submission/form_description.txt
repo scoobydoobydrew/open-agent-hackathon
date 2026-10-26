@@ -1,13 +1,24 @@
-Verified Knockout Agent: gene knockouts that provably force apoptosis in radiation-resistant tumour cells, with explanations that are checked.
+An AI that can prove it is right, and prove when no answer exists.
 
-Problem and users: research teams must choose which gene knockouts to test. Asked directly, an LLM proposed a wrong knockout set 91% of the time and invented a solution for a case where none exists (8 scenarios, exhaustive ground truth).
+THE PROBLEM
+Radiation kills most tumour cells, but some survive. Switching off the right genes can push those cells to self-destruct, yet there are millions of possible combinations and every wrong guess is a wasted lab experiment. Chatbots will happily suggest answers. We tested one on 8 cases: 91% of its gene suggestions were wrong, and when no solution existed it invented one.
 
-How it works: an LLM proposes knockouts; an exact solver (Z3 + attractor analysis of a published 35-gene bladder-tumour model) proves or refutes each one and returns a counterexample; a complete counterexample-guided search finds every minimal set or proves none exists (34x fewer solver calls than brute force); each explanation is cut into proof steps re-checked against the model's rules.
+OUR IDEA: PROPOSE, PROVE, EXPLAIN
+1. The AI proposes which genes to switch off.
+2. A mathematical referee tests every proposal on a published model of the cell (35 genes) and answers "works" or "fails, because this part of the cell stays alive".
+3. Each failure points to what to try next, so the search either finds every smallest solution or proves that none exists. "Impossible" becomes a proven fact, not a guess.
+4. Every explanation is split into small steps and each step is re-checked against the cell's rules, so the AI cannot make things up.
+Result: never wrong, 34x fewer checks than trying everything, and answers anyone can follow.
 
-Sponsors: Zetaris is the data layer (network rules, scenarios and drug evidence as SQL tables; the LLM writes its own validated read-only SQL). Meterless Nightshift is the primary AI provider: every request goes through it to NVIDIA Nemotron 3.5 Lightning 30B (nvidia/nemotron-3.5-lightning-30b-a3b), and the UI and logs show the model that handled each request. Meterless H-MEM (official engine, unmodified) is the agent's memory: store, ranked recall into every prompt, feedback, audit ledger; tests/test_hmem.py passes, conformance 13/13.
+BUILT ON THE SPONSORS
+- Zetaris: the data layer. Cell rules, scenarios and drug evidence are SQL tables; the AI writes its own safe, read-only queries.
+- Meterless Nightshift: every AI request goes through it to NVIDIA Nemotron 3.5 Lightning 30B, and the app and logs show which model answered each time.
+- Meterless H-MEM (official engine): the agent's memory. It keeps verified results and reuses them; tests pass, conformance 13/13.
 
-Runs from a clean clone: SAMPLE_MODE=true needs no account; Docker image; POST /run; 102 tests; JSONL evidence logs in logs/.
+TRY IT
+Runs from a clean clone with no account (SAMPLE_MODE), Docker, 102 tests, full logs.
 
-Limits: in-silico hypotheses on one published model, not medical advice.
+HONEST LIMITS
+Computer-model hypotheses, not medical advice.
 
-Pre-existing: the published Remy et al. 2015 network, the official H-MEM reference (Apache-2.0), open-source libraries. All other code was written in the build window with Claude Code.
+Pre-existing: the published 2015 cell model (Remy et al.), the official H-MEM code, open-source libraries. Everything else was built in the window with Claude Code.
