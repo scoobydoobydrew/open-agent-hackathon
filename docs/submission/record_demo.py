@@ -21,7 +21,7 @@ from playwright.sync_api import sync_playwright
 HERE = Path(__file__).parent
 WORK = HERE / "_video"
 WORK.mkdir(exist_ok=True)
-BASE = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:8765"
+BASE = next((a for a in sys.argv[1:] if a.startswith("http")), "http://localhost:8765")
 W, H = 1600, 900
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
@@ -57,41 +57,46 @@ OVERLAY_JS = """
 # (key, caption, narration). Numbers in the narration are the ones on screen or in benchmark/RESULTS-nemotron-lightning.md.
 SCRIPT = [
     ("intro", "An LLM proposes. An exact solver proves. The explanation is checked.",
-     "A tumour cell can survive radiation. With working p53, it stops its cell cycle and repairs itself instead of dying. "
-     "This is the Verified Knockout Agent. A language model proposes gene knockouts, an exact solver proves or refutes each one, "
-     "and every explanation is re-checked against the rules of the model. "
-     "The data layer is Zetaris, the language model is Nemotron, and the memory is the official Meterless H-MEM engine."),
+     "A tumour cell can survive radiation, and the question is which genes to switch off so that it dies instead. "
+     "This is for research teams who have to choose which knockouts to test, because every wrong guess is a wasted experiment. "
+     "The Verified Knockout Agent lets a language model propose, an exact solver prove or refute every proposal, "
+     "and checks every explanation against the rules. It runs on Zetaris, Meterless Nightshift with the official H-MEM engine, and NVIDIA Nemotron."),
     ("mdm2", "Explore: knock out MDM2. The cell still survives",
-     "The model is a published bladder tumour network with thirty five genes. After radiation, this cell survives: growth arrest wins. "
-     "Let's knock out MDM2. It does not help. The solver does not just say no. It returns the surviving state, "
-     "and names the genes that keep the cell alive."),
+     "The model is a published bladder tumour network with thirty five genes. After radiation, this cell survives. "
+     "Let's knock out MDM2. It does not help, and the solver returns the surviving state and names the genes that keep the cell alive."),
     ("tp53", "Knock out TP53: apoptosis is forced, with a checked proof",
      "Now TP53. Apoptosis is forced in every long term state of the cell, including oscillations. "
-     "Below is the proof. Each step is a rule of the model, and each one is re-checked. "
-     "A selectivity check shows that a resting normal cell would survive the same knockout."),
-    ("search", "Search: finds every minimal solution, nothing is skipped",
-     "The Search tab runs a complete counterexample guided search. Every failing set comes with a surviving state, "
-     "and only the genes active in that state can break it, so the search skips nothing. "
-     "It finds every minimal solution, here three, with a fraction of the solver calls that brute force would need."),
-    ("proof", "Quiescent cell, no growth signal: \"No solution exists\" is a proof",
-     "Now a quiescent cell with no growth signal. The search runs until the queue is empty and reports that no solution exists. "
-     "This is a proof, not a failure to find one. One hundred thirty nine solver calls, "
-     "where brute force would check ten thousand nine hundred and three sets."),
-    ("agent", "Agent: Zetaris SQL, Nemotron proposals, counterexample feedback, verified solution",
-     "In the Agent tab the language model takes over. First it queries Zetaris with its own read only S Q L. "
-     "Then it proposes knockouts with a rationale. The solver answers with counterexamples that go back to the model. "
-     "Finally the search, and a verified solution, with explanation steps checked against the rules. "
-     "This is a recorded run, with real Nemotron and Zetaris calls."),
+     "Each step of the proof is a rule of the model, and each one is re-checked. A selectivity check shows that a resting normal cell survives."),
+    ("proof", "Complete search: \"No solution exists\" is a proof, not a failure to find one",
+     "The search is complete: every failing set comes with a surviving state, and only the genes active in it can break it, so nothing is skipped. "
+     "For a quiescent cell with no growth signal it runs until the queue is empty and reports that no solution exists. "
+     "One hundred thirty nine solver calls, where brute force would check ten thousand nine hundred and three sets."),
+    ("agent", "Live run: Zetaris SQL, H-MEM recall, Nemotron through Nightshift, verified solution",
+     "Now the agent, live. Every request goes through Meterless Nightshift to NVIDIA Nemotron, and each line shows which model answered. "
+     "First the model queries Zetaris with its own read only S Q L. Then the official H-MEM engine recalls what earlier rounds verified and puts it into the prompt. "
+     "The solver answers each proposal with a counterexample, the search completes the job, and the result is a verified solution "
+     "whose explanation steps are checked against the rules."),
     ("bench", "Measured on 8 scenarios against exhaustive ground truth",
-     "We measured it. Without the solver, the language model's proposals are wrong ninety one percent of the time, "
-     "and it invents a solution where none exists. With the solver and the complete search, it is never wrong, "
-     "with thirty four times fewer solver calls than brute force. Ninety seven percent of the explanation steps stayed inside the proof. "
-     "And we are honest: on this network the search itself needs no language model. "
-     "The value is verification, proofs of impossibility, and explanations that are checked."),
-    ("end", "In-silico hypotheses on one published model. Code: github.com/scoobydoobydrew/open-agent-hackathon",
-     "The limits: these are in silico hypotheses on one published model, and the solutions are loss of tumour suppressors, not a drug. "
+     "We measured it. Without the solver, the language model's proposals are wrong ninety one percent of the time. "
+     "With the solver and the complete search the system is never wrong, with thirty four times fewer solver calls than brute force, "
+     "and ninety seven percent of the explanation steps stay inside the proof. On this network the search itself needs no language model; "
+     "the value is verification, proofs of impossibility, and checked explanations."),
+    ("end", "In-silico hypotheses on one published model: not medical advice. github.com/scoobydoobydrew/open-agent-hackathon",
+     "These are in silico hypotheses on one published model, not medical advice, and they need lab and expert review. "
      "The code is open source on GitHub. Thank you."),
 ]
+
+
+def check_provider() -> None:
+    """The video must show a real request through Nightshift: refuse to record on a fallback or without an LLM."""
+    import json
+    import urllib.request
+    meta = json.load(urllib.request.urlopen(BASE + "/api/meta", timeout=30))
+    llm = meta["llm"]
+    print("LLM status:", llm.get("provider"), llm.get("state"), llm.get("model"))
+    if llm.get("provider") != "nightshift" and "--allow-fallback" not in sys.argv:
+        raise SystemExit("Nightshift is not the active provider (" + str(llm.get("note")) + "). Start Nightshift, set "
+                         "NIGHTSHIFT_TOKEN, restart ui/server.py, or pass --allow-fallback for a rehearsal.")
 
 
 def tts(key: str, text: str) -> Path:
@@ -165,6 +170,7 @@ class Driver:
 
 
 def run():
+    check_provider()
     wavs = {k: tts(k, narr) for k, _, narr in SCRIPT}
     dur = {k: wav_seconds(p) for k, p in wavs.items()}
     print("narration seconds:", {k: round(v, 1) for k, v in dur.items()}, "total", round(sum(dur.values())))
@@ -222,15 +228,8 @@ def run():
                 pg.mouse.wheel(0, 260)
                 d.wait(1.8)
 
-        def search():
-            d.tab("Search")
-            d.scenario("EGF · p53 wild-type")
-            d.click(pg.locator("#view-search button", has_text="16×").first)
-            d.click(pg.locator("#view-search button", has_text="Run search").first)
-            pg.get_by_text("minimal solution(s) found").wait_for(timeout=90000)
-            d.wait(1.5)
-
         def proof():
+            d.tab("Search")
             d.scenario("Quiescent")
             pg.locator("#view-search select").select_option("4")
             d.click(pg.locator("#view-search button", has_text="16×").first)
@@ -240,18 +239,21 @@ def run():
 
         def agent():
             d.tab("Agent")
-            d.scenario("FGFR3 · p53 wild-type")
-            d.click(pg.locator("#view-agent button", has_text="Replay recorded run").last)
-            d.wait(22)
-            skip = pg.get_by_text("Skip animation")
-            if skip.count():
-                d.click(skip.first)
-            pg.get_by_text("Run finished").wait_for(timeout=120000)
+            d.scenario("EGF · p53 wild-type")
+            d.hover(pg.locator("header").get_by_text("LLM", exact=True).first)
+            d.wait(1.5)
+            d.click(pg.locator("#view-agent button", has_text="Run live").first)      # mode switch
+            d.click(pg.locator("#view-agent button", has_text="Run live").last)       # start: a real run, not a replay
+            pg.get_by_text("Run finished").wait_for(timeout=300000)
+            d.wait(1)
             tl = pg.locator("#view-agent .overflow-y-auto").first
             d.glide(520, 560, 20)
-            tl.evaluate("e => e.scrollTop = 0")
-            d.wait(2.5)
-            pg.get_by_text("Verified solution #1").first.scroll_into_view_if_needed()
+            tl.evaluate("e => e.scrollTop = 0")                                        # SQL calls, model per request, H-MEM recall
+            d.wait(3)
+            for _ in range(3):
+                pg.mouse.wheel(0, 380)
+                d.wait(3.5)
+            pg.get_by_text("Run finished").scroll_into_view_if_needed()
             d.wait(3)
 
         def bench():
@@ -266,7 +268,7 @@ def run():
             d.tab("How it works")
             d.wait(2)
 
-        acts = {"intro": intro, "mdm2": mdm2, "tp53": tp53, "search": search, "proof": proof, "agent": agent, "bench": bench, "end": end}
+        acts = {"intro": intro, "mdm2": mdm2, "tp53": tp53, "proof": proof, "agent": agent, "bench": bench, "end": end}
         for key, cap, _ in SCRIPT:
             seg(key, cap, acts[key])
         d.caption("")
