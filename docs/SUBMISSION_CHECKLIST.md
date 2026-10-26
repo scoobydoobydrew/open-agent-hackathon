@@ -9,7 +9,7 @@ runtime running on your PC.
 |---|---|---|
 | Demo video | 1 to 4 minutes; main workflow, how the agent solves the challenge, key features, Zetaris and Meterless integration, **one real request through Nightshift**; no keys on screen | **after Nightshift**: `docs/submission/record_demo.py` rebuilds it from the running UI |
 | Slide deck | problem and target users, solution, workflow/architecture, tech stack, Zetaris and Meterless use, what was unique, product visuals, future enhancements | done: `docs/submission/deck.pdf` (9 slides, one per point); screenshots are refreshed **after Nightshift** |
-| GitHub repository | public; README with setup, usage, dependencies; sample inputs and outputs; logs with the model per request; test of the Meterless engine; `.env.example`; `SAMPLE_MODE` fallback | done, except `docs/samples/` with LLM runs (**after Nightshift**) |
+| GitHub repository | public; README with setup, usage, dependencies; sample inputs and outputs; logs with the model per request; test of the Meterless engine; `.env.example`; `SAMPLE_MODE` fallback | done; `logs/samples/` has the SAMPLE_MODE runs, the runs with an LLM come **after Nightshift** |
 | Sponsor technology explanation | Zetaris, Meterless engines and their test, Nightshift connection, NVIDIA, what was unique | done: `docs/SPONSOR_WRITEUP.md` |
 
 ## Sponsor requirements
@@ -23,6 +23,17 @@ runtime running on your PC.
 - [ ] **NVIDIA through Nightshift, with the model shown per request** (needed for the DGX Spark award): the UI and the trace
   show the routed model; to be proven with a real run: **after Nightshift**.
 - [x] Claude Code is the only development tool claimed (Cursor is optional and was not used).
+
+## Extra points from the official rules and the Meterless README
+- [x] Evidence logs as JSONL in `logs/` (the Meterless README asks for it; the rules disqualify "no evidence of how the agent
+  reached its output"): LLM requests with the routed model, H-MEM retrieval trace, per-run events and H-MEM ledger.
+- [x] A sample mode that runs without credentials (`SAMPLE_MODE=true`); one seam for the provider (`agent/llm.py`); capped
+  rounds, retries and SQL turns (no unbounded loops against a paid API).
+- [x] Responsible AI section (rules, section 18): README "Responsible use", limits slide.
+- [x] Not a "fixed chain" or fabricated activity (rules, section 7.3): the solver's verdict decides every step, the demo
+  replays are recordings of real runs and are labelled as such.
+- [ ] Rules, section 11.3: data prepared before the window must be declared. Declared: the published network file.
+- The rules' own text says the binding version is on hackathon.genai.works; reread it before submitting.
 
 ## Done in the repository
 - [x] 91 tests (`python -m pytest`), reproducible benchmark, honest README with limits and data provenance.
@@ -55,7 +66,7 @@ runtime running on your PC.
 ```bash
 python ui/server.py                        # http://localhost:8765 (leave it running; the chips must read Zetaris and Nightshift)
 pip install playwright imageio-ffmpeg python-pptx
-python scripts/make_samples.py             # docs/samples/: reports, event logs, per-request model traces
+python scripts/make_samples.py             # logs/samples/: reports, event logs, H-MEM ledger, per-request model traces
 python docs/submission/capture_screens.py  # screenshots for the deck
 python docs/submission/render_deck.py      # deck.pdf and slides/*.png
 python docs/submission/build_pptx.py       # deck.pptx with speaker notes

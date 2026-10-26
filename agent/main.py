@@ -28,6 +28,7 @@ from solver.verifier import (FORCED, SAFE, SURVIVES, Scenario, Verification, Ver
 
 from . import prompts
 from .llm import ChatClient, LLMError, NemotronClient, NoLLM, extract_json
+from .logs import write_jsonl
 from .memory import DEFAULT_PATH, HMem
 from .sql_tool import run_sql, schema_text, summarise
 from .tools_zetaris import DataLayer
@@ -90,13 +91,14 @@ class CEGARAgent:
                  memory_path=DEFAULT_PATH, max_size: int = 3, max_rounds: int = 6, per_round: int = 3,
                  target_solutions: int = 3, explain: bool = True, cegar: bool = True, fallback: bool = True,
                  cegar_budget: int = 40, sql_tool: bool = False, log: Callable[[str], None] = print,
-                 on_event: Callable[[dict], None] | None = None):
+                 on_event: Callable[[dict], None] | None = None, log_prefix: str | None = None):
         assert memory_mode in ("persistent", "session", "off")
         self.llm, self.data, self.log = llm, data or DataLayer(), log
         self.memory_mode, self.max_size, self.max_rounds = memory_mode, max_size, max_rounds
         self.per_round, self.target, self.explain = per_round, target_solutions, explain
         self.cegar, self.fallback, self.cegar_budget = cegar, fallback, cegar_budget
-        self.on_event = on_event
+        self.on_event, self.log_prefix = on_event, log_prefix
+        self._events: list[dict] = []          # evidence for logs/<scenario>-<run>.events.jsonl (search steps left out)
         self.sql_tool, self._data_notes = sql_tool, "none"
         self.rows = self.data.network_rows()
         self.net = BooleanNetwork.from_rows(self.rows)
@@ -111,8 +113,11 @@ class CEGARAgent:
 
     def _emit(self, kind: str, **data) -> None:
         """Structured progress event for UIs and recordings (never affects the run)."""
+        event = {"type": kind, "t": round(time.perf_counter() - self._t0, 2), **data}
+        if not kind.startswith("search_"):
+            self._events.append(event)
         if self.on_event is not None:
-            self.on_event({"type": kind, "t": round(time.perf_counter() - self._t0, 2), **data})
+            self.on_event(event)
 
     # -- LLM plumbing --------------------------------------------------------------------------
     def _ask(self, system: str, user: str, max_tokens: int = 2048, purpose: str = "proposals") -> dict:
@@ -287,6 +292,7 @@ class CEGARAgent:
                            getattr(self.llm, "model", "?"), self.memory_mode, baseline.verdict)
         self.log(f"[{scenario.name}] {scenario.description}\n  data layer: {self.data.source}; baseline: {baseline.verdict}")
         self._t0 = t0
+        self._events = []
         self._emit("start", scenario=scenario.name, description=scenario.description, fixed=dict(scenario.fixed),
                    goal=dict(scenario.goal), candidates=candidates, baseline=baseline.verdict,
                    baseline_counterexample=baseline.counterexample, data_source=self.data.source,
@@ -430,6 +436,17 @@ class CEGARAgent:
         drug = sum(EVIDENCE_RANK.get(d["evidence_level"] or "none", 4) for d in sol.drugs)
         return (not sol.selective, len(sol.knockouts), drug, sol.knockouts)
 
+    def _write_logs(self, report: RunReport) -> None:
+        """Evidence for judges: the ordered events of the run and the H-MEM audit ledger, as JSONL under logs/."""
+        prefix = self.log_prefix or f"{report.scenario}-{self.run_id}"
+        write_jsonl(f"{prefix}.events.jsonl", self._events)
+        eng = self.memory.engine if self.memory_mode != "off" else None
+        if eng is not None:
+            try:
+                write_jsonl(f"{prefix}.hmem-ledger.jsonl", eng.ledger_all())
+            except Exception:       # a log must never break a run
+                pass
+
     def _finish(self, report: RunReport, t0: float, calls0: int, search) -> RunReport:
         report.solver_calls = self.verifier.calls - calls0
         report.llm_calls, report.tokens = self._llm_calls, self._tokens
@@ -439,6 +456,7 @@ class CEGARAgent:
         report.llm_models = sorted(m for m in self._models if m)
         report.seconds = round(time.perf_counter() - t0, 1)
         self._emit("done", report=asdict(report))
+        self._write_logs(report)
         return report
 
 

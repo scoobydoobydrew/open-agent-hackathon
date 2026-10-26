@@ -1,24 +1,23 @@
 {"type": "start", "t": 0.01, "scenario": "growthinh_only", "description": "Quiescent anti-growth tissue with no mitogenic signal, after radiation", "fixed": {"DNA_damage": 1, "EGFR_stimulus": 0, "FGFR3_stimulus": 0, "Growth_inhibitors": 1}, "goal": {"Apoptosis_high": 1}, "candidates": ["AKT", "ATM", "CDC25A", "CHEK1_2", "CyclinA", "CyclinD1", "CyclinE1", "E2F1", "E2F3", "EGFR", "FGFR3", "GRB2", "MDM2", "PI3K", "PTEN", "RAS", "RB1", "RBL2", "SPRY", "TP53", "p14ARF", "p16INK4a", "p21CIP"], "baseline": "SURVIVES", "baseline_counterexample": {"kind": "stable_state", "phenotype": {"Apoptosis_high": 0, "Apoptosis_medium": 1, "Proliferation": 0, "Growth_arrest": 1}, "active_nodes": ["ATM_medium", "CHEK1_2_medium", "DNA_damage", "Growth_inhibitors", "PTEN", "RB1", "RBL2", "TP53", "p21CIP"], "active_genes": ["ATM", "CHEK1_2", "PTEN", "RB1", "RBL2", "TP53", "p21CIP"], "inactive_genes": ["AKT", "CDC25A", "CyclinA", "CyclinD1", "CyclinE1", "E2F1", "E2F3", "EGFR", "FGFR3", "GRB2", "MDM2", "PI3K", "RAS", "SPRY", "p14ARF", "p16INK4a"], "state": {"DNA_damage": 1, "EGFR_stimulus": 0, "FGFR3_stimulus": 0, "Growth_inhibitors": 1, "AKT": 0, "ATM_high": 0, "ATM_medium": 1, "Apoptosis_high": 0, "Apoptosis_medium": 1, "CDC25A": 0, "CHEK1_2_high": 0, "CHEK1_2_medium": 1, "CyclinA": 0, "CyclinD1": 0, "CyclinE1": 0, "E2F1_high": 0, "E2F1_medium": 0, "E2F3_high": 0, "E2F3_medium": 0, "EGFR": 0, "FGFR3": 0, "GRB2": 0, "MDM2": 0, "PI3K": 0, "PTEN": 1, "RAS": 0, "RB1": 1, "RBL2": 1, "SPRY": 0, "TP53": 1, "p14ARF": 0, "p16INK4a": 0, "p21CIP": 1, "Growth_arrest": 1, "Proliferation": 0}, "values": {"DNA_damage": 1, "EGFR_stimulus": 0, "FGFR3_stimulus": 0, "Growth_inhibitors": 1, "AKT": 0, "ATM_high": 0, "ATM_medium": 1, "Apoptosis_high": 0, "Apoptosis_medium": 1, "CDC25A": 0, "CHEK1_2_high": 0, "CHEK1_2_medium": 1, "CyclinA": 0, "CyclinD1": 0, "CyclinE1": 0, "E2F1_high": 0, "E2F1_medium": 0, "E2F3_high": 0, "E2F3_medium": 0, "EGFR": 0, "FGFR3": 0, "GRB2": 0, "MDM2": 0, "PI3K": 0, "PTEN": 1, "RAS": 0, "RB1": 1, "RBL2": 1, "SPRY": 0, "TP53": 1, "p14ARF": 0, "p16INK4a": 0, "p21CIP": 1, "Growth_arrest": 1, "Proliferation": 0}, "why_goal_fails": "Apoptosis_high = 0\n  E2F1_medium = 0\n    RBL2 = 1\n      CyclinE1 = 0\n        p21CIP = 1\n          TP53 = 1\n            MDM2 = 0\n              RB1 = 1\n                p16INK4a = 0  (chain cut here)\n                CyclinE1 = 0  (see above)\n                CyclinD1 = 0  (chain cut here)\n                CyclinA = 0  (chain cut here)\n            CHEK1_2_medium = 1\n              ATM_medium = 1\n                DNA_damage = 1  [scenario]\n            ATM_medium = 1  (see above)\n          CyclinE1 = 0  (see above)\n          AKT = 0\n            PI3K = 0\n              RAS = 0\n                GRB2 = 0  (chain cut here)\n                FGFR3 = 0  (chain cut here)\n                EGFR = 0  (chain cut here)\n      CyclinD1 = 0  (see above)\n    E2F1_medium = 0  (see above)"}, "data_source": "local-csv (zetaris unavailable: SAMPLE_MODE is on)", "model": "none", "max_size": 3, "memory_mode": "session"}
-{"type": "round", "t": 0.06, "n": 1, "prompt_chars": 4413}
-{"type": "memory_recall", "t": 0.06, "round": 1, "n": 0, "strategy": "", "reason": "", "preview": []}
-{"type": "llm_error", "t": 0.06, "round": 1, "message": "SAMPLE_MODE is on: LLM calls are disabled"}
-{"type": "llm_reply", "t": 0.06, "round": 1, "give_up": false, "proposals": []}
-{"type": "round_end", "t": 0.26, "n": 1, "found": 0, "solver_calls": 41}
-{"type": "round", "t": 0.26, "n": 2, "prompt_chars": 4512}
-{"type": "memory_recall", "t": 0.26, "round": 2, "n": 0, "strategy": "", "reason": "", "preview": []}
-{"type": "llm_error", "t": 0.26, "round": 2, "message": "SAMPLE_MODE is on: LLM calls are disabled"}
-{"type": "llm_reply", "t": 0.26, "round": 2, "give_up": false, "proposals": []}
-{"type": "search_exhausted", "t": 0.27, "calls": 42, "replays": 41, "frontier": 0, "solutions": 0, "proved_infeasible": true}
-{"type": "round_end", "t": 0.27, "n": 2, "found": 0, "solver_calls": 43}
-{"type": "round", "t": 0.27, "n": 3, "prompt_chars": 4620}
-{"type": "memory_recall", "t": 0.27, "round": 3, "n": 0, "strategy": "", "reason": "", "preview": []}
-{"type": "llm_error", "t": 0.27, "round": 3, "message": "SAMPLE_MODE is on: LLM calls are disabled"}
-{"type": "llm_reply", "t": 0.27, "round": 3, "give_up": false, "proposals": []}
-{"type": "round_end", "t": 0.27, "n": 3, "found": 0, "solver_calls": 43}
-{"type": "round", "t": 0.27, "n": 4, "prompt_chars": 4728}
-{"type": "memory_recall", "t": 0.27, "round": 4, "n": 0, "strategy": "", "reason": "", "preview": []}
-{"type": "llm_error", "t": 0.27, "round": 4, "message": "SAMPLE_MODE is on: LLM calls are disabled"}
-{"type": "llm_reply", "t": 0.27, "round": 4, "give_up": false, "proposals": []}
-{"type": "round_end", "t": 0.27, "n": 4, "found": 0, "solver_calls": 43}
-{"type": "memory_state", "t": 0.27, "available": true, "records": 0, "layers": {}, "ledger": {}, "conflicts_detected": 0, "sleep_preview": {"consolidate": 0, "archive": 0, "synthesize": 0}}
-{"type": "done", "t": 0.27, "report": {"scenario": "growthinh_only", "description": "Quiescent anti-growth tissue with no mitogenic signal, after radiation", "data_source": "local-csv (zetaris unavailable: SAMPLE_MODE is on)", "model": "none", "memory_mode": "session", "baseline": "SURVIVES", "solutions": [], "attempts": [], "rounds": 4, "solver_calls": 43, "cegar_solver_calls": 42, "sql_calls": 0, "fallback_solver_calls": 0, "calls_to_first_solution": null, "first_solution_found_by": "", "memory_refutations": 0, "cegar_replays": 41, "llm_calls": 0, "llm_provider": "", "llm_models": [], "tokens": 0, "seconds": 0.3, "certified_infeasible": true, "notes": ["sql tool: SAMPLE_MODE is on: LLM calls are disabled", "round 1: SAMPLE_MODE is on: LLM calls are disabled", "round 2: SAMPLE_MODE is on: LLM calls are disabled", "round 3: SAMPLE_MODE is on: LLM calls are disabled", "round 4: SAMPLE_MODE is on: LLM calls are disabled"]}}
+{"type": "round", "t": 0.04, "n": 1, "prompt_chars": 4413}
+{"type": "memory_recall", "t": 0.04, "round": 1, "n": 0, "strategy": "", "reason": "", "preview": []}
+{"type": "llm_error", "t": 0.04, "round": 1, "message": "SAMPLE_MODE is on: LLM calls are disabled"}
+{"type": "llm_reply", "t": 0.04, "round": 1, "give_up": false, "proposals": []}
+{"type": "round_end", "t": 0.25, "n": 1, "found": 0, "solver_calls": 41}
+{"type": "round", "t": 0.25, "n": 2, "prompt_chars": 4512}
+{"type": "memory_recall", "t": 0.25, "round": 2, "n": 0, "strategy": "", "reason": "", "preview": []}
+{"type": "llm_error", "t": 0.25, "round": 2, "message": "SAMPLE_MODE is on: LLM calls are disabled"}
+{"type": "llm_reply", "t": 0.25, "round": 2, "give_up": false, "proposals": []}
+{"type": "round_end", "t": 0.26, "n": 2, "found": 0, "solver_calls": 43}
+{"type": "round", "t": 0.26, "n": 3, "prompt_chars": 4620}
+{"type": "memory_recall", "t": 0.26, "round": 3, "n": 0, "strategy": "", "reason": "", "preview": []}
+{"type": "llm_error", "t": 0.26, "round": 3, "message": "SAMPLE_MODE is on: LLM calls are disabled"}
+{"type": "llm_reply", "t": 0.26, "round": 3, "give_up": false, "proposals": []}
+{"type": "round_end", "t": 0.26, "n": 3, "found": 0, "solver_calls": 43}
+{"type": "round", "t": 0.26, "n": 4, "prompt_chars": 4728}
+{"type": "memory_recall", "t": 0.26, "round": 4, "n": 0, "strategy": "", "reason": "", "preview": []}
+{"type": "llm_error", "t": 0.26, "round": 4, "message": "SAMPLE_MODE is on: LLM calls are disabled"}
+{"type": "llm_reply", "t": 0.26, "round": 4, "give_up": false, "proposals": []}
+{"type": "round_end", "t": 0.26, "n": 4, "found": 0, "solver_calls": 43}
+{"type": "memory_state", "t": 0.26, "available": true, "records": 0, "layers": {}, "ledger": {}, "conflicts_detected": 0, "sleep_preview": {"consolidate": 0, "archive": 0, "synthesize": 0}}
+{"type": "done", "t": 0.26, "report": {"scenario": "growthinh_only", "description": "Quiescent anti-growth tissue with no mitogenic signal, after radiation", "data_source": "local-csv (zetaris unavailable: SAMPLE_MODE is on)", "model": "none", "memory_mode": "session", "baseline": "SURVIVES", "solutions": [], "attempts": [], "rounds": 4, "solver_calls": 43, "cegar_solver_calls": 42, "sql_calls": 0, "fallback_solver_calls": 0, "calls_to_first_solution": null, "first_solution_found_by": "", "memory_refutations": 0, "cegar_replays": 41, "llm_calls": 0, "llm_provider": "", "llm_models": [], "tokens": 0, "seconds": 0.3, "certified_infeasible": true, "notes": ["sql tool: SAMPLE_MODE is on: LLM calls are disabled", "round 1: SAMPLE_MODE is on: LLM calls are disabled", "round 2: SAMPLE_MODE is on: LLM calls are disabled", "round 3: SAMPLE_MODE is on: LLM calls are disabled", "round 4: SAMPLE_MODE is on: LLM calls are disabled"]}}

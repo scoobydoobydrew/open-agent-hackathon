@@ -130,6 +130,9 @@ class HMemEngine:
     def ledger_stats(self) -> dict:
         return self.call("ledger_stats")
 
+    def ledger_all(self) -> list[dict]:
+        return self.call("ledger_all")
+
     def scan_conflicts(self) -> list[dict]:
         return self.call("conflicts_scan")
 

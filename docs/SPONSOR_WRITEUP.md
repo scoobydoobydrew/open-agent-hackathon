@@ -33,7 +33,8 @@ shows the live engine.
 header. The NVIDIA key is stored in Nightshift's Providers tab and never in the project. A direct NVIDIA call exists only
 as a clearly labelled fallback for when Nightshift is not running, and `SAMPLE_MODE=true` switches every network call off
 so the project still runs. `tests/test_llm.py` checks the contract against a stand-in runtime (route, headers, routed
-model, fallback, no secrets in logs). Code: `agent/llm.py`.
+model, fallback, no secrets in logs). Evidence is written as JSONL to `logs/`: every LLM request with the model that
+handled it, every H-MEM retrieval, and each run's events and H-MEM ledger. Code: `agent/llm.py`, `agent/logs.py`.
 
 ## NVIDIA
 Nemotron (`nvidia/nemotron-3.5-lightning-30b-a3b`, pinned) is the runtime model, reached through Nightshift: it proposes

@@ -22,3 +22,8 @@ docs/submission/slides/
 docs/submission/deck.pptx
 docs/submission/demo*.mp4
 ui/server.err.log
+
+# evidence logs: only the committed samples are tracked (see logs/README.md)
+logs/*
+!logs/samples/
+!logs/README.md

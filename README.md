@@ -87,14 +87,14 @@ Configuration lives in `.env` (git-ignored; `.env.example` has placeholders only
 python ui/server.py                                     # the interactive UI: http://localhost:8765
 python -m agent.main --scenario fgfr3_wtp53             # the agent from the command line, prints a ranked report
 python -m agent.main --scenario growthinh_only          # a scenario where no solution exists: the agent proves it
-python scripts/make_samples.py                          # rewrites docs/samples/ (3 scenarios: reports and traces)
+python scripts/make_samples.py                          # rewrites logs/samples/ (3 scenarios: reports and logs)
 ```
 
 Scenario ids (the input of the agent): `fgfr3_wtp53`, `egf_wtp53`, `egf_growthinh`, `fgfr3_growthinh`, `egf_tp53null`,
 `egf_mdm2amp`, `fgfr3_rb1loss`, `growthinh_only` (no solution exists). The UI also lets you set your own inputs
 (radiation, EGF, FGFR3, anti-growth signal, tumour lesions) in the bar at the top.
 
-**Three sample inputs and their outputs** (committed in [`docs/samples/`](docs/samples/): the report `<id>.md`, the ordered event
+**Three sample inputs and their outputs** (committed in [`logs/samples/`](logs/samples/): the report `<id>.md`, the ordered event
 log `<id>.events.jsonl`, and, for runs with an LLM, `<id>.llm-trace.jsonl` with the provider and model of every request):
 
 | input (`--scenario`) | meaning | output |
@@ -110,14 +110,20 @@ and a trace of which model handled each request; they are produced by the same s
 
 ## Logs and traces
 
-- `runs/llm-trace.jsonl`: one line per LLM request, written by `agent/llm.py`: provider (`nightshift`, or `nvidia-direct`
-  with `fallback: true`), the requested model, **the routed model that actually handled the request** (read from
-  Nightshift's receipt), latency, tokens, and any `meterless-*` response headers. No prompts, no keys.
-- `runs/<scenario>-<id>.json`: the full report of each CLI run (proposals, verdicts, counterexamples, explanations).
-- The Agent tab shows the same trail live: every `LLM request` line names the provider and the model, every
-  `SQL tool call` card shows the query Zetaris ran, every `H-MEM recalled N memories` line shows what the memory engine
-  injected into the prompt.
-- `docs/samples/*.events.jsonl` and `*.llm-trace.jsonl`: committed examples of both logs.
+Evidence of how the agent reached each output is written as JSONL to `logs/` (see [logs/README.md](logs/README.md); no
+prompts, no keys):
+
+- `logs/llm-trace.jsonl`: one line per LLM request: provider (`nightshift`, or `nvidia-direct` with `fallback: true`), the
+  requested model, **the routed model that actually handled the request** (read from Nightshift's receipt), latency, tokens,
+  and any `meterless-*` response headers.
+- `logs/hmem-retrieval.jsonl`: one line per H-MEM retrieval before a proposal round: the query, the strategy and ranking
+  scores, and the memories injected into the prompt.
+- `logs/<scenario>-<run>.events.jsonl` and `logs/<scenario>-<run>.hmem-ledger.jsonl`: every proposal, solver verdict,
+  counterexample, SQL call and LLM request of a run, in order, and the H-MEM audit ledger.
+- The Agent tab shows the same trail live: every `LLM request` line names the provider and the model, every `SQL tool
+  call` card shows the query Zetaris ran, every `H-MEM recalled N memories` line shows what the memory engine injected.
+- `logs/samples/` holds committed examples for the three sample inputs. `python scripts/check_nightshift.py` checks the
+  Nightshift connection and prints which model answers (no secrets).
 
 ## What it does
 
@@ -270,6 +276,15 @@ Record runs for the offline replay with `python ui/record_replays.py fgfr3_wtp53
 round; the recordings in `ui/replays/` are real runs). Styling uses Tailwind (the Play CDN build is vendored in
 `ui/static/vendor/` so the demo works without internet; it is a demo tool, not a production build). Scenario inputs can
 be switched in the bar at the top, which creates a custom scenario that Explore and Search use.
+
+## Responsible use
+
+The outputs are **in-silico hypotheses on one published model, not medical advice or a treatment recommendation**. Any
+use beyond prioritising experiments needs validation in the lab and review by a domain expert. Safeguards in the code:
+inputs are validated (gene names must belong to the network; SQL from the model is limited to one `SELECT` on our three
+tables with a row limit), every claim is checked by the exact solver and unsupported wording is flagged, the memory never
+approves its own "dream" proposals, every LLM request and every retrieval is logged, and failures of any service degrade to a
+labelled fallback instead of an invented answer.
 
 ## Limitations
 

@@ -30,6 +30,7 @@ from solver.verifier import FORCED, SURVIVES, Scenario, Verification, knockout_c
 from .hmem_engine import HMemEngine, HMemUnavailable
 from .hmem_prompts import MAX_ITEMS, MINING_PLAN_COMPLETION, MINING_SYSTEM, parse_strict_json_array
 from .llm import ChatClient, LLMError
+from .logs import append_jsonl
 
 DEFAULT_PATH = Path(__file__).resolve().parent.parent / "memory" / "hmem.json"
 PROJECT_TAG = "project:p53-knockout"
@@ -211,6 +212,12 @@ class HMem:
             return fallback
         by_id = {v["id"]: k for k, v in self._index.items()}
         self._retrieved |= {by_id[m["memory"]["id"]] for m in res["memories"] if m["memory"]["id"] in by_id}
+        append_jsonl("hmem-retrieval.jsonl", {
+            "ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "scenario": scenario.name, "query": q,
+            "strategy": res["trace"].get("strategy", ""), "reason": res["trace"].get("retrievalReason", ""),
+            "scores": res["trace"].get("scores"), "memories": [{"id": m["memory"]["id"], "relevance": m.get("relevance"), "layer": m["memory"].get("layer"),
+                          "confidence": m["memory"].get("confidence"), "content": str(m["memory"].get("content", ""))[:200]}
+                         for m in res["memories"]]})
         self.last_recall = {"n": len(res["memories"]), "strategy": res["trace"].get("strategy", ""),
                             "reason": res["trace"].get("retrievalReason", ""),
                             "preview": [str(m["memory"].get("content", ""))[:150] for m in res["memories"][:3]]}

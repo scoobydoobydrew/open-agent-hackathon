@@ -20,13 +20,14 @@ from typing import Protocol
 import requests
 from dotenv import load_dotenv
 
+from .logs import log_path
+
 load_dotenv()
 
 NIGHTSHIFT_URL = "http://127.0.0.1:8088/v1"
 NVIDIA_URL = "https://integrate.api.nvidia.com/v1"
 DEFAULT_MODEL = "nvidia/nemotron-3.5-lightning-30b-a3b"
 APP_ID = "verified-knockout-agent"
-TRACE_PATH = Path(__file__).resolve().parent.parent / "runs" / "llm-trace.jsonl"
 _EXTENSIONS = ("chat_template_kwargs", "reasoning_effort")     # Nemotron switches; not part of the plain OpenAI schema
 
 
@@ -159,11 +160,13 @@ class NemotronClient:
 
     def __init__(self, api_key: str | None = None, model: str | None = None,
                  base_url: str | None = None, timeout: int = 180, retries: int = 3,
-                 thinking: bool | None = None, trace_path: Path | None = TRACE_PATH):
+                 thinking: bool | None = None, trace_path: Path | None | str = "default"):
         if sample_mode():
             raise LLMError("SAMPLE_MODE is on: LLM calls are disabled")
         self.model = model or os.getenv("NEMOTRON_MODEL", DEFAULT_MODEL)
-        self.timeout, self.retries, self.trace_path = timeout, retries, trace_path
+        self.timeout, self.retries = timeout, retries
+        # None disables the trace; the default is logs/llm-trace.jsonl (AGENT_LOG_DIR moves or switches it off)
+        self.trace_path = log_path("llm-trace.jsonl") if trace_path == "default" else trace_path
         self.fallback, self.note = False, ""
         self.calls: list[dict] = []
         self._lock = threading.Lock()

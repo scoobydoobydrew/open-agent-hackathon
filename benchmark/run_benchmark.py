@@ -16,6 +16,7 @@ proof, not an opinion. The model is selectable (--model), which is how the same 
 from __future__ import annotations
 
 import argparse
+import os
 import concurrent.futures as cf
 import json
 import random
@@ -28,6 +29,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
+os.environ.setdefault("AGENT_LOG_DIR", "off")          # thousands of agent runs: no per-run evidence files
 from agent.llm import LLMResponse, NemotronClient  # noqa: E402
 from agent.main import CEGARAgent  # noqa: E402
 from agent.tools_zetaris import DataLayer  # noqa: E402
