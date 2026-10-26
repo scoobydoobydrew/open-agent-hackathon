@@ -68,7 +68,7 @@ class FakeNightshift:
 @pytest.fixture(autouse=True)
 def clean_env(monkeypatch, tmp_path):
     for var in ("NIGHTSHIFT_BASE_URL", "NIGHTSHIFT_TOKEN", "NIGHTSHIFT_APP", "METERLESS_API_KEY", "METERLESS_BASE_URL",
-                "METERLESS_TOKEN", "NIGHTSHIFT_CONNECT_LINK", "LOCALAPPDATA", "NVIDIA_API_KEY", "SAMPLE_MODE", "NEMOTRON_MODEL", "NEMOTRON_THINKING", "LLM_BASE_URL"):
+                "METERLESS_TOKEN", "METERLESS_RUNTIME_TOKEN", "NIGHTSHIFT_CONNECT_LINK", "LOCALAPPDATA", "NVIDIA_API_KEY", "SAMPLE_MODE", "NEMOTRON_MODEL", "NEMOTRON_THINKING", "LLM_BASE_URL"):
         monkeypatch.delenv(var, raising=False)
     monkeypatch.setenv("NIGHTSHIFT_TOKEN_FILE", str(tmp_path / "no-such-token"))
     llm._probe_cache.clear()
@@ -227,3 +227,8 @@ def test_model_id_is_taken_from_the_list_the_runtime_serves(monkeypatch):
     finally:
         llm._model_cache.clear()
         srv.close()
+
+
+def test_runtime_token_variable_used_by_other_hackathon_projects_is_accepted(monkeypatch):
+    monkeypatch.setenv("METERLESS_RUNTIME_TOKEN", "runtime-var")
+    assert llm.nightshift_settings()[1] == "runtime-var"

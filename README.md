@@ -74,7 +74,7 @@ Configuration lives in `.env` (git-ignored; `.env.example` has placeholders only
 | variable | meaning |
 |---|---|
 | *(nothing)* | on the machine where Nightshift runs, the runtime token is read from its own file (Windows: `%LOCALAPPDATA%/ai.meterless.runtime/proxy-token`) |
-| `NIGHTSHIFT_CONNECT_LINK`, or `NIGHTSHIFT_TOKEN` / `METERLESS_TOKEN`, or `NIGHTSHIFT_TOKEN_FILE` | otherwise: Nightshift's Connect link (gives base URL and key), the runtime token, or the path of its `proxy-token` file. Never the NVIDIA key |
+| `NIGHTSHIFT_CONNECT_LINK`, or `NIGHTSHIFT_TOKEN` / `METERLESS_TOKEN` / `METERLESS_RUNTIME_TOKEN`, or `NIGHTSHIFT_TOKEN_FILE` | otherwise: Nightshift's Connect link (gives base URL and key), the runtime token, or the path of its `proxy-token` file. Never the NVIDIA key |
 | `METERLESS_BASE_URL`, `METERLESS_API_KEY` | an address and key from a Meterless account, if that is the route you were given |
 | `NIGHTSHIFT_BASE_URL` | default `http://127.0.0.1:8088/v1` |
 | `NIGHTSHIFT_APP` | value of the `meterless-app` header, default `verified-knockout-agent` |

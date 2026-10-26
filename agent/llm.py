@@ -119,7 +119,7 @@ def nightshift_settings() -> tuple[str, str, str]:
     link = parse_connect_link(os.getenv("NIGHTSHIFT_CONNECT_LINK", "")) if os.getenv("NIGHTSHIFT_CONNECT_LINK") else {}
     base = (os.getenv("NIGHTSHIFT_BASE_URL") or link.get("base") or os.getenv("METERLESS_BASE_URL") or NIGHTSHIFT_URL).strip().rstrip("/")
     token = (os.getenv("NIGHTSHIFT_TOKEN") or link.get("token") or os.getenv("METERLESS_TOKEN")
-             or os.getenv("METERLESS_API_KEY") or "").strip()
+             or os.getenv("METERLESS_RUNTIME_TOKEN") or os.getenv("METERLESS_API_KEY") or "").strip()
     if not token:
         for f in _token_files():
             try:
