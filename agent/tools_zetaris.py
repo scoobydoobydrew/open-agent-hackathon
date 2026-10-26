@@ -19,6 +19,8 @@ from typing import Any
 import requests
 from dotenv import load_dotenv
 
+from .logs import append_jsonl
+
 load_dotenv()
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
@@ -100,11 +102,17 @@ class DataLayer:
             raise ZetarisError("SAMPLE_MODE is on")
         if time.time() < self._down_until:
             raise ZetarisError("Zetaris was unreachable a moment ago")
+        t0 = time.perf_counter()
         try:
-            return self.client.query(sql)
-        except ZetarisError:
+            rows = self.client.query(sql)
+        except ZetarisError as exc:
             self._down_until = time.time() + 60
+            append_jsonl("zetaris-calls.jsonl", {"ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "ok": False, "sql": sql[:400],
+                                                 "error": str(exc)[:200], "ms": round((time.perf_counter() - t0) * 1000)})
             raise
+        append_jsonl("zetaris-calls.jsonl", {"ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "ok": True, "sql": sql[:400],
+                                             "rows": len(rows), "ms": round((time.perf_counter() - t0) * 1000)})
+        return rows
 
     def _local(self, table: str) -> list[dict[str, str]]:
         with (DATA_DIR / TABLE_FILES[table]).open(encoding="utf-8") as fh:

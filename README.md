@@ -64,7 +64,7 @@ a failure becomes a sound shortcut (a stored surviving state refutes later propo
 
 | need | for | required? |
 |---|---|---|
-| Python 3.10+ and `pip install -r requirements.txt` (Z3, numpy, scipy, requests, python-dotenv) | everything | yes |
+| Python 3.11+ (tested on 3.11 in Docker and on 3.12) and `pip install -r requirements.txt` (Z3, numpy, scipy, requests, python-dotenv) | everything | yes |
 | Node.js 18+ | the H-MEM engine (no `npm install` needed to run it) | for memory; the agent runs without it and says so |
 | **Zetaris** platform (Docker, `docker compose up -d`, three tables in the `open_agent` database) | the data layer | for the full system; without it the agent reads `data/*.csv` and says `local-csv` in every report |
 | **Meterless Nightshift** running locally, with the NVIDIA key set in its Providers tab | the primary AI provider | for live LLM runs; without it the agent falls back to NVIDIA directly (labelled "fallback") or, with no key, to the symbolic search |
@@ -73,10 +73,12 @@ Configuration lives in `.env` (git-ignored; `.env.example` has placeholders only
 
 | variable | meaning |
 |---|---|
-| `NIGHTSHIFT_TOKEN` or `NIGHTSHIFT_TOKEN_FILE` | the Nightshift runtime token (or the path of its `proxy-token` file). Never the NVIDIA key |
+| *(nothing)* | on the machine where Nightshift runs, the runtime token is read from its own file (Windows: `%LOCALAPPDATA%/ai.meterless.runtime/proxy-token`) |
+| `NIGHTSHIFT_CONNECT_LINK`, or `NIGHTSHIFT_TOKEN` / `METERLESS_TOKEN`, or `NIGHTSHIFT_TOKEN_FILE` | otherwise: Nightshift's Connect link (gives base URL and key), the runtime token, or the path of its `proxy-token` file. Never the NVIDIA key |
+| `METERLESS_BASE_URL`, `METERLESS_API_KEY` | an address and key from a Meterless account, if that is the route you were given |
 | `NIGHTSHIFT_BASE_URL` | default `http://127.0.0.1:8088/v1` |
 | `NIGHTSHIFT_APP` | value of the `meterless-app` header, default `verified-knockout-agent` |
-| `NEMOTRON_MODEL` | default `nvidia/nemotron-3.5-lightning-30b-a3b`; any id Nightshift serves works (for example `meterless/auto`) |
+| `NEMOTRON_MODEL` | default `nvidia/nemotron-3.5-lightning-30b-a3b`; if the runtime does not list it, the closest Nemotron id it serves is used; any id it serves works (for example `meterless/auto`) |
 | `ZETARIS_GATEWAY_URL`, `ZETARIS_USER`, `ZETARIS_PASS`, `ZETARIS_DB` | the Zetaris gateway (port 3000) and the database name (`open_agent`) |
 | `NVIDIA_API_KEY` | optional **fallback only**, used when Nightshift is not reachable; the UI and every trace line then say "NVIDIA direct (fallback)" |
 | `SAMPLE_MODE=true` | no call to Zetaris, Nightshift or NVIDIA: local files, symbolic search, recorded replays |
@@ -89,6 +91,25 @@ python -m agent.main --scenario fgfr3_wtp53             # the agent from the com
 python -m agent.main --scenario growthinh_only          # a scenario where no solution exists: the agent proves it
 python scripts/make_samples.py                          # rewrites logs/samples/ (3 scenarios: reports and logs)
 ```
+
+### Programmatic interface (no UI needed) and Docker
+
+```bash
+docker build -t verified-knockout-agent .
+docker run --rm -p 8765:8765 -e SAMPLE_MODE=true verified-knockout-agent      # add --env-file .env for the sponsor services
+
+curl http://localhost:8765/health
+curl -X POST http://localhost:8765/run -H "Content-Type: application/json" -d @input_examples/example_1.json
+```
+
+`POST /run` takes `{"scenario": "<id>", "max_size": 3, "rounds": 4, "solutions": 3, "explain": true, "llm": true}` and returns
+`{"report": {...}, "markdown": "..."}`: proposals, verdicts, counterexamples, solutions with proof steps and, when an LLM was
+used, the provider and the models that handled the requests. Work per request is capped (size 4, 6 rounds, 5 solutions).
+`input_examples/example_{1,2,3}.json` and the matching `output_examples/example_{1,2,3}.json` are three requests and the
+reports they return (`python scripts/make_examples.py` regenerates them; they use `"llm": false`, so anyone reproduces them
+without an account). Inside Docker, `localhost` is the container: reach Zetaris with
+`-e ZETARIS_GATEWAY_URL=http://host.docker.internal:3000`; if Nightshift listens only on the loopback interface of the host,
+run the agent outside Docker for live LLM runs.
 
 Scenario ids (the input of the agent): `fgfr3_wtp53`, `egf_wtp53`, `egf_growthinh`, `fgfr3_growthinh`, `egf_tp53null`,
 `egf_mdm2amp`, `fgfr3_rb1loss`, `growthinh_only` (no solution exists). The UI also lets you set your own inputs

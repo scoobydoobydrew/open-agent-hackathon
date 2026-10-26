@@ -86,21 +86,40 @@ def routed_model_of(body: dict) -> str:
 
 
 def _token_files() -> list[Path]:
-    """Where the runtime's ``proxy-token`` file may be: NIGHTSHIFT_TOKEN_FILE if set, else a few best-effort guesses."""
+    """Where the runtime's ``proxy-token`` file may be: NIGHTSHIFT_TOKEN_FILE if set, else the locations Meterless documents
+    (Windows: %LOCALAPPDATA%\ai.meterless.runtime, Mac: Application Support/ai.meterless.runtime) and two guesses."""
     explicit = os.getenv("NIGHTSHIFT_TOKEN_FILE", "").strip()
     if explicit:
         return [Path(explicit)]
     home = Path.home()
-    guesses = [home / ".meterless" / "proxy-token", home / "Library" / "Application Support" / "Meterless" / "proxy-token"]
-    if os.getenv("APPDATA"):
-        guesses.insert(0, Path(os.environ["APPDATA"]) / "Meterless" / "proxy-token")
-    return guesses
+    out = []
+    if os.getenv("LOCALAPPDATA"):
+        out.append(Path(os.environ["LOCALAPPDATA"]) / "ai.meterless.runtime" / "proxy-token")
+    out += [home / "Library" / "Application Support" / "ai.meterless.runtime" / "proxy-token",
+            Path("/var/lib/meterless/proxy-token"), home / ".meterless" / "proxy-token"]
+    return out
+
+
+def parse_connect_link(link: str) -> dict:
+    """Nightshift's Connect link ``http://host:port/connect#k=<key>[&m=<model>][&n=<app>]`` gives the base URL
+    (``<origin>/v1``), the key and optionally a model and an app name."""
+    from urllib.parse import parse_qs, urlparse
+    u = urlparse(link.strip())
+    if not u.scheme or not u.netloc:
+        return {}
+    frag = {k: v[0] for k, v in parse_qs(u.fragment).items()}
+    return {"base": f"{u.scheme}://{u.netloc}/v1", "token": frag.get("k", ""), "model": frag.get("m", ""), "app": frag.get("n", "")}
 
 
 def nightshift_settings() -> tuple[str, str, str]:
-    """(base_url, token, app id) of the Nightshift runtime from the environment; the token may be empty."""
-    base = (os.getenv("NIGHTSHIFT_BASE_URL") or os.getenv("METERLESS_BASE_URL") or NIGHTSHIFT_URL).strip().rstrip("/")
-    token = (os.getenv("NIGHTSHIFT_TOKEN") or os.getenv("METERLESS_API_KEY") or "").strip()
+    """(base_url, token, app id) of the Nightshift runtime; the token may be empty.
+
+    Order: NIGHTSHIFT_* variables, a Connect link (NIGHTSHIFT_CONNECT_LINK), METERLESS_TOKEN (what Meterless' own ``ns`` tool
+    reads first), METERLESS_BASE_URL / METERLESS_API_KEY, then the runtime's token file on this machine."""
+    link = parse_connect_link(os.getenv("NIGHTSHIFT_CONNECT_LINK", "")) if os.getenv("NIGHTSHIFT_CONNECT_LINK") else {}
+    base = (os.getenv("NIGHTSHIFT_BASE_URL") or link.get("base") or os.getenv("METERLESS_BASE_URL") or NIGHTSHIFT_URL).strip().rstrip("/")
+    token = (os.getenv("NIGHTSHIFT_TOKEN") or link.get("token") or os.getenv("METERLESS_TOKEN")
+             or os.getenv("METERLESS_API_KEY") or "").strip()
     if not token:
         for f in _token_files():
             try:
@@ -111,7 +130,33 @@ def nightshift_settings() -> tuple[str, str, str]:
                 break
     if token.lower().startswith("your_"):          # a placeholder copied from .env.example is not a token
         token = ""
-    return base, token, os.getenv("NIGHTSHIFT_APP", APP_ID).strip() or APP_ID
+    app = (os.getenv("NIGHTSHIFT_APP") or link.get("app") or APP_ID).strip() or APP_ID
+    return base, token, app
+
+
+_model_cache: dict[str, str] = {}
+
+
+def resolve_model(base: str, token: str, app: str, wanted: str) -> str:
+    """The model id to send: ``wanted`` if the runtime serves it, else the closest Nemotron id it lists (the ids differ
+    between routes, and a wrong one is a 404), else ``wanted`` unchanged."""
+    key = f"{base}|{wanted}"
+    if key in _model_cache:
+        return _model_cache[key]
+    chosen = wanted
+    try:
+        r = requests.get(f"{base}/models", headers=_nightshift_headers(token, app), timeout=5)
+        ids = [m.get("id", "") for m in r.json().get("data", [])] if r.status_code == 200 else []
+    except (requests.RequestException, ValueError):
+        ids = []
+    if ids and wanted not in ids:
+        tail = wanted.split("/")[-1].lower()
+        candidates = ([i for i in ids if tail in i.lower()]
+                      or [i for i in ids if "nemotron" in i.lower() and "lightning" in i.lower()]
+                      or [i for i in ids if "nemotron" in i.lower()])
+        chosen = sorted(candidates, key=len)[0] if candidates else wanted
+    _model_cache[key] = chosen
+    return chosen
 
 
 def _nightshift_headers(token: str, app: str) -> dict:
@@ -183,6 +228,10 @@ class NemotronClient:
             nvidia_key = os.getenv("NVIDIA_API_KEY", "").strip()
             if state == "online":
                 self.provider, self.api_key, self.base_url = "nightshift", ns_token, ns_base
+                if model is None and not os.getenv("NEMOTRON_MODEL"):
+                    self.model = resolve_model(ns_base, ns_token, self.app, self.model)
+                    if self.model != DEFAULT_MODEL:
+                        self.note = f"the runtime does not list {DEFAULT_MODEL}; using {self.model}"
             elif nvidia_key:
                 self.provider, self.api_key = "nvidia-direct", nvidia_key
                 self.base_url = os.getenv("LLM_BASE_URL", NVIDIA_URL).rstrip("/")

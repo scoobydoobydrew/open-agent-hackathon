@@ -27,6 +27,8 @@ runtime running on your PC.
 ## Extra points from the official rules and the Meterless README
 - [x] Evidence logs as JSONL in `logs/` (the Meterless README asks for it; the rules disqualify "no evidence of how the agent
   reached its output"): LLM requests with the routed model, H-MEM retrieval trace, per-run events and H-MEM ledger.
+- [x] From the troubleshooting guide: a programmatic interface (`POST /run`, `GET /health`), `input_examples/` and `output_examples/`
+  (3 each), a Dockerfile, a connection test script (`scripts/check_nightshift.py`), Zetaris and LLM calls logged.
 - [x] A sample mode that runs without credentials (`SAMPLE_MODE=true`); one seam for the provider (`agent/llm.py`); capped
   rounds, retries and SQL turns (no unbounded loops against a paid API).
 - [x] Responsible AI section (rules, section 18): README "Responsible use", limits slide.
@@ -36,7 +38,7 @@ runtime running on your PC.
 - The rules' own text says the binding version is on hackathon.genai.works; reread it before submitting.
 
 ## Done in the repository
-- [x] 91 tests (`python -m pytest`), reproducible benchmark, honest README with limits and data provenance.
+- [x] 99 tests (`python -m pytest`), reproducible benchmark, honest README with limits and data provenance.
 - [x] `.env` is git-ignored, `.env.example` has placeholders only, no secret in the history.
 - [x] `SAMPLE_MODE=true python ui/server.py` runs from a clean clone with no account, key or service (checked on a simulated clean
   clone: 89 passed, 2 skipped that need `npm install`).

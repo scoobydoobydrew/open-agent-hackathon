@@ -15,7 +15,8 @@ MODEL = "nvidia/nemotron-3.5-lightning-30b-a3b"
 class FakeNightshift:
     """Answers GET /v1/models and POST /v1/chat/completions like the runtime; records what it received."""
 
-    def __init__(self, reject_extensions: bool = False, receipt: bool = True):
+    def __init__(self, reject_extensions: bool = False, receipt: bool = True, models: list[str] | None = None):
+        self.models = models or ["meterless/auto", MODEL]
         self.requests: list[dict] = []
         outer = self
 
@@ -38,7 +39,7 @@ class FakeNightshift:
             def do_GET(self):  # noqa: N802
                 if not self._auth():
                     return self._send(401, {"error": "unauthorized"})
-                self._send(200, {"data": [{"id": "meterless/auto"}, {"id": MODEL}]})
+                self._send(200, {"data": [{"id": m} for m in outer.models]})
 
             def do_POST(self):  # noqa: N802
                 body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
@@ -67,7 +68,7 @@ class FakeNightshift:
 @pytest.fixture(autouse=True)
 def clean_env(monkeypatch, tmp_path):
     for var in ("NIGHTSHIFT_BASE_URL", "NIGHTSHIFT_TOKEN", "NIGHTSHIFT_APP", "METERLESS_API_KEY", "METERLESS_BASE_URL",
-                "NVIDIA_API_KEY", "SAMPLE_MODE", "NEMOTRON_MODEL", "NEMOTRON_THINKING", "LLM_BASE_URL"):
+                "METERLESS_TOKEN", "NIGHTSHIFT_CONNECT_LINK", "LOCALAPPDATA", "NVIDIA_API_KEY", "SAMPLE_MODE", "NEMOTRON_MODEL", "NEMOTRON_THINKING", "LLM_BASE_URL"):
         monkeypatch.delenv(var, raising=False)
     monkeypatch.setenv("NIGHTSHIFT_TOKEN_FILE", str(tmp_path / "no-such-token"))
     llm._probe_cache.clear()
@@ -187,3 +188,42 @@ def test_agent_reports_which_model_handled_each_request(monkeypatch, nightshift,
     calls = [e for e in events if e["type"] == "llm_call"]
     assert calls and all(c["provider"] == "nightshift" and c["model"] == MODEL for c in calls)
     assert report.llm_provider == "nightshift" and report.llm_models == [MODEL]
+
+
+def test_connect_link_supplies_base_url_key_and_app_name(monkeypatch):
+    monkeypatch.setenv("NIGHTSHIFT_CONNECT_LINK", "http://192.168.1.20:8088/connect#k=link-key&m=nvidia%2Fx&n=my-app")
+    base, token, app = llm.nightshift_settings()
+    assert (base, token, app) == ("http://192.168.1.20:8088/v1", "link-key", "my-app")
+    assert llm.parse_connect_link("not a link") == {}
+
+
+def test_meterless_token_variable_is_read_like_the_ns_tool_does(monkeypatch):
+    monkeypatch.setenv("METERLESS_TOKEN", "from-ns-variable")
+    assert llm.nightshift_settings()[1] == "from-ns-variable"
+    monkeypatch.setenv("NIGHTSHIFT_TOKEN", "explicit-wins")
+    assert llm.nightshift_settings()[1] == "explicit-wins"
+
+
+def test_token_is_read_from_the_runtimes_own_file_on_windows(monkeypatch, tmp_path):
+    state = tmp_path / "ai.meterless.runtime"
+    state.mkdir()
+    (state / "proxy-token").write_text("file-token\n", encoding="utf-8")
+    monkeypatch.delenv("NIGHTSHIFT_TOKEN_FILE", raising=False)
+    monkeypatch.setenv("LOCALAPPDATA", str(tmp_path))
+    assert llm.nightshift_settings()[1] == "file-token"
+
+
+def test_model_id_is_taken_from_the_list_the_runtime_serves(monkeypatch):
+    llm._model_cache.clear()
+    srv = FakeNightshift(models=["meterless/auto", "nvidia/nemotron-3-ultra-550b-a55b", "nvidia/nemotron-3.5-lightning-30b-a3b-fp8"])
+    try:
+        configure(monkeypatch, srv)
+        client = NemotronClient(trace_path=None)
+        assert client.model == "nvidia/nemotron-3.5-lightning-30b-a3b-fp8" and "does not list" in client.note
+        assert client.complete([{"role": "user", "content": "hi"}]).content
+        assert srv.requests[0]["body"]["model"] == "nvidia/nemotron-3.5-lightning-30b-a3b-fp8"
+        monkeypatch.setenv("NEMOTRON_MODEL", "meterless/auto")                     # an explicit choice is never replaced
+        assert NemotronClient(trace_path=None).model == "meterless/auto"
+    finally:
+        llm._model_cache.clear()
+        srv.close()

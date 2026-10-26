@@ -106,3 +106,38 @@ def test_paths_cannot_escape_the_static_folder(base):
     for bad in ("/../server.py", "/..%2fserver.py", "/js/../../server.py"):
         assert requests.get(f"{base}{bad}", timeout=10).status_code == 404
     assert requests.get(f"{base}/api/replay", params={"name": "../../.env"}, timeout=10).status_code == 404
+
+
+# -- the programmatic interface: a judge can drive the agent without the UI ---------------------------------------
+def test_health_reports_the_services(base):
+    h = requests.get(f"{base}/health", timeout=60).json()
+    assert h["status"] == "ok" and "provider" in h["llm"] and "data_source" in h
+
+
+def test_run_endpoint_returns_a_report_without_the_ui(base):
+    r = requests.post(f"{base}/run", json={"scenario": "growthinh_only", "max_size": 2, "rounds": 1, "llm": False}, timeout=180)
+    assert r.status_code == 200
+    body = r.json()
+    assert body["report"]["certified_infeasible"] is True and body["report"]["solutions"] == []
+    assert "No knockout set of the allowed size forces apoptosis" in body["markdown"]
+
+
+def test_run_endpoint_rejects_bad_input_and_caps_the_work(base):
+    bad = requests.post(f"{base}/run", json={"scenario": "nope"}, timeout=60)
+    assert bad.status_code == 400 and "unknown scenario" in bad.json()["error"]
+    assert requests.post(f"{base}/run", json={"scenario": "fgfr3_wtp53", "max_size": "x"}, timeout=60).status_code == 400
+    from agent.api import MAX_SIZE, _bounded
+    assert _bounded({"max_size": 99}, "max_size", 3, MAX_SIZE) == MAX_SIZE
+
+
+def test_committed_examples_are_what_the_endpoint_returns_in_sample_mode(monkeypatch):
+    import json as _json
+    from pathlib import Path
+    root = Path(__file__).resolve().parent.parent
+    monkeypatch.setenv("SAMPLE_MODE", "true")
+    from agent.api import run_payload
+    for i in (1, 3):
+        payload = _json.loads((root / "input_examples" / f"example_{i}.json").read_text(encoding="utf-8"))
+        want = _json.loads((root / "output_examples" / f"example_{i}.json").read_text(encoding="utf-8"))["report"]
+        got = run_payload(payload)["report"]
+        assert got["solutions"] == want["solutions"] and got["certified_infeasible"] == want["certified_infeasible"]

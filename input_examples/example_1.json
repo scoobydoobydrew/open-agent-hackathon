@@ -1,0 +1,7 @@
+{
+  "scenario": "fgfr3_wtp53",
+  "max_size": 3,
+  "rounds": 4,
+  "solutions": 3,
+  "llm": false
+}

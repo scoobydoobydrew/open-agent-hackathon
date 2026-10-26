@@ -290,6 +290,8 @@ class Handler(BaseHTTPRequestHandler):
         url = urlparse(self.path)
         qs = {k: v[0] for k, v in parse_qs(url.query).items()}
         try:
+            if url.path == "/health":
+                return self._json({"status": "ok", "data_source": state().data.source, "llm": llm_status()})
             if url.path == "/api/meta":
                 state().reconnect()
                 return self._json(state().meta())
@@ -320,6 +322,12 @@ class Handler(BaseHTTPRequestHandler):
             body = json.loads(self.rfile.read(length) or b"{}")
         except json.JSONDecodeError:
             return self._json({"error": "bad json"}, 400)
+        if url.path == "/run":                      # programmatic interface: no UI needed
+            from agent.api import run_payload
+            try:
+                return self._json(run_payload(body))
+            except ValueError as exc:
+                return self._json({"error": str(exc)}, 400)
         if url.path == "/api/verify":
             try:
                 return self._json(state().verify(body.get("scenario", ""), body.get("fixed"), body.get("knockouts", [])))

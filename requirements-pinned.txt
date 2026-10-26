@@ -1,0 +1,9 @@
+# The exact versions the project was developed and benchmarked with (Python 3.12). requirements.txt allows older Pythons.
+requests==2.34.2
+python-dotenv==1.2.4
+z3-solver==5.3.1.0
+numpy==2.5.4
+scipy==1.18.1
+# tests only
+networkx==3.7
+pytest==9.1.1

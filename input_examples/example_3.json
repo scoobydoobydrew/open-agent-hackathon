@@ -1,0 +1,7 @@
+{
+  "scenario": "growthinh_only",
+  "max_size": 3,
+  "rounds": 4,
+  "solutions": 3,
+  "llm": false
+}

@@ -1,0 +1,127 @@
+{
+ "report": {
+  "scenario": "fgfr3_wtp53",
+  "description": "FGFR3-driven tumour with wild-type p53 after radiation",
+  "data_source": "local-csv (zetaris unavailable: SAMPLE_MODE is on)",
+  "model": "none",
+  "memory_mode": "session",
+  "baseline": "SURVIVES",
+  "solutions": [
+   {
+    "knockouts": [
+     "TP53"
+    ],
+    "found_by": "cegar",
+    "selective": true,
+    "toxic_in": [],
+    "drugs": [
+     {
+      "gene": "TP53",
+      "druggable": "no",
+      "evidence_level": "preclinical",
+      "example_agents": "pifithrin-alpha (research tool)"
+     }
+    ],
+    "derivation": "Attractor 1 (fixed, 1 state(s)):\nApoptosis_high = 1\n  E2F1_medium = 1\n    E2F1_medium = 1  (see above)\n    E2F1_high = 1\n      RBL2 = 0\n        CyclinD1 = 1\n          p21CIP = 0\n            TP53 = 0  [knockout]\n            Growth_inhibitors = 0  [scenario]\n          p16INK4a = 0\n            Growth_inhibitors = 0  [scenario]\n          RAS = 1\n            FGFR3 = 1\n              GRB2 = 0\n                SPRY = 1  (chain cut here)\n                EGFR = 0  (chain cut here)\n              FGFR3_stimulus = 1  [scenario]\n              EGFR = 0  (see above)\n      RB1 = 0\n        CyclinD1 = 1  (see above)\n      RAS = 1  (see above)\n      E2F1_medium = 1  (see above)\n      CHEK1_2_medium = 1\n        ATM_medium = 1\n          DNA_damage = 1  [scenario]\n      CHEK1_2_high = 1\n        E2F1_medium = 1  (see above)\n        CHEK1_2_medium = 1  (see above)\n        ATM_medium = 1  (see above)\n      ATM_medium = 1  (see above)\n      ATM_high = 1\n        E2F1_medium = 1  (see above)\n        DNA_damage = 1  [scenario]\n        ATM_medium = 1  (see above)\n  E2F1_high = 1  (see above)\n  Apoptosis_medium = 1\n    E2F1_medium = 1  (see above)\n    E2F1_high = 1  (see above)",
+    "explanation": null
+   },
+   {
+    "knockouts": [
+     "p21CIP"
+    ],
+    "found_by": "cegar",
+    "selective": true,
+    "toxic_in": [],
+    "drugs": [
+     {
+      "gene": "p21CIP",
+      "druggable": "no",
+      "evidence_level": "none",
+      "example_agents": ""
+     }
+    ],
+    "derivation": "Attractor 1 (fixed, 1 state(s)):\nApoptosis_high = 1\n  E2F1_medium = 1\n    E2F1_medium = 1  (see above)\n    E2F1_high = 1\n      RBL2 = 0\n        CyclinD1 = 1\n          p21CIP = 0  [knockout]\n          p16INK4a = 0\n            Growth_inhibitors = 0  [scenario]\n          RAS = 1\n            FGFR3 = 1\n              GRB2 = 0\n                SPRY = 1  (chain cut here)\n                EGFR = 0  (chain cut here)\n              FGFR3_stimulus = 1  [scenario]\n              EGFR = 0  (see above)\n      RB1 = 0\n        CyclinD1 = 1  (see above)\n      RAS = 1  (see above)\n      E2F1_medium = 1  (see above)\n      CHEK1_2_medium = 1\n        ATM_medium = 1\n          DNA_damage = 1  [scenario]\n      CHEK1_2_high = 1\n        E2F1_medium = 1  (see above)\n        CHEK1_2_medium = 1  (see above)\n        ATM_medium = 1  (see above)\n      ATM_medium = 1  (see above)\n      ATM_high = 1\n        E2F1_medium = 1  (see above)\n        DNA_damage = 1  [scenario]\n        ATM_medium = 1  (see above)\n  E2F1_high = 1  (see above)\n  Apoptosis_medium = 1\n    TP53 = 1\n      MDM2 = 0\n        p14ARF = 1\n          E2F1_medium = 1  (see above)\n      E2F1_medium = 1  (see above)\n      E2F1_high = 1  (see above)",
+    "explanation": null
+   },
+   {
+    "knockouts": [
+     "RB1",
+     "RBL2"
+    ],
+    "found_by": "cegar",
+    "selective": true,
+    "toxic_in": [],
+    "drugs": [
+     {
+      "gene": "RB1",
+      "druggable": "no",
+      "evidence_level": "none",
+      "example_agents": ""
+     },
+     {
+      "gene": "RBL2",
+      "druggable": "no",
+      "evidence_level": "none",
+      "example_agents": ""
+     }
+    ],
+    "derivation": "Attractor 1 (fixed, 1 state(s)):\nApoptosis_high = 1\n  E2F1_medium = 1\n    E2F1_medium = 1  (see above)\n    E2F1_high = 1\n      RBL2 = 0  [knockout]\n      RB1 = 0  [knockout]\n      RAS = 1\n        FGFR3 = 1\n          GRB2 = 0\n            SPRY = 1\n              RAS = 1  (see above)\n            EGFR = 0\n              FGFR3 = 1  (see above)\n          FGFR3_stimulus = 1  [scenario]\n          EGFR = 0  (see above)\n      E2F1_medium = 1  (see above)\n      CHEK1_2_medium = 1\n        ATM_medium = 1\n          DNA_damage = 1  [scenario]\n      CHEK1_2_high = 1\n        E2F1_medium = 1  (see above)\n        CHEK1_2_medium = 1  (see above)\n        ATM_medium = 1  (see above)\n      ATM_medium = 1  (see above)\n      ATM_high = 1\n        E2F1_medium = 1  (see above)\n        DNA_damage = 1  [scenario]\n        ATM_medium = 1  (see above)\n  E2F1_high = 1  (see above)\n  Apoptosis_medium = 1\n    TP53 = 1\n      MDM2 = 0\n        p14ARF = 1\n          E2F1_medium = 1  (see above)\n      E2F1_medium = 1  (see above)\n      E2F1_high = 1  (see above)",
+    "explanation": null
+   }
+  ],
+  "attempts": [
+   {
+    "round": 1,
+    "knockouts": [
+     "TP53"
+    ],
+    "verdict": "FORCED",
+    "via": "cegar",
+    "note": "budgeted",
+    "counterexample": null
+   },
+   {
+    "round": 1,
+    "knockouts": [
+     "p21CIP"
+    ],
+    "verdict": "FORCED",
+    "via": "cegar",
+    "note": "budgeted",
+    "counterexample": null
+   },
+   {
+    "round": 2,
+    "knockouts": [
+     "RB1",
+     "RBL2"
+    ],
+    "verdict": "FORCED",
+    "via": "cegar",
+    "note": "budgeted",
+    "counterexample": null
+   }
+  ],
+  "rounds": 2,
+  "solver_calls": 55,
+  "cegar_solver_calls": 48,
+  "sql_calls": 0,
+  "fallback_solver_calls": 0,
+  "calls_to_first_solution": 41,
+  "first_solution_found_by": "cegar",
+  "memory_refutations": 0,
+  "cegar_replays": 6,
+  "llm_calls": 0,
+  "llm_provider": "",
+  "llm_models": [],
+  "tokens": 0,
+  "seconds": 0.0,
+  "certified_infeasible": null,
+  "notes": [
+   "sql tool: llm disabled in the request",
+   "round 1: llm disabled in the request",
+   "round 2: llm disabled in the request"
+  ]
+ },
+ "markdown": "# Ranked knockout experiments: fgfr3_wtp53\n\n_FGFR3-driven tumour with wild-type p53 after radiation_\n\n## 1. Knock out TP53  (selective; found by cegar)\n- TP53: druggable=no, evidence=preclinical (pifithrin-alpha (research tool))\n\nSolver derivation (why apoptosis holds):\n```\nAttractor 1 (fixed, 1 state(s)):\nApoptosis_high = 1\n  E2F1_medium = 1\n    E2F1_medium = 1  (see above)\n    E2F1_high = 1\n      RBL2 = 0\n        CyclinD1 = 1\n          p21CIP = 0\n            TP53 = 0  [knockout]\n            Growth_inhibitors = 0  [scenario]\n          p16INK4a = 0\n            Growth_inhibitors = 0  [scenario]\n          RAS = 1\n            FGFR3 = 1\n              GRB2 = 0\n                SPRY = 1  (chain cut here)\n                EGFR = 0  (chain cut here)\n              FGFR3_stimulus = 1  [scenario]\n              EGFR = 0  (see above)\n      RB1 = 0\n        CyclinD1 = 1  (see above)\n      RAS = 1  (see above)\n      E2F1_medium = 1  (see above)\n      CHEK1_2_medium = 1\n        ATM_medium = 1\n          DNA_damage = 1  [scenario]\n      CHEK1_2_high = 1\n        E2F1_medium = 1  (see above)\n        CHEK1_2_medium = 1  (see above)\n        ATM_medium = 1  (see above)\n      ATM_medium = 1  (see above)\n      ATM_high = 1\n        E2F1_medium = 1  (see above)\n        DNA_damage = 1  [scenario]\n        ATM_medium = 1  (see above)\n  E2F1_high = 1  (see above)\n  Apoptosis_medium = 1\n    E2F1_medium = 1  (see above)\n    E2F1_high = 1  (see above)\n```\n\n## 2. Knock out p21CIP  (selective; found by cegar)\n- p21CIP: druggable=no, evidence=none\n\nSolver derivation (why apoptosis holds):\n```\nAttractor 1 (fixed, 1 state(s)):\nApoptosis_high = 1\n  E2F1_medium = 1\n    E2F1_medium = 1  (see above)\n    E2F1_high = 1\n      RBL2 = 0\n        CyclinD1 = 1\n          p21CIP = 0  [knockout]\n          p16INK4a = 0\n            Growth_inhibitors = 0  [scenario]\n          RAS = 1\n            FGFR3 = 1\n              GRB2 = 0\n                SPRY = 1  (chain cut here)\n                EGFR = 0  (chain cut here)\n              FGFR3_stimulus = 1  [scenario]\n              EGFR = 0  (see above)\n      RB1 = 0\n        CyclinD1 = 1  (see above)\n      RAS = 1  (see above)\n      E2F1_medium = 1  (see above)\n      CHEK1_2_medium = 1\n        ATM_medium = 1\n          DNA_damage = 1  [scenario]\n      CHEK1_2_high = 1\n        E2F1_medium = 1  (see above)\n        CHEK1_2_medium = 1  (see above)\n        ATM_medium = 1  (see above)\n      ATM_medium = 1  (see above)\n      ATM_high = 1\n        E2F1_medium = 1  (see above)\n        DNA_damage = 1  [scenario]\n        ATM_medium = 1  (see above)\n  E2F1_high = 1  (see above)\n  Apoptosis_medium = 1\n    TP53 = 1\n      MDM2 = 0\n        p14ARF = 1\n          E2F1_medium = 1  (see above)\n      E2F1_medium = 1  (see above)\n      E2F1_high = 1  (see above)\n```\n\n## 3. Knock out RB1 + RBL2  (selective; found by cegar)\n- RB1: druggable=no, evidence=none\n- RBL2: druggable=no, evidence=none\n\nSolver derivation (why apoptosis holds):\n```\nAttractor 1 (fixed, 1 state(s)):\nApoptosis_high = 1\n  E2F1_medium = 1\n    E2F1_medium = 1  (see above)\n    E2F1_high = 1\n      RBL2 = 0  [knockout]\n      RB1 = 0  [knockout]\n      RAS = 1\n        FGFR3 = 1\n          GRB2 = 0\n            SPRY = 1\n              RAS = 1  (see above)\n            EGFR = 0\n              FGFR3 = 1  (see above)\n          FGFR3_stimulus = 1  [scenario]\n          EGFR = 0  (see above)\n      E2F1_medium = 1  (see above)\n      CHEK1_2_medium = 1\n        ATM_medium = 1\n          DNA_damage = 1  [scenario]\n      CHEK1_2_high = 1\n        E2F1_medium = 1  (see above)\n        CHEK1_2_medium = 1  (see above)\n        ATM_medium = 1  (see above)\n      ATM_medium = 1  (see above)\n      ATM_high = 1\n        E2F1_medium = 1  (see above)\n        DNA_damage = 1  [scenario]\n        ATM_medium = 1  (see above)\n  E2F1_high = 1  (see above)\n  Apoptosis_medium = 1\n    TP53 = 1\n      MDM2 = 0\n        p14ARF = 1\n          E2F1_medium = 1  (see above)\n      E2F1_medium = 1  (see above)\n      E2F1_high = 1  (see above)\n```\n\n---\nmodel none | data layer local-csv (zetaris unavailable: SAMPLE_MODE is on) | memory session | rounds 2 | solver calls 55 (search 48, replayed from memory 6) | LLM calls 0 via none (no model) | tokens 0 | 0.6s"
+}

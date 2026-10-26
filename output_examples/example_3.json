@@ -1,0 +1,35 @@
+{
+ "report": {
+  "scenario": "growthinh_only",
+  "description": "Quiescent anti-growth tissue with no mitogenic signal, after radiation",
+  "data_source": "local-csv (zetaris unavailable: SAMPLE_MODE is on)",
+  "model": "none",
+  "memory_mode": "session",
+  "baseline": "SURVIVES",
+  "solutions": [],
+  "attempts": [],
+  "rounds": 4,
+  "solver_calls": 43,
+  "cegar_solver_calls": 42,
+  "sql_calls": 0,
+  "fallback_solver_calls": 0,
+  "calls_to_first_solution": null,
+  "first_solution_found_by": "",
+  "memory_refutations": 0,
+  "cegar_replays": 41,
+  "llm_calls": 0,
+  "llm_provider": "",
+  "llm_models": [],
+  "tokens": 0,
+  "seconds": 0.0,
+  "certified_infeasible": true,
+  "notes": [
+   "sql tool: llm disabled in the request",
+   "round 1: llm disabled in the request",
+   "round 2: llm disabled in the request",
+   "round 3: llm disabled in the request",
+   "round 4: llm disabled in the request"
+  ]
+ },
+ "markdown": "# Ranked knockout experiments: growthinh_only\n\n_Quiescent anti-growth tissue with no mitogenic signal, after radiation_\n\n**No knockout set of the allowed size forces apoptosis.** The counterexample-guided search is complete up to the size limit and ran out of candidates, so this is a proof, not a failure to find one.\n\n---\nmodel none | data layer local-csv (zetaris unavailable: SAMPLE_MODE is on) | memory session | rounds 4 | solver calls 43 (search 42, replayed from memory 41) | LLM calls 0 via none (no model) | tokens 0 | 0.3s"
+}
