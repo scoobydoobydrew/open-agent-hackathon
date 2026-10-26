@@ -29,7 +29,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-os.environ.setdefault("AGENT_LOG_DIR", "off")          # thousands of agent runs: no per-run evidence files
 from agent.llm import LLMResponse, NemotronClient  # noqa: E402
 from agent.main import CEGARAgent  # noqa: E402
 from agent.tools_zetaris import DataLayer  # noqa: E402
@@ -152,6 +151,7 @@ def markdown(model: str, results: dict[str, list[dict]]) -> str:
 
 
 def main() -> None:
+    os.environ.setdefault("AGENT_LOG_DIR", "off")      # thousands of agent runs: no per-run evidence files (only when run as a script)
     ap = argparse.ArgumentParser()
     ap.add_argument("--arms", nargs="+", default=ARMS, choices=ARMS)
     ap.add_argument("--scenarios", nargs="*")

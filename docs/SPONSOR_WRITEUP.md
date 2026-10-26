@@ -32,8 +32,10 @@ shows the live engine.
 (OpenAI-compatible `/v1/chat/completions` on `http://127.0.0.1:8088/v1`) with the runtime token and a `meterless-app`
 header. The NVIDIA key is stored in Nightshift's Providers tab and never in the project. A direct NVIDIA call exists only
 as a clearly labelled fallback for when Nightshift is not running, and `SAMPLE_MODE=true` switches every network call off
-so the project still runs. `tests/test_llm.py` checks the contract against a stand-in runtime (route, headers, routed
-model, fallback, no secrets in logs). Evidence is written as JSONL to `logs/`: every LLM request with the model that
+so the project still runs. Checked live: in the four committed sample runs (`logs/samples/`) all 22 LLM requests went to
+Nightshift, each handled by `nvidia/nemotron-3.5-lightning-30b-a3b` (Nemotron 3.5 Lightning 30B A3B, NVIDIA cloud route),
+with Nightshift's receipt id logged per request. `tests/test_llm.py` also checks the contract against a stand-in runtime
+(route, headers, routed model, fallback, no secrets in logs). Evidence is written as JSONL to `logs/`: every LLM request with the model that
 handled it, every H-MEM retrieval, and each run's events and H-MEM ledger. Code: `agent/llm.py`, `agent/logs.py`.
 
 ## NVIDIA

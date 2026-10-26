@@ -50,6 +50,8 @@ class LLMResponse:
     provider: str = ""
     routed_model: str = ""             # the model that actually answered, as reported by the provider
     latency: float = 0.0
+    from_cache: bool = False           # Nightshift answered from its own cache (a repeated prompt), not from a fresh model call
+    receipt_id: str = ""               # Nightshift's receipt for this request
 
 
 class ChatClient(Protocol):
@@ -83,6 +85,21 @@ def routed_model_of(body: dict) -> str:
             or _find_key(receipt, "model")
             or (body.get("model") if isinstance(body.get("model"), str) else "")
             or "")
+
+
+def receipt_summary(body: dict) -> dict:
+    """The parts of Nightshift's ``meterless`` block worth keeping in a trace: no prompt text, no keys."""
+    m = body.get("meterless") if isinstance(body.get("meterless"), dict) else {}
+    if not m:
+        return {}
+    route = m.get("winning_route") if isinstance(m.get("winning_route"), dict) else {}
+    egress = m.get("egress") if isinstance(m.get("egress"), dict) else {}
+    cost = m.get("cost") if isinstance(m.get("cost"), dict) else {}
+    consensus = m.get("consensus") if isinstance(m.get("consensus"), dict) else {}
+    return {"receipt_id": m.get("receipt_id"), "decision_id": m.get("decision_id"), "mode": m.get("mode"),
+            "from_cache": bool(m.get("from_cache")), "route": route.get("label"), "route_provider": route.get("provider"),
+            "route_kind": route.get("kind"), "egress_to": egress.get("destination"), "cost_usd": cost.get("actual_usd"),
+            "consensus": consensus.get("level"), "requires_review": m.get("requires_review")}
 
 
 def _token_files() -> list[Path]:
@@ -284,16 +301,19 @@ class NemotronClient:
                     finish = choice.get("finish_reason") or "stop"
                     content = msg.get("content") or ""
                     routed = routed_model_of(body) or self.model
+                    receipt = receipt_summary(body)
                     self._trace({"ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "provider": self.provider,
                                  "fallback": self.fallback, "requested_model": self.model, "routed_model": routed,
                                  "latency_s": round(latency, 2), "prompt_tokens": usage.get("prompt_tokens", 0),
                                  "completion_tokens": usage.get("completion_tokens", 0), "finish_reason": finish,
+                                 "nightshift": receipt or None,
                                  "meterless_headers": {k: v for k, v in r.headers.items() if k.lower().startswith("meterless")}})
                     if not content and finish == "length":
                         raise LLMError(f"reply cut off by the {max_tokens}-token limit before any answer "
                                        "(the model spent it on thinking)")
                     return LLMResponse(content, msg.get("reasoning_content") or "", usage.get("prompt_tokens", 0),
-                                       usage.get("completion_tokens", 0), finish, self.provider, routed, round(latency, 2))
+                                       usage.get("completion_tokens", 0), finish, self.provider, routed, round(latency, 2),
+                                       bool(receipt.get("from_cache")), str(receipt.get("receipt_id") or ""))
                 last = f"HTTP {r.status_code}: {r.text[:200]}"
                 if r.status_code == 400 and any(k in payload for k in _EXTENSIONS):
                     for k in _EXTENSIONS:                                # endpoint rejects the extensions: retry plainly

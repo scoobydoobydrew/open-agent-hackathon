@@ -219,3 +219,13 @@ def test_one_zetaris_outage_costs_one_timeout(monkeypatch):
     layer = DataLayer(client=Down())
     layer.network_rows(); layer.scenarios(); layer.druggability()
     assert len(calls) == 1 and layer.source.startswith("local-csv")
+
+
+def test_importing_the_benchmark_does_not_switch_evidence_logging_off(monkeypatch):
+    """The UI server imports the benchmark module; that import must not disable logs/ for live runs."""
+    import importlib
+    import os
+    monkeypatch.delenv("AGENT_LOG_DIR", raising=False)
+    import benchmark.run_benchmark as rb
+    importlib.reload(rb)
+    assert "AGENT_LOG_DIR" not in os.environ

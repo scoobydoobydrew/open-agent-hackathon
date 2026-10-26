@@ -90,7 +90,7 @@ def configure(monkeypatch, srv):
 
 def test_nightshift_is_the_primary_provider_and_follows_its_contract(monkeypatch, nightshift, tmp_path):
     configure(monkeypatch, nightshift)
-    monkeypatch.setenv("NVIDIA_API_KEY", "nvapi-should-not-be-used")           # present, but Nightshift is online
+    monkeypatch.setenv("NVIDIA_API_KEY", "fake-direct-key-must-not-be-used")           # present, but Nightshift is online
     trace = tmp_path / "trace.jsonl"
     client = NemotronClient(trace_path=trace)
     assert client.provider == "nightshift" and not client.fallback
@@ -108,7 +108,7 @@ def test_nightshift_is_the_primary_provider_and_follows_its_contract(monkeypatch
     rec = json.loads(line)
     assert rec["provider"] == "nightshift" and rec["routed_model"] == MODEL and rec["prompt_tokens"] == 12
     assert rec["meterless_headers"] == {"meterless-route": "nvidia-lightning"}
-    assert "SECRET PROMPT TEXT" not in line and TOKEN not in line and "nvapi" not in line
+    assert "SECRET PROMPT TEXT" not in line and TOKEN not in line and "fake-direct-key" not in line
 
 
 def test_routed_model_falls_back_to_the_plain_model_field():
@@ -141,7 +141,7 @@ def test_nvidia_direct_is_only_a_labelled_fallback(monkeypatch):
     monkeypatch.setenv("NIGHTSHIFT_TOKEN", TOKEN)
     with pytest.raises(LLMError, match="offline"):
         NemotronClient(trace_path=None)
-    monkeypatch.setenv("NVIDIA_API_KEY", "nvapi-test")
+    monkeypatch.setenv("NVIDIA_API_KEY", "fake-direct-key")
     client = NemotronClient(trace_path=None)
     assert client.provider == "nvidia-direct" and client.fallback and "offline" in client.note
     assert "nvidia.com" in client.base_url and "reasoning_effort" not in client._headers()
@@ -232,3 +232,17 @@ def test_model_id_is_taken_from_the_list_the_runtime_serves(monkeypatch):
 def test_runtime_token_variable_used_by_other_hackathon_projects_is_accepted(monkeypatch):
     monkeypatch.setenv("METERLESS_RUNTIME_TOKEN", "runtime-var")
     assert llm.nightshift_settings()[1] == "runtime-var"
+
+
+def test_real_nightshift_response_shape_is_understood():
+    """The shape the real runtime returns (checked live): a top-level ``meterless`` block with the routing receipt."""
+    body = {"model": "nvidia/nemotron-3.5-lightning-30b-a3b", "choices": [], "meterless": {
+        "requested_model": "nvidia/nemotron-3.5-lightning-30b-a3b", "routed_model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+        "from_cache": True, "receipt_id": "rcpt-1", "decision_id": "d-1", "mode": "auto", "requires_review": False,
+        "winning_route": {"model": "nvidia/nemotron-3.5-lightning-30b-a3b", "label": "Nemotron 3.5 Lightning 30B A3B",
+                          "provider": "nvidia", "kind": "cloud"},
+        "egress": {"destination": "nvidia"}, "cost": {"actual_usd": 0}, "consensus": {"level": "solo"}}}
+    assert routed_model_of(body) == "nvidia/nemotron-3.5-lightning-30b-a3b"
+    r = llm.receipt_summary(body)
+    assert r["from_cache"] is True and r["route"] == "Nemotron 3.5 Lightning 30B A3B" and r["egress_to"] == "nvidia"
+    assert r["receipt_id"] == "rcpt-1" and llm.receipt_summary({"model": "x"}) == {}

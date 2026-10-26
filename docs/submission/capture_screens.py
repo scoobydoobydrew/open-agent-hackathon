@@ -47,6 +47,8 @@ with sync_playwright() as p:
     sol = pg.get_by_text("Verified solution #1").first
     sol.scroll_into_view_if_needed(); tl.evaluate("e => e.scrollTop += 0"); pg.wait_for_timeout(600)
     pg.screenshot(path=OUT / "agent_solution.png")
+    pg.get_by_text("H-MEM recalled").first.scroll_into_view_if_needed(); pg.wait_for_timeout(600)
+    pg.screenshot(path=OUT / "agent_nightshift.png")        # LLM request lines (provider and model) and the H-MEM recall
 
     tab(pg, "Benchmark"); pg.wait_for_timeout(1500)
     pg.screenshot(path=OUT / "benchmark.png")

@@ -239,7 +239,7 @@ def run():
 
         def agent():
             d.tab("Agent")
-            d.scenario("EGF · p53 wild-type")
+            d.scenario("FGFR3 · RB1 lost")        # not run before through Nightshift, so no request is answered from its cache
             d.hover(pg.locator("header").get_by_text("LLM", exact=True).first)
             d.wait(1.5)
             d.click(pg.locator("#view-agent button", has_text="Run live").first)      # mode switch

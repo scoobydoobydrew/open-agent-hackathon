@@ -17,7 +17,7 @@ import requests
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from agent.llm import (DEFAULT_MODEL, _nightshift_headers, _token_files, nightshift_settings,  # noqa: E402
-                       probe_nightshift, routed_model_of)
+                       probe_nightshift, receipt_summary, resolve_model, routed_model_of)
 
 
 def main() -> int:
@@ -47,6 +47,7 @@ def main() -> int:
     t0 = time.perf_counter()
     r = requests.post(f"{base}/chat/completions", headers=headers, timeout=120, json={
         "model": model, "max_tokens": 40, "temperature": 0,
+        "chat_template_kwargs": {"enable_thinking": False}, "reasoning_effort": "none",   # what the agent sends
         "messages": [{"role": "user", "content": "Reply with the single word: ready"}]})
     dt = time.perf_counter() - t0
     print(f"POST /chat/completions: HTTP {r.status_code} in {dt:.1f}s")
@@ -56,6 +57,9 @@ def main() -> int:
     body = r.json()
     print("reply         :", (body["choices"][0]["message"].get("content") or "").strip()[:80])
     print("handled by    :", routed_model_of(body) or "(not reported)")
+    receipt = receipt_summary(body)
+    print("route         :", receipt.get("route"), f"({receipt.get('route_provider')}, {receipt.get('route_kind')})")
+    print("from cache    :", receipt.get("from_cache"), "| receipt id:", receipt.get("receipt_id"))
     print("response keys :", sorted(body.keys()))
     print("meterless-* headers:", sorted(k for k in r.headers if k.lower().startswith("meterless")) or "none")
     print("\nNightshift works. The agent will use it as its primary provider.")

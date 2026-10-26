@@ -21,20 +21,30 @@ OUT = Path(__file__).resolve().parent / "replays"
 DEFAULT = ["fgfr3_wtp53", "egf_wtp53", "egf_tp53null", "growthinh_only"]
 
 
-def record(sid: str, rounds: int, max_size: int) -> Path:
+def target_solutions(sid: str) -> int:
     truth = json.loads((ROOT / "benchmark" / "ground_truth.json").read_text(encoding="utf-8"))
-    target = min(len(truth.get(sid, {}).get("minimal_sets", [])) or 3, 3)
+    return min(len(truth.get(sid, {}).get("minimal_sets", [])) or 3, 3)
+
+
+def save_replay(sid: str, llm, events: list[dict], seconds: float) -> Path:
+    """Write the events of a real run in the form the UI's Replay button plays offline."""
+    OUT.mkdir(exist_ok=True)
+    path = OUT / f"{sid}.json"
+    path.write_text(json.dumps({"scenario": sid, "model": getattr(llm, "model", ""), "provider": getattr(llm, "provider", ""),
+                                "recorded_at": time.strftime("%Y-%m-%d %H:%M:%S"), "seconds": round(seconds, 1),
+                                "events": events}, default=str), encoding="utf-8")
+    return path
+
+
+def record(sid: str, rounds: int, max_size: int) -> Path:
     events: list[dict] = []
     llm = NemotronClient()
     agent = CEGARAgent(llm, DataLayer(), memory_mode="session", max_size=max_size, max_rounds=rounds, per_round=3,
-                       target_solutions=target, explain=True, sql_tool=True, log=lambda _: None, on_event=events.append)
+                       target_solutions=target_solutions(sid), explain=True, sql_tool=True, log=lambda _: None,
+                       on_event=events.append)
     t0 = time.time()
     agent.run(sid)
-    OUT.mkdir(exist_ok=True)
-    path = OUT / f"{sid}.json"
-    path.write_text(json.dumps({"scenario": sid, "model": llm.model, "provider": getattr(llm, "provider", ""), "recorded_at": time.strftime("%Y-%m-%d %H:%M:%S"),
-                                "seconds": round(time.time() - t0, 1), "events": events}, default=str), encoding="utf-8")
-    return path
+    return save_replay(sid, llm, events, time.time() - t0)
 
 
 def main() -> None:

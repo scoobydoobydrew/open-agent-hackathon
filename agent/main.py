@@ -133,7 +133,8 @@ class CEGARAgent:
             self._providers.add(provider)
             self._models.add(model)
             self._emit("llm_call", purpose=purpose, provider=provider, model=model,
-                       latency=getattr(reply, "latency", 0.0), tokens=reply.prompt_tokens + reply.completion_tokens)
+                       latency=getattr(reply, "latency", 0.0), tokens=reply.prompt_tokens + reply.completion_tokens,
+                       from_cache=bool(getattr(reply, "from_cache", False)), receipt_id=getattr(reply, "receipt_id", ""))
             try:
                 return extract_json(reply.content)
             except LLMError:

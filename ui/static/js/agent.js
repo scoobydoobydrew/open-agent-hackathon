@@ -169,7 +169,7 @@ function onLlmCall(ev) {
   const purpose = { proposals: 'proposals', explanation: 'explanation', sql: 'SQL' }[ev.purpose] || ev.purpose;
   add(h('div', { class: 'animate-fadeUp flex flex-wrap items-center gap-1.5 pl-4 text-[11px] text-slate-500' },
     '⚙ ' + t('ag.llmreq', { p: purpose }), badge(PROVIDER[ev.provider] || ev.provider || '?', ev.provider === 'nightshift' ? 'green' : 'amber'),
-    badge((ev.model || '').split('/').pop(), 'cyan'), `${ev.latency}s · ${fmt(ev.tokens)} tokens`));
+    badge((ev.model || '').split('/').pop(), 'cyan'), ev.from_cache ? badge('cached', 'amber') : null, `${ev.latency}s · ${fmt(ev.tokens)} tokens`));
 }
 
 function onMemoryRecall(ev) {

@@ -43,7 +43,7 @@ NOTES = [
     "with the NVIDIA key kept in Nightshift. What is unique: nobody in the loop is trusted. The model writes SQL but a guard "
     "validates it, proposes knockouts but a solver judges them, and the memory keeps only solver-verified facts.",
     "The stack: Python with Z3, numpy and scipy for the solver; Nightshift, Zetaris REST and an H-MEM Node bridge for the "
-    "agent; a standard-library HTTP server with vanilla JavaScript and vendored Tailwind for the interface; 99 pytest tests, "
+    "agent; a standard-library HTTP server with vanilla JavaScript and vendored Tailwind for the interface; 102 pytest tests, "
     "exhaustive ground truth and a reproducible benchmark. Built in the window: everything except the declared "
     "pre-existing components, which are the published 2015 network, the official H-MEM reference, and open-source libraries. "
     "It runs from a clean clone with SAMPLE_MODE and no account.",

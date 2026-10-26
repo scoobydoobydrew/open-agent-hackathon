@@ -115,19 +115,22 @@ Scenario ids (the input of the agent): `fgfr3_wtp53`, `egf_wtp53`, `egf_growthin
 `egf_mdm2amp`, `fgfr3_rb1loss`, `growthinh_only` (no solution exists). The UI also lets you set your own inputs
 (radiation, EGF, FGFR3, anti-growth signal, tumour lesions) in the bar at the top.
 
-**Three sample inputs and their outputs** (committed in [`logs/samples/`](logs/samples/): the report `<id>.md`, the ordered event
-log `<id>.events.jsonl`, and, for runs with an LLM, `<id>.llm-trace.jsonl` with the provider and model of every request):
+**Four sample inputs and their outputs**, committed in [`logs/samples/`](logs/samples/) from real runs through Meterless
+Nightshift (per scenario: the report `<id>.md`, the ordered event log `<id>.events.jsonl`, the H-MEM ledger
+`<id>.hmem-ledger.jsonl`, and `<id>.llm-trace.jsonl` with the provider, the model that handled every request and its
+Nightshift receipt id):
 
 | input (`--scenario`) | meaning | output |
 |---|---|---|
-| `fgfr3_wtp53` | FGFR3-driven tumour, wild-type p53, after radiation | three minimal sets, all selective: `TP53`, `p21CIP`, `RB1 + RBL2`, each with a solver derivation of why apoptosis holds |
-| `egf_tp53null` | EGF-driven tumour that already lost TP53 | one minimal set: `GRB2` (selective); a drug-evidence line for it from Zetaris |
-| `growthinh_only` | quiescent anti-growth tissue, no growth signal | **no solution exists**: the search proves that no set of up to 3 genes forces apoptosis |
+| `fgfr3_wtp53` | FGFR3-driven tumour, wild-type p53, after radiation | three minimal sets, all selective: `TP53`, `p21CIP`, `RB1 + RBL2`, each with checked proof steps (6 LLM requests) |
+| `egf_wtp53` | EGF-driven tumour, wild-type p53 | three minimal sets (`GRB2 + TP53`, `GRB2 + p21CIP`, `GRB2 + RB1 + RBL2`), **none selective**: `GRB2` loss also kills a resting normal cell, and the report says so |
+| `egf_tp53null` | EGF-driven tumour that already lost TP53 | one minimal set: `GRB2` (selective), with its drug-evidence line from Zetaris |
+| `growthinh_only` | quiescent anti-growth tissue, no growth signal | **no solution exists**: the search proves that no set of up to 4 genes forces apoptosis |
 
-The committed samples are produced by `SAMPLE_MODE=true python scripts/make_samples.py` (no LLM, no network, reproducible by
-anyone): the solutions and proofs come from the solver and the search, which need no LLM. Runs with an LLM add the
-proposals with their rationale, the Zetaris SQL the model wrote, the H-MEM recall lines and the worded explanation steps,
-and a trace of which model handled each request; they are produced by the same script without `SAMPLE_MODE`.
+`python scripts/make_samples.py <ids>` regenerates them (add `--replays` to refresh the UI's offline replays from the same
+runs). With `SAMPLE_MODE=true`, or when no provider is reachable, the same command runs without an LLM: the solutions and
+proofs are the same, because they come from the solver and the complete search. `input_examples/` and `output_examples/`
+hold three request/response pairs for the HTTP interface (below).
 
 ## Logs and traces
 
